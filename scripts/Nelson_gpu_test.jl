@@ -17,6 +17,10 @@ a code to Derive the Energetics and Spectra of Optically Thick Insterstellar Clo
 DESPOTIC has pre-defined networks, one of them coming from the Nelson & Langer paper, 
 so the initial conditions and paramters were meant to mimic those from DESPOTIC.
 
+Note: The composite hydrocarbon radical CHx represents both CH and CH2, 
+the composite oxygen species OHx represents OH, H2O, O2 and their ions,
+and M represents the low ionization potential metals Mg, Fe, Ca, and Na. 
+
         Parameter definitions:
         T: Tempurature (Kelvin)
         Av: V-band extinction

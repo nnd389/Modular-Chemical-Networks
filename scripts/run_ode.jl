@@ -1,7 +1,7 @@
 # %%
 using Revise
 using DrWatson
-@quickactivate "AstroChemNetwork"
+#@quickactivate "AstroChemNetwork"
 
     # %% Load packages 
 using Catalyst
@@ -24,6 +24,7 @@ includet("NL99_network.jl")
 includet("Glover_network.jl")
 
 
+
     # %% Benchmark_network: This is a network taken from an astrochemistry benchmarking code
 function run_Benchmark(d :: Dict)
     @unpack tspan, u0, params = d
@@ -31,7 +32,6 @@ function run_Benchmark(d :: Dict)
     sol = solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
     return sol
 end
-
 
     # %% NL99_GC_network: This is a network taken from a paper written by Nelson and Langer in 1999 with some added hydrogen chemistry as combined in ____
 # FIX: this network isn't complete, I just have to fill in some rates and double check
@@ -67,19 +67,38 @@ function run_Glover(d :: Dict)
 end
 
 
+
+
+function run_network(ssys, d :: Dict)
+    @unpack tspan, u0, params = d
+    prob = ODEProblem(ssys, u0, tspan, params)
+    sol = solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+    return sol
+end
+
+
+
+
+
+
+
     # %% Run
 #sol_Benchmark = run_Benchmark(allvars)
 #sol_NL99_GC = run_NL99_GC(allvars)
 #sol_NL99_odes = run_NL99_odes(allvars)
-#sol_NL99 = run_NL99(allvars)
-sol_Glover = run_Glover(allvars)
+sol_NL99 = run_NL99(allvars)
+#sol_Glover = run_Glover(allvars)
+
+#sol_Glover = run_network(ssys, allvars)
+
+
 
     # %% Plot
 #plot(sol_Benchmark, vars = (0,4), lw = 3)
 #plot(sol_NL99_GC, vars = (0,16), lw = 3)
 #plot(sol_NL99_odes, vars = (0,11), lw = 3, title = "HCO+ set up as a system of ODEs")
-#plot(sol_NL99, vars = (0,11), lw = 3, title = "HCO+ set up as a list of reactions")
-plot(sol_Glover, vars = (0,10), lw = 3, title = "HCO+ set up as a list of reactions")
+plot(sol_NL99, vars = (0,11), lw = 3, title = "HCO+ set up as a list of reactions")
+#plot(sol_Glover, vars = (0,10), lw = 3, title = "HCO+ set up as a list of reactions")
 
 
 #plot(sol_NL99, vars = (0,6), lw = 3, title = "C and C+ set up as a list of reactions")
