@@ -1,0 +1,4 @@
+[deps]
+DiffEqGPU = "071ae1c0-96b5-11e9-1965-c90190d839ea"
+ModelingToolkit = "961ee093-0014-501f-94e3-6117800e7a78"
+Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
