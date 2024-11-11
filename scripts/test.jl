@@ -1,8 +1,6 @@
 #using CUDA, LinearAlgebra
 using Revise
 using DrWatson
-
-
 using Catalyst
 using DifferentialEquations
 using Plots
@@ -10,19 +8,14 @@ using OrdinaryDiffEq
 using ModelingToolkit
 using LSODA
 
-print("Checkpoint 1\n")
-#@time begin
+
     # %% Set The timespan, paramters, and initial conditions
 seconds_per_year = 3600 * 24 * 365
 tspan = (0.0, 30000 * seconds_per_year) # ~30 thousand yrs
-print("Checkpoint 2\n")
 
-T = 100
-n_H =  300
-Av = 1
 params = Dict(
-    :T => 10,  # from glover paper, T=60 section 4
-    :n_H => 6000000, # n_H = 300, from glover paper, section 4
+    :T => 60,  # from glover paper, section 4
+    :n_H => 300, # from glover paper, section 4
     :Av => 1,
     :k1 => 10^(-17.845 + 0.762 * log(T) + 0.1523 * (log(T))^2 - 0.03274 * (log(T))^3),
     :k2 => 0.0000000015,
@@ -53,63 +46,17 @@ params = Dict(
     :R194 => 7.5e-12 * exp(-2.55*Av + 0.0165*(Av)^2),
     :R195 => 2.5e-11 * exp(-2.55*Av + 0.0165*(Av)^2)) 
 
-#print(params[k42])
-
-#=
-params = [1000, #T
-        3000, #n_H
-        1,#Av
-        10^(-17.845 + 0.762 * log(T) + 0.1523 * (log(T))^2 - 0.03274 * (log(T))^3), #k1
-        0.0000000015, #k2
-        0.00000001, #k6
-        0.0000000000001269 * ((315614/T)^(1.503)) * (1 + (604625/T)^(0.47))^(-1.923), #k12
-        0.0000000025634 * (T)^(1.78186), #k14
-        0.0000000069 * T^(-0.35), #k15
-        0.0000000001 * T^(-0.5) * (12.72 - 1.615 * log(T) - 0.3162 * (log(T))^2 + 0.0493 * (log(T))^3), #k17
-        0.00000000126 * T^(-0.75) * exp(-127500/T),#k19
-        0.00000000000467 * (T/300)^(-0.6),#k20
-        0.00000000013 * T^(-0.64), #k21
-        0.0000000000000000858 * (T)^(0.757),#k29
-        0.000000000066,#k38
-        0.00000000005 * (T/300)^(0.5),#k42
-        0.000000000035,#k47
-        0.000000000047 * (T/300)^(-0.34),#k52
-        2.1e-19,#k146
-        2.5e-18,#k149
-        1.32e-32 * (T/300)^(-0.38),#k154
-        5.99e-33 * (T/5000)^(-1.6), #k157
-        6.16e-29 * (T/300)^(-3.08),#k158
-        5.0e-11 * exp(-2.55*Av + 0.0165*(Av)^2),#R188
-        5.0e-11 * exp(-2.55*Av + 0.0165*(Av)^2),#R189
-        5.0e-10 * exp(-2.55*Av + 0.0165*(Av)^2),#R190
-        1.5e-10 * exp(-2.55*Av + 0.0165*(Av)^2),#R191
-        2.5e-11 * exp(-2.55*Av + 0.0165*(Av)^2),#R192
-        2.5e-11 * exp(-2.55*Av + 0.0165*(Av)^2),#R193
-        7.5e-12 * exp(-2.55*Av + 0.0165*(Av)^2),#R194
-        2.5e-11 * exp(-2.55*Av + 0.0165*(Av)^2)]#R195
-=#
-
-
-print(params, "\n")
-print(" \n")
-#params["T"] = 7
-#print(params)
-print("Checkpoint 3\n")
-# FIX av value, see equaiton 2 in paper
-# Nelson has CHx (CH and CH2) and OHx (OH, H2O, O2) start at zero
 u0 = [  
-    0,        # 1: H⁻ #FIX
-    0,        # 2: H2⁺ #FIX
+    7,        # 1: H⁻ #FIX
+    .1,        # 2: H2⁺ #FIX
     9.059e-9, # 3: H3⁺ # This is what nelson has
-    0,        # 4: CH⁺ #FIX
-    0,        # 5: CH2⁺ #FIX
-    0,        # 6: OH⁺ #FIX
-    0,        # 7: H2O⁺ #FIX
-    0,        # 8: H3O⁺ #FIX
-    0,        # 9: CO⁺ #FIX
+    .1,        # 4: CH⁺ #FIX
+    .1,        # 5: CH2⁺ #FIX
+    .1,        # 6: OH⁺ #FIX
+    .1,        # 7: H2O⁺ #FIX
+    .1,        # 8: H3O⁺ #FIX
+    .1,        # 9: CO⁺ #FIX
     0,        # 10: HOC⁺ # This is what nelson has for HCO+
-    @species HOC⁺(t) O⁻(t) C⁻(t) O2⁺(t) e(t) H⁺(t) H(t) H2(t) He(t) He⁺(t) C(t) C⁺(t) O(t) O⁺(t) OH(t) H2O(t) CO(t) C2(t) O2(t) HCO⁺(t) CH(t) CH2(t) CH3⁺(t) M(t)
-
     .1,        # 11: O⁻ #FIX
     .1,        # 12: C⁻ #FIX
     .1,        # 13: O2⁺ #FIX
@@ -122,7 +69,7 @@ u0 = [
     1.41e-4,  # 20: C # Glover paper has 1.41e-4 section 4, (nelson has 0)
     0.0002,   # 21: C⁺ # This is what nelson has
     3.16e-4,  # 22: O # Glover paper has 3.16e-4 section 4, (nelson has 4e-4)
-    .1,        # 23: O⁺ #FIX
+    .2,        # 23: O⁺ #FIX
     0,        # 24: OH # This is what nelson has, OHx
     0,        # 25: H2O # This is what nelson has, OHxe8
     0,        # 26: CO # This is what nelson has
@@ -136,145 +83,12 @@ u0 = [
     ]
 
 
-
-#=
-T = 60
-n_H = 300
-Av = 1
-#CHECK I am replacing ln with log
-k1 = 10^(-17.845 + 0.762 * log(T) + 0.1523 * (log(T))^2 - 0.03274 * (log(T))^3)
-k2 = 0.0000000015
-k6 = 0.00000001
-k12 = 0.0000000000001269 * ((315614/T)^(1.503)) * (1 + (604625/T)^(0.47))^(-1.923) 
-k14 = 0.0000000025634 * (T)^(1.78186) 
-k15 = 0.0000000069 * T^(-0.35) 
-#k17 = 0.0000000001 * T^(-0.5) * (12.72 - 1.615 * log(T) - 0.3162 * (log(T))^2 + 0.0493 * (log(T))^3) 
-k17 = 5
-k19 = 0.00000000126 * T^(-0.75) * exp(-127500/T) 
-k20 = 0.00000000000467 * (T/300)^(-0.6) 
-k21 = 0.00000000013 * T^(-0.64)
-k29 = 0.0000000000000000858 * (T)^(0.757) 
-k38 = 0.000000000066 
-k42 = 0.00000000005 * (T/300)^(0.5)
-k47 = 0.000000000035
-k52 = 0.000000000047 * (T/300)^(-0.34)
-k146 = 2.1e-19 
-k149 = 2.5e-18
-k154 = 1.32e-32 * (T/300)^-0.38 
-k157 = 5.99e-33 * (T/5000)^(-1.6) 
-k158 = 6.16e-29 * (T/300)^(-3.08) 
-R188 = 5.0e-11 * exp(-2.55*Av + 0.0165*(Av)^2)
-R189 = 5.0e-11 * exp(-2.55*Av + 0.0165*(Av)^2)
-R190 = 5.0e-10 * exp(-2.55*Av + 0.0165*(Av)^2)
-R191 = 1.5e-10 * exp(-2.55*Av + 0.0165*(Av)^2)
-R192 = 2.5e-11 * exp(-2.55*Av + 0.0165*(Av)^2)
-R193 = 2.5e-11 * exp(-2.55*Av + 0.0165*(Av)^2)
-R194 = 7.5e-12 * exp(-2.55*Av + 0.0165*(Av)^2)
-R195 = 2.5e-11 * exp(-2.55*Av + 0.0165*(Av)^2)
-# FIX K12, K14, K17
-# CHECK K22 and K23 and K30
-=#
-
-#=
-print("Checkpoint 5\n")
-if T > 6000
-    k1 = 10^(-16.420 + 0.1998 * (log(T))^2 - 5.447e-3 * (log(T))^4 + 4.0415e-5 * (log(T))^6)
-end
-
-if T > 300
-    k2 = 1.23612E-09
-end
-
-if T > 617
-    k6 = 0.00000132 * (T)^(-0.76)
-end
-
-if T > 8000
-    k15 = 0.00000096*T^(-0.9)
-end
-
-if T > 10000
-    k19 = 4e37 * (T)^(4.74)
-end
-
-if T > 7950 && T <= 21140
-    k20 = 0.0000000000000000123 * (T/300)^(2.49) * exp(21845.6/T)
-end
-
-if T > 21140
-    k20 = 0.0000000962 * (T/300)^(-1.37) * exp(-115786.2/T)
-end
-
-if T > 400
-    k21 =0.000000000141 * (T)^(-0.66)+0.00074 * T^(-1.5)*exp(-175000/T)*(1+0.062*exp(-145000/T))
-end
-
-if T > 200 && T <= 2000
-    k29 = 0.0000000000000000325 * T^(0.968)
-end
-
-if T > 2000
-    k29 = 2.77e-19 * T^(1.597)
-end
-
-if T > 2000
-    k38 = 0.000000000102 * exp(-914/T)
-end
-
-if T > 300
-    k42 = 0.00000000005 * (T/300)^(0.757) 
-end
-
-if T > 261
-    k47 = 0.0000000000177 * exp(178/T)
-end
-
-if T > 295
-    k52 = 0.00000000000248 * (T/300)^(1.54)*exp(613/T)
-end
-
-if T > 300
-    k146 = 0.0000000000000000309 * (T/300)^(0.33) * exp(-1629/T)
-end
-
-if T > 300
-    k149 = 3.14e-18 *(T/300)^(-0.15) * exp(68/T)
-end
-
-if T > 300
-    k154 = 1.32e32 * (T/300)^-1
-end
-
-if T > 5000
-    k157 = 5.99e33 * (T/5000)^(-0.64) * exp(5255/T)
-end
-
-if T > 2000
-    k158 = 2.14e29 * (T/300)^(-3.08) * exp(2114/T)
-end
-
-if Av > 15
-    R188 = 5.0e-11 * exp(-2.8 * Av)
-    R189 = 5.0e-11 * exp(-2.8 * Av)
-    R190 = 5.0e-10 * exp(-2.8 * Av)
-    R191 = 1.5e-10 * exp(-2.8 * Av)
-    R192 = 2.5e-11 * exp(-2.8 * Av)
-    R193 = 2.5e-11 * exp(-2.8 * Av)
-    R194 = 7.5e-12 * exp(-2.8 * Av)
-    R195 = 2.5e-11 * exp(-2.8 * Av)
-end
-
-=#
 # %% Network admin things
-#allvars = @strdict tspan u0 params
-#allvars = @strdict tspan u0
+allvars = @strdict tspan u0 params
 @variables t 
 @species H⁻(t) H2⁺(t) H3⁺(t) CH⁺(t) CH2⁺(t) OH⁺(t) H2O⁺(t) H3O⁺(t) CO⁺(t) HOC⁺(t) O⁻(t) C⁻(t) O2⁺(t) e(t) H⁺(t) H(t) H2(t) He(t) He⁺(t) C(t) C⁺(t) O(t) O⁺(t) OH(t) H2O(t) CO(t) C2(t) O2(t) HCO⁺(t) CH(t) CH2(t) CH3⁺(t) M(t)
-@parameters T n_H Av k1 k2 k6 k12 k14 k15 k17 k19 k20 k21 k29 k38 k42 k47 k52 k146 k149 k154 k157 k158 R188 R189 R190 R191 R192 R193 R194 R195
+#@parameters T n_H
 
-#CHECK I am replacing ln with log
-
-print("Checkpoint 4\n")
 # %% Define the network
 reaction_equations = [
     (@reaction n_H * k1, H+e --> H⁻), 
@@ -435,20 +249,12 @@ reaction_equations = [
     (@reaction n_H * 6.9e-32 * (T)^(-0.4) , H+H+He  -->  H2+He), 
     (@reaction n_H * k157, C+C+M  -->  C2+M), 
     (@reaction n_H * k158, C+O+M  -->  CO+M), 
-    #FIXlvl3 (@reaction n_H * 100 * C210 , C⁺ + O+M  -->  CO⁺ + M), 
-    #FIXlvl3 (@reaction n_H * 100 * C210 , C+O⁺ + M  -->  CO⁺ + M), 
     (@reaction n_H * 4.33e-32 * (T/300)^(-1) , O+H+M  -->  OH+M), 
     (@reaction n_H * 2.56e-31 * (T/300)^(-2) , OH+H+M  -->  H2O+M), 
     (@reaction n_H * 9.2e-34 * (T/300)^(-1) , O+O+M  -->  O2+M), 
     (@reaction n_H * 0.00000000002 * (T/300)^(0.44) , O+CH  -->  HCO⁺ + e), 
-    #FIXlvl3 (@reaction n_H * 0.000000000000000003 * (T)^(0.5) * (1 + 100000 * exp(-600/T)) * (1 + 0.04*(T + T)^(0.5) + 0.002*T + 0.000008 * T^2)^(-1) , H+H(s)  -->  H2), 
-    
-
-
-    # Photochemical Reactions (R166) start below
     (@reaction 7.1e-7 * exp(-0.5 * Av), H⁻    -->  H+e), 
     (@reaction 1.1e-9 * exp(-1.9 * Av), H2⁺   -->  H+H⁺), 
-    #FIXlvl1 (@reaction 5.6e-11 * exp(-0.5 * Av), H2   -->  H+H), 
     (@reaction 4.9e-13 * exp(-1.8 * Av), H3⁺   -->  H2+H⁺),
     (@reaction 4.9e-13 * exp(-2.3 * Av), H3⁺   -->  H2⁺+H), 
     (@reaction 3.1e-10 * exp(-3.0 * Av), C   -->  C⁺ + e), 
@@ -478,10 +284,6 @@ reaction_equations = [
     (@reaction R195, H3O⁺    -->  OH⁺ + H2), 
     (@reaction 5.6e-11 * exp(-3.7 * Av), O2   -->  O2⁺+e), 
     (@reaction 7.0e-10 * exp(-1.8 * Av), O2   -->  O+O), 
-    #(@reaction 0.0000000002 , CO   -->  C+O),
-
-
-    # Cosmic Ray Reactions (R199) start below 
     (@reaction 1 , H   -->  H⁺ + e), 
     (@reaction 1.1 , He   -->  He⁺ + e), 
     (@reaction 0.037 , H2   -->  H⁺ + H+e), 
@@ -501,7 +303,6 @@ reaction_equations = [
     (@reaction 5300 , H2O   -->  OH+H), 
     (@reaction 4100 , O2   -->  O+O), 
     (@reaction 640  , O2   -->  O2⁺ + e), 
-    #FIX(@reaction 0.21*T^(1/2) *1 *(0.00001)^-1/2 , CO   -->  C+O)
     
 ]
 
@@ -512,20 +313,8 @@ odesys = convert(ODESystem, complete(system))
 sys = convert(ODESystem, complete(system))
 ssys = structural_simplify(sys)
 
-
-
 prob = ODEProblem(ssys, u0, tspan, params)
 #sol = solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 sol = solve(prob, Rodas4())
-
-plot(sol, idxs = (0,10), lw = 3, lc = "blue")
-plot!(sol, idxs = (0,9), lw = 3, lc = "gold")
-plot!(sol, idxs = (0,16), lw = 3, lc = "green", title = "HCO+ from Glover network")
-
-
-#HOC+ is 14
-#HCO+ is 15
-#CO is 16
-#print(sol)
-#print(params)
-#end
+plot(sol, idxs = (0,12), lw = 3, title = "HCO+ from Glover network")
+#14 is HOC+

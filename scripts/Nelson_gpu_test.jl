@@ -170,4 +170,13 @@ end
 
 prob = ODEProblem(NL99_network_odes, u0, tspan, params)
 sol = solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-plot(sol, vars = (0,11), lw = 3, title = "HCO+ set up as a system of ODEs")
+sol1 = solve(prob, Euler(), dt = 1e6)
+#plot(sol, vars = (0,11), lw = 3, title = "HCO+ set up as a system of ODEs")
+
+@time solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(prob, Euler(), dt = 1e6)
+
+
+#sol1 = solve(prob, Euler(), dt = 1e6)
+#plot(sol1, vars = (0,11), lw = 3, title = "HCO+ set up as a system of ODEs")
+

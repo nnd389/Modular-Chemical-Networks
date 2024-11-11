@@ -1,4 +1,4 @@
-    # %% Set The timespan, paramters, and initial conditions
+    # %% Set The timespan, parameters, and initial conditions
 seconds_per_year = 3600 * 24 * 365
 tspan = (0.0, 30000 * seconds_per_year) # ~30 thousand yrs
 
