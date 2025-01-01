@@ -1,8 +1,7 @@
 using OrdinaryDiffEq
 using DiffEqDevTools, Plots
 using LSODA
-using CUDA
-
+using Sundials
 
 #=
 The ODE function defined below models the reduced carbon-oxygen 
@@ -136,11 +135,11 @@ end
 seconds_per_year = 3600 * 24 * 365
 tspan = (0.0, 30000 * seconds_per_year) # ~30 thousand yrs
 
-params = [10,  # T
+params = (10,  # T
           2,   # Av
           1.7, # Go
           611, # n_H
-          1]   # shield
+          1)   # shield
 
 u0 = [0.5,      # 1:  H2
       9.059e-9, # 2:  H3+
@@ -159,7 +158,6 @@ u0 = [0.5,      # 1:  H2
 
 
 prob = ODEProblem(Nelson!, u0, tspan, params)
-#=
 refsol = solve(prob, Vern9(), abstol=1e-14, reltol=1e-14)
 sol1 = solve(prob, Rodas5P())
 sol2 = solve(prob, FBDF())
@@ -174,11 +172,54 @@ p2 = plot(sol2, vars = (0,11), lc=colors[2], legend = false, titlefontsize = 12,
 p3 = plot(sol3, vars = (0,11), lc=colors[3], legend = false, titlefontsize = 12, lw = 3, xlabel = "", title = "HCO+ solved using lsoda")
 p4 = plot(sol4, vars = (0,11), lc=colors[4], legend = false, titlefontsize = 12, lw = 3, xlabel = "", title = "HCO+ solved using lsoda with saveat")
 combined_plot = plot(p1, p2, p3, p4, layout=(4, 1), dpi = 600, pallete=:acton)
-=#
+
 
 @time solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 @time solve(prob, Vern9(), abstol=1e-14, reltol=1e-14)
 @time solve(prob, Euler(), dt = 1e6)
+
+
+
+# Run Benchmark
+setups = [
+          Dict(:alg=>Rodas4P()),
+          Dict(:alg=>Rodas4()),
+          Dict(:alg=>Rodas5P()),
+
+          Dict(:alg=>FBDF()),
+          Dict(:alg=>QNDF()),
+          Dict(:alg=>CVODE_BDF()),
+          Dict(:alg=>lsoda()),
+          #Dict(:alg=>AutoTsit5(Rosenbrock23())),
+          #Dict(:alg=>Euler(), :dt=>1e6)
+          ]
+
+refsol = solve(prob, Euler(); dt = 1e6)
+
+abstols = 1.0 ./ 10.0 .^ (7:13)
+reltols = 1.0 ./ 10.0 .^ (4:10)
+#wp = WorkPrecision(prob,Rodas4(),appxsol=refsol,abstols,reltols;name="Dormand-Prince 4/5")
+#plot(wp)
+
+wp = WorkPrecisionSet(prob,
+                      abstols,
+                      reltols,
+                      setups;
+                      appxsol=refsol,
+                      save_everystep=false, 
+                      print_names = true)
+
+plot(wp; 
+     palette=:PRGn_8, 
+     xlabel = "Error", 
+     ylabel = "Time to solve (s)",
+     xguidefontsize=16, 
+     yguidefontsize=16, 
+     tickfontsize=11)
+
+
+#palette=:acton10
+
 
 
 
