@@ -1,0 +1,1629 @@
+### Parameters ###
+T = 10
+omega = 0.5
+Av = 2
+params = Dict(
+         :T => T,
+         :Av => Av,
+         :n_H => 611,
+         :cr_ion_rate => 6e-18,
+         :omega => omega,
+         :k1 =>  3.37e-16 * (T/300)^(0.64) * exp(-(9.2/T)),     # Found Match for Glover 1 H + e --> H⁻ and Umist 6155 H + e --> H⁻ with temp range [10, 41000]
+
+         :k2 =>  4.82e-09 * (T/300)^(0.02) * exp(-(4.3/T)),     # Found Match for Glover 2 H⁻ + H --> H2 + e and Umist 75 H⁻ + H --> H2 + e with temp range [10, 100]
+
+         :k3 =>  1.15e-18 * (T/300)^(1.49) * exp(-(228.0/T)),     # Found Match for Glover 3 H + H⁺ --> H2⁺  and Umist 6093 H⁺ + H --> H2⁺ with temp range [200, 32000]
+
+         :k4 =>  6.4e-10 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 4 H + H2⁺ --> H2 + H⁺ and Umist 489 H + H2⁺ --> H2 + H⁺ with temp range [10, 41000]
+
+         :k5 =>  7.51e-08 * (T/300)^(-0.5) * exp(-(0.0/T)),     # Found Match for Glover 5 H⁻ + H⁺--> H + H and Umist 4921 H⁻ + H⁺ --> H + H with temp range [10, 41000]
+
+         :k6 =>  1.6e-08 * (T/300)^(-0.43) * exp(-(0.0/T)),     # Found Match for Glover 6 H2⁺ + e --> H + H and Umist 1239 H2⁺ + e --> H + H with temp range [10, 300]
+
+         # :k7 =>  Glover 7 H2 + H⁺ --> H2⁺ + H had 0 product matches
+
+         :k8 =>  3.22e-09 * (T/300)^(0.35) * exp(-(102000.0/T)),     # Found Match for Glover 8 H2 + e --> H + H + e and Umist 140 H2 + e --> H + H + e with temp range [3400, 41000]
+
+         :k9 =>  4.67e-07 * (T/300)^(-1.0) * exp(-(55000.0/T)),     # Found Match for Glover 9 H2 + H --> H + H + H and Umist 142 H + H2 --> H + H + H with temp range [1833, 41000]
+
+         :k10 =>  1e-08 * (T/300)^(0.0) * exp(-(84100.0/T)),     # Found Match for Glover 10 H2 + H2 --> H2 + H + H and Umist 135 H2 + H2 --> H2 + H + H with temp range [2803, 41000]
+
+         # :k11 => NO match for Glover reaction 11 H + e --> H⁺ + e + e
+
+         :k12 =>  3.5e-12 * (T/300)^(-0.75) * exp(-(0.0/T)),     # Found Match for Glover 12 H⁺ + e --> H  and Umist 6162 H⁺ + e --> H with temp range [10, 20000]
+
+         # :k13 =>  Glover 13 H⁻ + e --> H + e + e had 0 product matches
+
+         # :k14 => NO match for Glover reaction 14 H⁻ + H --> H + H + e
+
+
+         # :k16 =>  Glover 16 He + e --> He⁺ + e + e had 0 product matches
+
+         :k17 =>  5.36e-12 * (T/300)^(-0.5) * exp(-(0.0/T)),     # Found Match for Glover 17 He⁺ + e --> He  and Umist 6166 He⁺ + e --> He with temp range [10, 1000]
+
+         :k18 =>  1.2e-15 * (T/300)^(0.25) * exp(-(0.0/T)),     # Found Match for Glover 18 He⁺ + H --> He + H⁺ and Umist 491 H + He⁺ --> He + H⁺ with temp range [10, 41000]
+
+         # :k19 => NO match for Glover reaction 19 He + H⁺--> He⁺ + H
+
+         :k20 =>  2.36e-12 * (T/300)^(-0.29) * exp(-(-17.6/T)),     # Found Match for Glover 20 C⁺ + e --> C  and Umist 6158 C⁺ + e --> C with temp range [10, 41000]
+
+         :k21 =>  3.24e-12 * (T/300)^(-0.66) * exp(-(0.0/T)),     # Found Match for Glover 21 O⁺ + e --> O  and Umist 6170 O⁺ + e --> O with temp range [10, 41000]
+
+         # :k22 => NO match for Glover reaction 22 C + e --> C⁺ + e + e
+
+         # :k23 => NO match for Glover reaction 23 O + e --> O⁺ + e + e
+
+         :k24 =>  5.66e-10 * (T/300)^(0.36) * exp(-(-8.6/T)),     # Found Match for Glover 24 O⁺ + H --> O + H⁺ and Umist 492 H + O⁺ --> O + H⁺ with temp range [10, 41000]
+
+         :k25 =>  6.86e-10 * (T/300)^(0.26) * exp(-(224.3/T)),     # Found Match for Glover 25 O + H⁺--> O⁺ + H and Umist 406 H⁺ + O --> O⁺ + H with temp range [10, 41000]
+
+         # :k26 =>  Glover 26 O + He⁺ --> O⁺ + He had 0 product matches
+
+         # :k27 =>  Glover 27 C + H⁺ --> C⁺ + H had 0 product matches
+
+         # :k28 => NO match for Glover reaction 28 C⁺ + H --> C + H⁺
+
+         :k29 =>  6.3e-15 * (T/300)^(0.75) * exp(-(0.0/T)),     # Found Match for Glover 29 C + He⁺ --> C⁺ + He and Umist 513 He⁺ + C --> C⁺ + He with temp range [10, 300]
+
+         # :k30 =>  Glover 30 H2 + He --> H + H + He had 0 product matches
+
+         :k31 =>  6e-09 * (T/300)^(0.0) * exp(-(50900.0/T)),     # Found Match for Glover 31 OH + H --> O + H + H and Umist 145 H + OH --> O + H + H with temp range [1696, 41000]
+         # :k31 => NO match for Glover reaction 31 OH + H --> O + H + H
+
+         :k32 =>  3.8e-10 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 32 HOC⁺ + H2 --> HCO⁺ + H2 and Umist 137 H2 + HOC⁺ --> HCO⁺ + H2 with temp range [20, 41000]
+
+         # :k33 =>  Glover 33 HOC⁺ + CO --> HCO⁺ + CO had 0 product matches
+
+         :k34 =>  6.64e-10 * (T/300)^(0.0) * exp(-(11700.0/T)),     # Found Match for Glover 34 C + H2 --> CH + H and Umist 5348 H2 + C --> CH + H with temp range [300, 2500]
+         # :k34 => NO match for Glover reaction 34 C + H2 --> CH + H
+
+         :k35 =>  1.31e-10 * (T/300)^(0.0) * exp(-(80.0/T)),     # Found Match for Glover 35 CH + H --> C + H2 and Umist 5374 H + CH --> C + H2 with temp range [300, 2000]
+         # :k35 => NO match for Glover reaction 35 CH + H --> C + H2
+
+         :k36 =>  5.46e-10 * (T/300)^(0.0) * exp(-(1943.0/T)),     # Found Match for Glover 36 CH + H2 --> CH2 + H and Umist 5351 H2 + CH --> CH2 + H with temp range [300, 2500]
+         # :k36 => NO match for Glover reaction 36 CH + H2 --> CH2 + H
+
+         :k37 =>  6.59e-11 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 37 CH + C --> C2 + H and Umist 5173 C + CH --> C2 + H with temp range [10, 300]
+
+         :k38 =>  6.02e-11 * (T/300)^(0.1) * exp(-(-4.5/T)),     # Found Match for Glover 38 CH + O --> CO + H and Umist 5310 CH + O --> CO + H with temp range [10, 2000]
+
+         :k39 =>  2.2e-10 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 39 CH2 + H --> CH + H2 and Umist 5370 H + CH2 --> CH + H2 with temp range [10, 2500]
+
+         :k40 =>  1.33e-10 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 40 CH2 + O --> CO + H + H and Umist 5232 CH2 + O --> CO + H + H with temp range [10, 2500]
+         # :k40 => NO match for Glover reaction 40 CH2 + O --> CO + H + H
+
+         :k41 =>  8e-11 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 41 CH2 + O --> CO + H2 and Umist 5231 CH2 + O --> CO + H2 with temp range [1900, 2600]
+         # :k41 => NO match for Glover reaction 41 CH2 + O --> CO + H2
+
+         :k42 =>  2e-10 * (T/300)^(-0.12) * exp(-(0.0/T)),     # Found Match for Glover 42 C2 + O --> CO + C and Umist 5555 O + C2 --> CO + C with temp range [10, 8000]
+
+         :k43 =>  3.14e-13 * (T/300)^(2.7) * exp(-(3150.0/T)),     # Found Match for Glover 43 O + H2 --> OH + H and Umist 5361 H2 + O --> OH + H with temp range [297, 3532]
+
+         :k44 =>  6.99e-14 * (T/300)^(2.8) * exp(-(1950.0/T)),     # Found Match for Glover 44 OH + H --> O + H2 and Umist 5412 H + OH --> O + H2 with temp range [300, 2500]
+         # :k44 => NO match for Glover reaction 44 OH + H --> O + H2
+
+         :k45 =>  2.05e-12 * (T/300)^(1.52) * exp(-(1736.0/T)),     # Found Match for Glover 45 OH + H2 --> H2O + H and Umist 5362 H2 + OH --> H2O + H with temp range [250, 2581]
+         # :k45 => NO match for Glover reaction 45 OH + H2 --> H2O + H
+
+         :k46 =>  1e-10 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 46 OH + C --> CO + H and Umist 5199 C + OH --> CO + H with temp range [10, 300]
+
+         :k47 =>  3.69e-11 * (T/300)^(-0.27) * exp(-(12.9/T)),     # Found Match for Glover 47 OH + O --> O2 + H and Umist 5643 O + OH --> O2 + H with temp range [10, 500]
+
+
+         :k49 =>  1.59e-11 * (T/300)^(1.2) * exp(-(9610.0/T)),     # Found Match for Glover 49 H2O + H --> H2 + OH and Umist 5382 H + H2O --> OH + H2 with temp range [250, 3000]
+         # :k49 => NO match for Glover reaction 49 H2O + H --> H2 + OH
+
+         :k50 =>  2.61e-10 * (T/300)^(0.0) * exp(-(8156.0/T)),     # Found Match for Glover 50 O2 + H --> OH + O and Umist 5404 H + O2 --> OH + O with temp range [250, 4000]
+         # :k50 => NO match for Glover reaction 50 O2 + H --> OH + O
+
+         :k51 =>  3.16e-10 * (T/300)^(0.0) * exp(-(21890.0/T)),     # Found Match for Glover 51 O2 + H2 --> OH + OH and Umist 5359 H2 + O2 --> OH + OH with temp range [300, 2500]
+         # :k51 => NO match for Glover reaction 51 O2 + H2 --> OH + OH
+
+         :k52 =>  5.56e-11 * (T/300)^(0.41) * exp(-(-26.9/T)),     # Found Match for Glover 52 O2 + C --> CO + O and Umist 5196 C + O2 --> CO + O with temp range [10, 8000]
+
+         :k53 =>  1.1e-10 * (T/300)^(0.5) * exp(-(77700.0/T)),     # Found Match for Glover 53 CO + H --> C + OH and Umist 5377 H + CO --> OH + C with temp range [2590, 41000]
+
+         :k54 =>  2.08e-09 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 54 H2⁺ + H2 --> H3⁺ + H and Umist 2604 H2⁺ + H2 --> H3⁺ + H with temp range [10, 41000]
+
+         # :k55 =>  Glover 55 H3⁺ + H --> H2⁺ + H2 had 0 product matches
+
+         :k56 =>  2.4e-09 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 56 C + H2⁺ --> CH⁺ + H and Umist 2594 H2⁺ + C --> CH⁺ + H with temp range [10, 41000]
+
+         :k57 =>  2e-09 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 57 C + H3⁺ --> CH⁺ + H2 and Umist 2852 H3⁺ + C --> CH⁺ + H2 with temp range [10, 41000]
+
+         :k58 =>  1e-10 * (T/300)^(0.0) * exp(-(4640.0/T)),     # Found Match for Glover 58 C⁺ + H2 --> CH⁺ + H and Umist 2618 H2 + C⁺ --> CH⁺ + H with temp range [154, 3000]
+         # :k58 => NO match for Glover reaction 58 C⁺ + H2 --> CH⁺ + H
+
+         :k59 =>  9.06e-10 * (T/300)^(-0.37) * exp(-(29.1/T)),     # Found Match for Glover 59 CH⁺ + H --> C⁺ + H2 and Umist 3055 H + CH⁺ --> C⁺ + H2 with temp range [10, 1000]
+
+         :k60 =>  1.2e-09 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 60 CH⁺ + H2 --> CH2⁺ + H and Umist 2647 H2 + CH⁺ --> CH2⁺ + H with temp range [10, 41000]
+
+         :k61 =>  3.5e-10 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 61 CH⁺ + O --> CO⁺ + H and Umist 2189 CH⁺ + O --> CO⁺ + H with temp range [10, 41000]
+
+         :k62 =>  1.4e-09 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 62 CH2 + H⁺--> CH⁺ + H2 and Umist 2534 H⁺ + CH2 --> CH⁺ + H2 with temp range [10, 41000]
+
+         :k63 =>  1e-09 * (T/300)^(0.0) * exp(-(7080.0/T)),     # Found Match for Glover 63 CH2⁺ + H --> CH⁺ + H2 and Umist 3056 H + CH2⁺ --> CH⁺ + H2 with temp range [236, 300]
+
+         :k64 =>  1.6e-09 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 64 CH2⁺ + H2 --> CH3⁺ + H and Umist 2648 H2 + CH2⁺ --> CH3⁺ + H with temp range [10, 41000]
+
+         :k65 =>  7.5e-10 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 65 CH2⁺ + O --> HCO⁺ + H and Umist 2211 CH2⁺ + O --> HCO⁺ + H with temp range [10, 41000]
+
+         :k66 =>  7e-10 * (T/300)^(0.0) * exp(-(10560.0/T)),     # Found Match for Glover 66 CH3⁺ + H --> CH2⁺ + H2 and Umist 3057 H + CH3⁺ --> CH2⁺ + H2 with temp range [352, 41000]
+
+         :k67 =>  4e-10 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 67 CH3⁺ + O --> HCO⁺ + H2 and Umist 2311 CH3⁺ + O --> HCO⁺ + H2 with temp range [10, 41000]
+
+         :k68 =>  4.8e-10 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 68 C2 + O⁺ --> CO⁺ + C and Umist 3851 O⁺ + C2 --> CO⁺ + C with temp range [10, 41000]
+
+         :k69 =>  1.7e-09 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 69 O⁺ + H2 --> OH⁺ + H and Umist 2686 H2 + O⁺ --> OH⁺ + H with temp range [10, 41000]
+
+         :k70 =>  1.5e-09 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 70 O + H2⁺ --> OH⁺ + H and Umist 2616 H2⁺ + O --> OH⁺ + H with temp range [10, 41000]
+
+         :k71 =>  7.98e-10 * (T/300)^(-0.16) * exp(-(1.4/T)),     # Found Match for Glover 71 O + H3⁺ --> OH⁺ + H2 and Umist 2951 H3⁺ + O --> OH⁺ + H2 with temp range [5, 400]
+
+         :k72 =>  1.3e-09 * (T/300)^(-0.5) * exp(-(0.0/T)),     # Found Match for Glover 72 OH + H3⁺ --> H2O⁺ + H2 and Umist 2953 H3⁺ + OH --> H2O⁺ + H2 with temp range [10, 41000]
+
+         :k73 =>  7.7e-10 * (T/300)^(-0.5) * exp(-(0.0/T)),     # Found Match for Glover 73 OH + C⁺ --> CO⁺ + H and Umist 1646 C⁺ + OH --> CO⁺ + H with temp range [10, 41000]
+
+         :k74 =>  1.01e-09 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 74 OH⁺ + H2 --> H2O⁺ + H and Umist 2689 H2 + OH⁺ --> H2O⁺ + H with temp range [10, 41000]
+
+         :k75 =>  6.4e-10 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 75 H2O⁺ + H2 --> H3O⁺ + H and Umist 2662 H2 + H2O⁺ --> H3O⁺ + H with temp range [10, 41000]
+
+         :k76 =>  5.9e-09 * (T/300)^(-0.5) * exp(-(0.0/T)),     # Found Match for Glover 76 H2O + H3⁺ --> H3O⁺ + H2 and Umist 2904 H3⁺ + H2O --> H3O⁺ + H2 with temp range [10, 41000]
+
+         :k77 =>  9e-10 * (T/300)^(-0.5) * exp(-(0.0/T)),     # Found Match for Glover 77 H2O + C⁺ --> HCO⁺ + H and Umist 1613 C⁺ + H2O --> HCO⁺ + H with temp range [10, 41000]
+
+         :k78 =>  2.09e-09 * (T/300)^(-0.5) * exp(-(0.0/T)),     # Found Match for Glover 78 H2O + C⁺ --> HOC⁺ + H and Umist 1614 C⁺ + H2O --> HOC⁺ + H with temp range [10, 41000]
+
+         :k79 =>  1e-11 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 79 H3O⁺ + C --> HCO⁺ + H2 and Umist 2121 C + H3O⁺ --> HCO⁺ + H2 with temp range [10, 41000]
+
+         :k80 =>  3.42e-10 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 80 O2 + C⁺ --> CO⁺ + O and Umist 1642 C⁺ + O2 --> CO⁺ + O with temp range [10, 41000]
+
+         :k81 =>  4.54e-10 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 81 O2 + C⁺ --> CO + O⁺ and Umist 1643 C⁺ + O2 --> CO + O⁺ with temp range [10, 41000]
+
+         :k82 =>  9.1e-10 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 82 O2 + CH2⁺ --> HCO⁺ + OH and Umist 2210 CH2⁺ + O2 --> HCO⁺ + OH with temp range [10, 41000]
+
+         :k83 =>  5.2e-11 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 83 O2⁺ + C --> CO⁺ + O and Umist 2132 C + O2⁺ --> CO⁺ + O with temp range [10, 41000]
+
+         :k84 =>  8.49e-10 * (T/300)^(0.07) * exp(-(5.2/T)),     # Found Match for Glover 84 CO + H3⁺ --> HOC⁺ + H2 and Umist 2896 H3⁺ + CO --> HOC⁺ + H2 with temp range [10, 400]
+
+         :k85 =>  1.36e-09 * (T/300)^(-0.14) * exp(-(-3.4/T)),     # Found Match for Glover 85 CO + H3⁺ --> HCO⁺ + H2 and Umist 2895 H3⁺ + CO --> HCO⁺ + H2 with temp range [10, 400]
+
+         :k86 =>  1.1e-09 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 86 HCO⁺ + C --> CO + CH⁺ and Umist 2124 C + HCO⁺ --> CO + CH⁺ with temp range [10, 41000]
+
+         :k87 =>  2.5e-09 * (T/300)^(-0.5) * exp(-(0.0/T)),     # Found Match for Glover 87 HCO⁺ + H2O --> CO + H3O⁺ and Umist 2767 H2O + HCO⁺ --> CO + H3O⁺ with temp range [10, 41000]
+         # :k87 => NO match for Glover reaction 87 HCO⁺ + H2O --> CO + H3O⁺
+
+         :k88 =>  7.2e-15 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 88 H2 + He⁺ --> He + H2⁺ and Umist 458 H2 + He⁺ --> He + H2⁺ with temp range [10, 300]
+         # :k88 => NO match for Glover reaction 88 H2 + He⁺ --> He + H2⁺
+
+         :k89 =>  3.7e-14 * (T/300)^(0.0) * exp(-(35.0/T)),     # Found Match for Glover 89 H2 + He⁺ --> He + H + H⁺ and Umist 2677 H2 + He⁺ --> He + H⁺ + H with temp range [10, 300]
+         # :k89 => NO match for Glover reaction 89 H2 + He⁺ --> He + H + H⁺
+
+         :k90 =>  1.9e-09 * (T/300)^(-0.5) * exp(-(0.0/T)),     # Found Match for Glover 90 CH + H⁺ --> CH⁺ + H and Umist 372 H⁺ + CH --> CH⁺ + H with temp range [10, 41000]
+
+         :k91 =>  1.4e-09 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 91 CH2 + H⁺ --> CH2⁺ + H and Umist 359 H⁺ + CH2 --> CH2⁺ + H with temp range [10, 41000]
+
+         :k92 =>  7.5e-10 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 92 CH2 + He⁺ --> C⁺ + He + H2 and Umist 3380 He⁺ + CH2 --> C⁺ + He + H2 with temp range [10, 41000]
+
+         :k93 =>  1.6e-09 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 93 C2 + He⁺ --> C⁺ + C + He and Umist 3293 He⁺ + C2 --> C⁺ + C + He with temp range [10, 41000]
+         # :k93 => NO match for Glover reaction 93 C2 + He⁺ --> C⁺ + C + He
+
+         :k94 =>  2.1e-09 * (T/300)^(-0.5) * exp(-(0.0/T)),     # Found Match for Glover 94 OH + H⁺ --> OH⁺ + H and Umist 408 H⁺ + OH --> OH⁺ + H with temp range [10, 41000]
+
+         :k95 =>  1.1e-09 * (T/300)^(-0.5) * exp(-(0.0/T)),     # Found Match for Glover 95 OH + He⁺ --> O⁺ + He + H and Umist 3517 He⁺ + OH --> O⁺ + He + H with temp range [10, 41000]
+
+         :k96 =>  6.9e-09 * (T/300)^(-0.5) * exp(-(0.0/T)),     # Found Match for Glover 96 H2O + H⁺ --> H2O⁺ + H and Umist 378 H⁺ + H2O --> H2O⁺ + H with temp range [10, 300]
+
+         :k97 =>  2.04e-10 * (T/300)^(-0.5) * exp(-(0.0/T)),     # Found Match for Glover 97 H2O + He⁺ --> OH + He + H⁺ and Umist 3446 He⁺ + H2O --> OH + He + H⁺ with temp range [10, 41000]
+         # :k97 => NO match for Glover reaction 97 H2O + He⁺ --> OH + He + H⁺
+
+         :k98 =>  2.86e-10 * (T/300)^(-0.5) * exp(-(0.0/T)),     # Found Match for Glover 98 H2O + He⁺ --> OH⁺ + He + H and Umist 3445 He⁺ + H2O --> OH⁺ + He + H with temp range [10, 41000]
+         # :k98 => NO match for Glover reaction 98 H2O + He⁺ --> OH⁺ + He + H
+
+         :k99 =>  6.05e-11 * (T/300)^(-0.5) * exp(-(0.0/T)),     # Found Match for Glover 99 H2O + He⁺ --> H2O⁺ + He and Umist 518 He⁺ + H2O --> H2O⁺ + He with temp range [10, 41000]
+         # :k99 => NO match for Glover reaction 99 H2O + He⁺ --> H2O⁺ + He
+
+         :k100 =>  2e-09 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 100 O2 + H⁺ --> O2⁺ + H and Umist 405 H⁺ + O2 --> O2⁺ + H with temp range [10, 300]
+
+         :k101 =>  3.3e-11 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 101 O2 + He⁺ --> O2⁺ + He and Umist 525 He⁺ + O2 --> O2⁺ + He with temp range [10, 41000]
+         # :k101 => NO match for Glover reaction 101 O2 + He⁺ --> O2⁺ + He
+
+         :k102 =>  1.1e-09 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 102 O2 + He⁺ --> O⁺ + O + He and Umist 3510 He⁺ + O2 --> O⁺ + O + He with temp range [10, 41000]
+         # :k102 => NO match for Glover reaction 102 O2 + He⁺ --> O⁺ + O + He
+
+         :k103 =>  5.2e-11 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 103 O2⁺ + C --> O2 + C⁺ and Umist 248 C + O2⁺ --> O2 + C⁺ with temp range [10, 41000]
+
+         :k104 =>  1.6e-09 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 104 CO + He⁺ --> C⁺ + O + He and Umist 3431 He⁺ + CO --> O + C⁺ + He with temp range [10, 41000]
+
+
+         :k106 =>  7.5e-10 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 106 CO⁺ + H --> CO + H⁺ and Umist 488 H + CO⁺ --> CO + H⁺ with temp range [10, 41000]
+
+         :k107 =>  7.51e-08 * (T/300)^(-0.5) * exp(-(0.0/T)),     # Found Match for Glover 107 C⁻ + H⁺ --> C + H and Umist 4116 C⁻ + H⁺ --> C + H with temp range [10, 41000]
+
+         :k108 =>  7.51e-08 * (T/300)^(-0.5) * exp(-(0.0/T)),     # Found Match for Glover 108 O⁻ + H⁺ --> O + H and Umist 4957 O⁻ + H⁺ --> O + H with temp range [10, 41000]
+
+         :k109 =>  7.51e-08 * (T/300)^(-0.5) * exp(-(0.0/T)),     # Found Match for Glover 109 He⁺ + H⁻ --> He + H and Umist 4932 H⁻ + He⁺ --> H + He with temp range [10, 41000]
+
+         :k110 =>  2.34e-08 * (T/300)^(-0.52) * exp(-(0.0/T)),     # Found Match for Glover 110 H3⁺ + e --> H2 + H and Umist 1277 H3⁺ + e --> H2 + H with temp range [10, 1000]
+         # :k110 => NO match for Glover reaction 110 H3⁺ + e --> H2 + H
+
+         :k111 =>  4.36e-08 * (T/300)^(-0.52) * exp(-(0.0/T)),     # Found Match for Glover 111 H3⁺ + e --> H + H + H and Umist 1278 H3⁺ + e --> H + H + H with temp range [10, 1000]
+         # :k111 => NO match for Glover reaction 111 H3⁺ + e --> H + H + H
+
+         :k112 =>  1.5e-07 * (T/300)^(-0.42) * exp(-(0.0/T)),     # Found Match for Glover 112 CH⁺ + e --> C + H and Umist 1158 CH⁺ + e --> C + H with temp range [10, 300]
+
+         :k113 =>  1.6e-07 * (T/300)^(-0.6) * exp(-(0.0/T)),     # Found Match for Glover 113 CH2⁺ + e --> CH + H and Umist 1161 CH2⁺ + e --> CH + H with temp range [10, 1000]
+         # :k113 => NO match for Glover reaction 113 CH2⁺ + e --> CH + H
+
+         :k114 =>  4.03e-07 * (T/300)^(-0.6) * exp(-(0.0/T)),     # Found Match for Glover 114 CH2⁺ + e --> C + H + H and Umist 1160 CH2⁺ + e --> C + H + H with temp range [10, 1000]
+         # :k114 => NO match for Glover reaction 114 CH2⁺ + e --> C + H + H
+
+         :k115 =>  7.68e-08 * (T/300)^(-0.6) * exp(-(0.0/T)),     # Found Match for Glover 115 CH2⁺ + e --> C + H2 and Umist 1159 CH2⁺ + e --> C + H2 with temp range [10, 1000]
+         # :k115 => NO match for Glover reaction 115 CH2⁺ + e --> C + H2
+
+         :k116 =>  7.75e-08 * (T/300)^(-0.5) * exp(-(0.0/T)),     # Found Match for Glover 116 CH3⁺ + e --> CH2 + H and Umist 1175 CH3⁺ + e --> CH2 + H with temp range [10, 300]
+         # :k116 => NO match for Glover reaction 116 CH3⁺ + e --> CH2 + H
+
+         :k117 =>  1.95e-07 * (T/300)^(-0.5) * exp(-(0.0/T)),     # Found Match for Glover 117 CH3⁺ + e --> CH + H2 and Umist 1176 CH3⁺ + e --> CH + H2 with temp range [10, 300]
+         # :k117 => NO match for Glover reaction 117 CH3⁺ + e --> CH + H2
+
+         :k118 =>  2e-07 * (T/300)^(-0.4) * exp(-(0.0/T)),     # Found Match for Glover 118 CH3⁺ + e --> CH + H + H and Umist 1177 CH3⁺ + e --> CH + H + H with temp range [10, 1000]
+         # :k118 => NO match for Glover reaction 118 CH3⁺ + e --> CH + H + H
+
+         :k119 =>  3.75e-08 * (T/300)^(-0.5) * exp(-(0.0/T)),     # Found Match for Glover 119 OH⁺ + e --> O + H and Umist 1427 OH⁺ + e --> O + H with temp range [10, 300]
+
+         :k120 =>  3.05e-07 * (T/300)^(-0.5) * exp(-(0.0/T)),     # Found Match for Glover 120 H2O⁺ + e --> O + H + H and Umist 1265 H2O⁺ + e --> O + H + H with temp range [10, 1000]
+         # :k120 => NO match for Glover reaction 120 H2O⁺ + e --> O + H + H
+
+         :k121 =>  3.9e-08 * (T/300)^(-0.5) * exp(-(0.0/T)),     # Found Match for Glover 121 H2O⁺ + e --> O + H2 and Umist 1264 H2O⁺ + e --> O + H2 with temp range [10, 1000]
+         # :k121 => NO match for Glover reaction 121 H2O⁺ + e --> O + H2
+
+         :k122 =>  8.6e-08 * (T/300)^(-0.5) * exp(-(0.0/T)),     # Found Match for Glover 122 H2O⁺ + e --> OH + H and Umist 1266 H2O⁺ + e --> OH + H with temp range [10, 1000]
+         # :k122 => NO match for Glover reaction 122 H2O⁺ + e --> OH + H
+
+         :k123 =>  7.09e-08 * (T/300)^(-0.5) * exp(-(0.0/T)),     # Found Match for Glover 123 H3O⁺ + e --> H + H2O and Umist 1293 H3O⁺ + e --> H2O + H with temp range [10, 1000]
+         # :k123 => NO match for Glover reaction 123 H3O⁺ + e --> H + H2O
+
+         :k124 =>  5.37e-08 * (T/300)^(-0.5) * exp(-(0.0/T)),     # Found Match for Glover 124 H3O⁺ + e --> OH + H2 and Umist 1295 H3O⁺ + e --> OH + H2 with temp range [10, 1000]
+         # :k124 => NO match for Glover reaction 124 H3O⁺ + e --> OH + H2
+
+         :k125 =>  3.05e-07 * (T/300)^(-0.5) * exp(-(0.0/T)),     # Found Match for Glover 125 H3O⁺ + e --> OH + H + H and Umist 1296 H3O⁺ + e --> OH + H + H with temp range [10, 1000]
+         # :k125 => NO match for Glover reaction 125 H3O⁺ + e --> OH + H + H
+
+         :k126 =>  5.6e-09 * (T/300)^(-0.5) * exp(-(0.0/T)),     # Found Match for Glover 126 H3O⁺ + e --> O + H + H2 and Umist 1294 H3O⁺ + e --> O + H2 + H with temp range [10, 1000]
+         # :k126 => NO match for Glover reaction 126 H3O⁺ + e --> O + H + H2
+
+         :k127 =>  1.95e-07 * (T/300)^(-0.7) * exp(-(0.0/T)),     # Found Match for Glover 127 O2⁺ + e --> O + O and Umist 1421 O2⁺ + e --> O + O with temp range [10, 300]
+
+         :k128 =>  2e-07 * (T/300)^(-0.48) * exp(-(0.0/T)),     # Found Match for Glover 128 CO⁺ + e --> C + O and Umist 1232 CO⁺ + e --> O + C with temp range [10, 41000]
+
+         :k129 =>  2.4e-07 * (T/300)^(-0.69) * exp(-(0.0/T)),     # Found Match for Glover 129 HCO⁺ + e --> CO + H and Umist 1349 HCO⁺ + e --> CO + H with temp range [10, 300]
+
+
+         :k131 =>  1.1e-07 * (T/300)^(-1.0) * exp(-(0.0/T)),     # Found Match for Glover 131 HOC⁺ + e --> CO + H and Umist 1377 HOC⁺ + e --> CO + H with temp range [10, 300]
+
+         :k132 =>  1e-09 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 132 H⁻ + C --> CH + e and Umist 69 H⁻ + C --> CH + e with temp range [10, 41000]
+
+         :k133 =>  1e-09 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 133 H⁻ + O --> OH + e and Umist 80 H⁻ + O --> OH + e with temp range [10, 41000]
+
+         :k134 =>  1e-10 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 134 H⁻ + OH --> H2O + e and Umist 81 H⁻ + OH --> H2O + e with temp range [10, 41000]
+
+         :k135 =>  5e-10 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 135 C⁻ + H --> CH + e and Umist 84 H + C⁻ --> CH + e with temp range [10, 41000]
+
+         :k136 =>  1e-13 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 136 C⁻ + H2 --> CH2 + e and Umist 82 H2 + C⁻ --> CH2 + e with temp range [10, 41000]
+
+         :k137 =>  5e-10 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 137 C⁻ + O --> CO + e and Umist 9 C⁻ + O --> CO + e with temp range [10, 41000]
+
+         :k138 =>  5e-10 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 138 O⁻ + H --> OH + e and Umist 107 H + O⁻ --> OH + e with temp range [10, 41000]
+
+         :k139 =>  7e-10 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 139 O⁻ + H2 --> H2O + e and Umist 83 H2 + O⁻ --> H2O + e with temp range [10, 41000]
+
+         :k140 =>  5e-10 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 140 O⁻ + C --> CO + e and Umist 57 C + O⁻ --> CO + e with temp range [10, 41000]
+
+         # :k141 =>  Glover 141 H2 + H⁺ --> H3⁺ had 0 product matches
+
+         :k142 =>  2.25e-15 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 142 C + e --> C⁻  and Umist 6154 C + e --> C⁻ with temp range [10, 1000]
+
+         :k143 =>  1e-17 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 143 C + H --> CH  and Umist 6119 H + C --> CH with temp range [10, 300]
+
+         :k144 =>  1e-17 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 144 C + H2 --> CH2  and Umist 6101 H2 + C --> CH2 with temp range [10, 300]
+         # :k144 => NO match for Glover reaction 144 C + H2 --> CH2 
+
+         :k145 =>  4.36e-18 * (T/300)^(0.35) * exp(-(161.3/T)),     # Found Match for Glover 145 C + C --> C2  and Umist 6070 C + C --> C2 with temp range [10, 41000]
+
+         :k146 =>  4.69e-19 * (T/300)^(1.52) * exp(-(-50.5/T)),     # Found Match for Glover 146 C + O --> CO  and Umist 6073 C + O --> CO with temp range [10, 14700]
+
+         :k147 =>  1.7e-17 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 147 C⁺ + H --> CH⁺  and Umist 6116 H + C⁺ --> CH⁺ with temp range [10, 300]
+
+         :k148 =>  2e-16 * (T/300)^(-1.3) * exp(-(23.0/T)),     # Found Match for Glover 148 C⁺ + H2 --> CH2⁺  and Umist 6095 H2 + C⁺ --> CH2⁺ with temp range [10, 300]
+         # :k148 => NO match for Glover reaction 148 C⁺ + H2 --> CH2⁺ 
+
+         :k149 =>  3.14e-18 * (T/300)^(-0.15) * exp(-(68.0/T)),     # Found Match for Glover 149 C⁺ + O --> CO⁺  and Umist 6052 C⁺ + O --> CO⁺ with temp range [10, 13900]
+
+         :k150 =>  1.5e-15 * (T/300)^(0.0) * exp(-(0.0/T)),     # Found Match for Glover 150 O + e --> O⁻  and Umist 6156 O + e --> O⁻ with temp range [10, 41000]
+
+         :k151 =>  9.9e-19 * (T/300)^(-0.38) * exp(-(0.0/T)),     # Found Match for Glover 151 O + H --> OH  and Umist 6120 H + O --> OH with temp range [10, 300]
+
+         :k152 =>  4.9e-20 * (T/300)^(1.58) * exp(-(0.0/T)),     # Found Match for Glover 152 O + O --> O2  and Umist 6129 O + O --> O2 with temp range [10, 300]
+
+         :k153 =>  5.26e-18 * (T/300)^(-5.22) * exp(-(90.0/T)),     # Found Match for Glover 153 OH + H --> H2O  and Umist 6121 H + OH --> H2O with temp range [20, 300]
+         # :k153 => NO match for Glover reaction 153 OH + H --> H2O 
+
+         # :k154 => Three reactants found, no match for Glover reaction 154 H + H + H --> H2 + H
+
+         # :k155 => Three reactants found, no match for Glover reaction 155 H + H + H2 --> H2 + H2
+
+         # :k156 => Three reactants found, no match for Glover reaction 156 H + H + He --> H2 + He
+
+         # :k157 => Three reactants found, no match for Glover reaction 157 C + C + M --> C2 + M
+
+         # :k158 => Three reactants found, no match for Glover reaction 158 C + O + M --> CO + M
+
+         # :k159 => Three reactants found, no match for Glover reaction 159 C⁺ + O + M --> CO⁺ + M
+
+         # :k160 => Three reactants found, no match for Glover reaction 160 C + O⁺ + M --> CO⁺ + M
+
+         # :k161 => Three reactants found, no match for Glover reaction 161 O + H + M --> OH + M
+
+         # :k162 => Three reactants found, no match for Glover reaction 162 OH + H + M --> H2O + M
+
+         # :k163 => Three reactants found, no match for Glover reaction 163 O + O + M --> O2 + M
+
+         :k164 =>  1.09e-11 * (T/300)^(-2.19) * exp(-(165.1/T)),     # Found Match for Glover 164 O + CH --> HCO⁺ + e and Umist 64 CH + O --> HCO⁺ + e with temp range [10, 2500]
+
+         # :k165 =>  Glover 165 H + H --> H2 had 0 product matches
+
+         :k166 =>  1.3e-17 * (T/300)^(0.0) * (250.0/(1-omega)),     # Found Match for Glover 166 H⁻ --> H + e and Umist 883 H⁻ --> H + e with temp range [10, 41000]
+         :k166 =>  1.43e-07 * exp(-(0.5*Av)),     # Found Match for Glover 166 H⁻ --> H + e and Umist 5902 H⁻ --> H + e with temp range [10, 41000]
+         # :k166 => NO match for Glover reaction 166 H⁻ --> H + e
+
+         :k167 =>  5.7e-10 * exp(-(2.4*Av)),     # Found Match for Glover 167 H2⁺ --> H + H⁺ and Umist 5903 H2⁺ --> H⁺ + H with temp range [10, 41000]
+         # :k167 => NO match for Glover reaction 167 H2⁺ --> H + H⁺
+
+         :k168 => 1.3e-18,     # Found Match for Glover 168 H2 --> H + H and Umist 732 H2 --> H + H with temp range [10, 41000]
+         # :k168 => NO match for Glover reaction 168 H2 --> H + H
+
+         :k169 =>  5e-15 * exp(-(1.8*Av)),     # Found Match for Glover 169 H3⁺ --> H2 + H⁺ and Umist 5923 H3⁺ --> H2 + H⁺ with temp range [10, 41000]
+         # :k169 => NO match for Glover reaction 169 H3⁺ --> H2 + H⁺
+
+         :k170 =>  5e-15 * exp(-(2.3*Av)),     # Found Match for Glover 170 H3⁺ --> H2⁺ + H and Umist 5922 H3⁺ --> H2⁺ + H with temp range [10, 41000]
+         # :k170 => NO match for Glover reaction 170 H3⁺ --> H2⁺ + H
+
+         :k171 => 2.3e-17,     # Found Match for Glover 171 C --> C⁺ + e and Umist 726 C --> C⁺ + e with temp range [10, 41000]
+         :k171 =>  1.3e-17 * (T/300)^(0.0) * (255.0/(1-omega)),     # Found Match for Glover 171 C --> C⁺ + e and Umist 823 C --> C⁺ + e with temp range [10, 41000]
+         :k171 =>  3.1e-10 * exp(-(3.3*Av)),     # Found Match for Glover 171 C --> C⁺ + e and Umist 5827 C --> C⁺ + e with temp range [10, 41000]
+         # :k171 => NO match for Glover reaction 171 C --> C⁺ + e
+
+         :k172 =>  1.3e-17 * (T/300)^(0.0) * (250.0/(1-omega)),     # Found Match for Glover 172 C⁻ --> C + e and Umist 737 C⁻ --> C + e with temp range [10, 41000]
+         :k172 =>  4.9e-08 * exp(-(0.5*Av)),     # Found Match for Glover 172 C⁻ --> C + e and Umist 5706 C⁻ --> C + e with temp range [10, 41000]
+         # :k172 => NO match for Glover reaction 172 C⁻ --> C + e
+
+         :k173 =>  1.3e-17 * (T/300)^(0.0) * (365.0/(1-omega)),     # Found Match for Glover 173 CH --> C + H and Umist 871 CH --> C + H with temp range [10, 41000]
+         :k173 =>  9.2e-10 * exp(-(1.7*Av)),     # Found Match for Glover 173 CH --> C + H and Umist 5887 CH --> C + H with temp range [10, 41000]
+         # :k173 => NO match for Glover reaction 173 CH --> C + H
+
+         :k174 =>  7.6e-10 * exp(-(3.3*Av)),     # Found Match for Glover 174 CH --> CH⁺ + e and Umist 5888 CH --> CH⁺ + e with temp range [10, 41000]
+         # :k174 => NO match for Glover reaction 174 CH --> CH⁺ + e
+
+         :k175 =>  3.3e-10 * exp(-(2.9*Av)),     # Found Match for Glover 175 CH⁺ --> C + H⁺ and Umist 5831 CH⁺ --> C + H⁺ with temp range [10, 41000]
+         # :k175 => NO match for Glover reaction 175 CH⁺ --> C + H⁺
+
+         :k176 =>  1.3e-17 * (T/300)^(0.0) * (250.0/(1-omega)),     # Found Match for Glover 176 CH2 --> CH + H and Umist 830 CH2 --> CH + H with temp range [10, 41000]
+         :k176 =>  5.8e-10 * exp(-(2.0*Av)),     # Found Match for Glover 176 CH2 --> CH + H and Umist 5837 CH2 --> CH + H with temp range [10, 41000]
+         # :k176 => NO match for Glover reaction 176 CH2 --> CH + H
+
+         :k177 =>  1.3e-17 * (T/300)^(0.0) * (250.0/(1-omega)),     # Found Match for Glover 177 CH2 --> CH2⁺ + e and Umist 829 CH2 --> CH2⁺ + e with temp range [10, 41000]
+         :k177 =>  1e-09 * exp(-(2.3*Av)),     # Found Match for Glover 177 CH2 --> CH2⁺ + e and Umist 5836 CH2 --> CH2⁺ + e with temp range [10, 41000]
+         # :k177 => NO match for Glover reaction 177 CH2 --> CH2⁺ + e
+
+         :k178 =>  4.67e-11 * exp(-(2.2*Av)),     # Found Match for Glover 178 CH2⁺ --> CH⁺ + H and Umist 5834 CH2⁺ --> CH⁺ + H with temp range [10, 41000]
+         # :k178 => NO match for Glover reaction 178 CH2⁺ --> CH⁺ + H
+
+         :k179 =>  1e-09 * exp(-(1.7*Av)),     # Found Match for Glover 179 CH3⁺ --> CH2⁺ + H and Umist 5854 CH3⁺ --> CH2⁺ + H with temp range [10, 41000]
+         # :k179 => NO match for Glover reaction 179 CH3⁺ --> CH2⁺ + H
+
+         :k180 =>  1e-09 * exp(-(1.7*Av)),     # Found Match for Glover 180 CH3⁺ --> CH⁺ + H2 and Umist 5853 CH3⁺ --> CH⁺ + H2 with temp range [10, 41000]
+         # :k180 => NO match for Glover reaction 180 CH3⁺ --> CH⁺ + H2
+
+         :k181 =>  1.3e-17 * (T/300)^(0.0) * (119.5/(1-omega)),     # Found Match for Glover 181 C2 --> C + C and Umist 745 C2 --> C + C with temp range [10, 41000]
+         :k181 =>  2.4e-10 * exp(-(2.6*Av)),     # Found Match for Glover 181 C2 --> C + C and Umist 5736 C2 --> C + C with temp range [10, 41000]
+         # :k181 => NO match for Glover reaction 181 C2 --> C + C
+
+         :k182 =>  1.3e-17 * (T/300)^(0.0) * (250.0/(1-omega)),     # Found Match for Glover 182 O⁻ --> O + e and Umist 945 O⁻ --> O + e with temp range [10, 41000]
+         :k182 =>  1.09e-08 * exp(-(0.5*Av)),     # Found Match for Glover 182 O⁻ --> O + e and Umist 5985 O⁻ --> O + e with temp range [10, 41000]
+         # :k182 => NO match for Glover reaction 182 O⁻ --> O + e
+
+         :k183 =>  1.3e-17 * (T/300)^(0.0) * (254.5/(1-omega)),     # Found Match for Glover 183 OH --> O + H and Umist 955 OH --> O + H with temp range [10, 41000]
+         :k183 =>  3.9e-10 * exp(-(2.2*Av)),     # Found Match for Glover 183 OH --> O + H and Umist 5997 OH --> O + H with temp range [10, 41000]
+         # :k183 => NO match for Glover reaction 183 OH --> O + H
+
+         :k184 =>  1.6e-12 * exp(-(3.1*Av)),     # Found Match for Glover 184 OH --> OH⁺ + e and Umist 5998 OH --> OH⁺ + e with temp range [10, 41000]
+         # :k184 => NO match for Glover reaction 184 OH --> OH⁺ + e
+
+         # :k185 => NO match for Glover reaction 185 OH⁺ --> O + H⁺
+
+         :k186 =>  1.3e-17 * (T/300)^(0.0) * (485.5/(1-omega)),     # Found Match for Glover 186 H2O --> OH + H and Umist 889 H2O --> OH + H with temp range [10, 41000]
+         :k186 =>  8e-10 * exp(-(2.2*Av)),     # Found Match for Glover 186 H2O --> OH + H and Umist 5915 H2O --> OH + H with temp range [10, 41000]
+         # :k186 => NO match for Glover reaction 186 H2O --> OH + H
+
+         :k187 =>  3.1e-11 * exp(-(3.9*Av)),     # Found Match for Glover 187 H2O --> H2O⁺ + e and Umist 5914 H2O --> H2O⁺ + e with temp range [10, 41000]
+         # :k187 => NO match for Glover reaction 187 H2O --> H2O⁺ + e
+
+         # :k188 => NO match for Glover reaction 188 H2O⁺ --> H2⁺ + O
+
+         # :k189 => NO match for Glover reaction 189 H2O⁺ --> H⁺ + OH
+
+         # :k190 => NO match for Glover reaction 190 H2O⁺ --> O⁺ + H2
+
+         :k191 =>  1e-12 * exp(-(2.0*Av)),     # Found Match for Glover 191 H2O⁺ --> OH⁺ + H and Umist 5912 H2O⁺ --> OH⁺ + H with temp range [10, 41000]
+         # :k191 => NO match for Glover reaction 191 H2O⁺ --> OH⁺ + H
+
+         # :k192 => NO match for Glover reaction 192 H3O⁺ --> H⁺ + H2O
+
+         # :k193 => NO match for Glover reaction 193 H3O⁺ --> H2⁺ + OH
+
+         # :k194 => NO match for Glover reaction 194 H3O⁺ --> H2O⁺ + H
+
+         # :k195 => NO match for Glover reaction 195 H3O⁺ --> OH⁺ + H2
+
+         :k196 =>  1.3e-17 * (T/300)^(0.0) * (58.5/(1-omega)),     # Found Match for Glover 196 O2 --> O2⁺ + e and Umist 947 O2 --> O2⁺ + e with temp range [10, 41000]
+         :k196 =>  7.6e-11 * exp(-(3.9*Av)),     # Found Match for Glover 196 O2 --> O2⁺ + e and Umist 5988 O2 --> O2⁺ + e with temp range [10, 41000]
+
+         :k197 =>  1.3e-17 * (T/300)^(0.0) * (375.5/(1-omega)),     # Found Match for Glover 197 O2 --> O + O and Umist 948 O2 --> O + O with temp range [10, 41000]
+         :k197 =>  7.9e-10 * exp(-(2.1*Av)),     # Found Match for Glover 197 O2 --> O + O and Umist 5989 O2 --> O + O with temp range [10, 41000]
+
+         :k198 =>  1.3e-17 * (T/300)^(1.17) * (105.0/(1-omega)),     # Found Match for Glover 198 CO --> C + O and Umist 876 CO --> O + C with temp range [10, 41000]
+         :k198 =>  2e-10 * exp(-(3.5*Av)),     # Found Match for Glover 198 CO --> C + O and Umist 5894 CO --> O + C with temp range [10, 41000]
+
+         :k199 => 5.98e-18,     # Found Match for Glover 199 H --> H⁺ + e and Umist 733 H --> H⁺ + e with temp range [10, 41000]
+         :k199 =>  1.3e-17 * (T/300)^(0.0) * (0.2/(1-omega)),     # Found Match for Glover 199 H --> H⁺ + e and Umist 894 H --> H⁺ + e with temp range [10, 41000]
+         # :k199 => NO match for Glover reaction 199 H --> H⁺ + e
+
+         :k200 => 6.5e-18,     # Found Match for Glover 200 He --> He⁺ + e and Umist 734 He --> He⁺ + e with temp range [10, 41000]
+         :k200 =>  1.3e-17 * (T/300)^(0.0) * (0.2/(1-omega)),     # Found Match for Glover 200 He --> He⁺ + e and Umist 926 He --> He⁺ + e with temp range [10, 41000]
+
+         :k201 => 2.86e-19,     # Found Match for Glover 201 H2 --> H⁺ + H + e and Umist 730 H2 --> H⁺ + H + e with temp range [10, 41000]
+         # :k201 => NO match for Glover reaction 201 H2 --> H⁺ + H + e
+
+         :k202 => 1.3e-18,     # Found Match for Glover 202 H2 --> H + H and Umist 732 H2 --> H + H with temp range [10, 41000]
+         # :k202 => NO match for Glover reaction 202 H2 --> H + H
+
+         :k203 => 3.9e-21,     # Found Match for Glover 203 H2 --> H⁺ + H⁻ and Umist 729 H2 --> H⁺ + H⁻ with temp range [10, 41000]
+         # :k203 => NO match for Glover reaction 203 H2 --> H⁺ + H⁻
+
+         :k204 => 1.2e-17,     # Found Match for Glover 204 H2 --> H2⁺ + e and Umist 731 H2 --> H2⁺ + e with temp range [10, 41000]
+         # :k204 => NO match for Glover reaction 204 H2 --> H2⁺ + e
+
+         :k205 => 2.3e-17,     # Found Match for Glover 205 C --> C⁺ + e and Umist 726 C --> C⁺ + e with temp range [10, 41000]
+         :k205 =>  1.3e-17 * (T/300)^(0.0) * (255.0/(1-omega)),     # Found Match for Glover 205 C --> C⁺ + e and Umist 823 C --> C⁺ + e with temp range [10, 41000]
+         :k205 =>  3.1e-10 * exp(-(3.3*Av)),     # Found Match for Glover 205 C --> C⁺ + e and Umist 5827 C --> C⁺ + e with temp range [10, 41000]
+         # :k205 => NO match for Glover reaction 205 C --> C⁺ + e
+
+         :k206 => 3.4e-17,     # Found Match for Glover 206 O --> O⁺ + e and Umist 736 O --> O⁺ + e with temp range [10, 41000]
+         :k206 =>  1.3e-17 * (T/300)^(0.0) * (1.4/(1-omega)),     # Found Match for Glover 206 O --> O⁺ + e and Umist 950 O --> O⁺ + e with temp range [10, 41000]
+         # :k206 => NO match for Glover reaction 206 O --> O⁺ + e
+
+         :k207 => 3.9e-17,     # Found Match for Glover 207 CO --> CO⁺ + e and Umist 727 CO --> CO⁺ + e with temp range [10, 41000]
+
+         :k208 => 2.3e-17,     # Found Match for Glover 208 C --> C⁺ + e and Umist 726 C --> C⁺ + e with temp range [10, 41000]
+         :k208 =>  1.3e-17 * (T/300)^(0.0) * (255.0/(1-omega)),     # Found Match for Glover 208 C --> C⁺ + e and Umist 823 C --> C⁺ + e with temp range [10, 41000]
+         :k208 =>  3.1e-10 * exp(-(3.3*Av)),     # Found Match for Glover 208 C --> C⁺ + e and Umist 5827 C --> C⁺ + e with temp range [10, 41000]
+         # :k208 => NO match for Glover reaction 208 C --> C⁺ + e
+
+         :k209 =>  1.3e-17 * (T/300)^(0.0) * (365.0/(1-omega)),     # Found Match for Glover 209 CH --> C + H and Umist 871 CH --> C + H with temp range [10, 41000]
+         :k209 =>  9.2e-10 * exp(-(1.7*Av)),     # Found Match for Glover 209 CH --> C + H and Umist 5887 CH --> C + H with temp range [10, 41000]
+         # :k209 => NO match for Glover reaction 209 CH --> C + H
+
+         :k210 =>  1.3e-17 * (T/300)^(0.0) * (88.0/(1-omega)),     # Found Match for Glover 210 CH⁺ --> C⁺ + H and Umist 827 CH⁺ --> C⁺ + H with temp range [10, 41000]
+         # :k210 => NO match for Glover reaction 210 CH⁺ --> C⁺ + H
+
+         :k211 =>  1.3e-17 * (T/300)^(0.0) * (250.0/(1-omega)),     # Found Match for Glover 211 CH2 --> CH2⁺ + e and Umist 829 CH2 --> CH2⁺ + e with temp range [10, 41000]
+         :k211 =>  1e-09 * exp(-(2.3*Av)),     # Found Match for Glover 211 CH2 --> CH2⁺ + e and Umist 5836 CH2 --> CH2⁺ + e with temp range [10, 41000]
+         # :k211 => NO match for Glover reaction 211 CH2 --> CH2⁺ + e
+
+         :k212 =>  1.3e-17 * (T/300)^(0.0) * (250.0/(1-omega)),     # Found Match for Glover 212 CH2 --> CH + H and Umist 830 CH2 --> CH + H with temp range [10, 41000]
+         :k212 =>  5.8e-10 * exp(-(2.0*Av)),     # Found Match for Glover 212 CH2 --> CH + H and Umist 5837 CH2 --> CH + H with temp range [10, 41000]
+         # :k212 => NO match for Glover reaction 212 CH2 --> CH + H
+
+         :k213 =>  1.3e-17 * (T/300)^(0.0) * (119.5/(1-omega)),     # Found Match for Glover 213 C2 --> C + C and Umist 745 C2 --> C + C with temp range [10, 41000]
+         :k213 =>  2.4e-10 * exp(-(2.6*Av)),     # Found Match for Glover 213 C2 --> C + C and Umist 5736 C2 --> C + C with temp range [10, 41000]
+         # :k213 => NO match for Glover reaction 213 C2 --> C + C
+
+         :k214 =>  1.3e-17 * (T/300)^(0.0) * (254.5/(1-omega)),     # Found Match for Glover 214 OH --> O + H and Umist 955 OH --> O + H with temp range [10, 41000]
+         :k214 =>  3.9e-10 * exp(-(2.2*Av)),     # Found Match for Glover 214 OH --> O + H and Umist 5997 OH --> O + H with temp range [10, 41000]
+         # :k214 => NO match for Glover reaction 214 OH --> O + H
+
+         :k215 =>  1.3e-17 * (T/300)^(0.0) * (485.5/(1-omega)),     # Found Match for Glover 215 H2O --> OH + H and Umist 889 H2O --> OH + H with temp range [10, 41000]
+         :k215 =>  8e-10 * exp(-(2.2*Av)),     # Found Match for Glover 215 H2O --> OH + H and Umist 5915 H2O --> OH + H with temp range [10, 41000]
+         # :k215 => NO match for Glover reaction 215 H2O --> OH + H
+
+         :k216 =>  1.3e-17 * (T/300)^(0.0) * (375.5/(1-omega)),     # Found Match for Glover 216 O2 --> O + O and Umist 948 O2 --> O + O with temp range [10, 41000]
+         :k216 =>  7.9e-10 * exp(-(2.1*Av)),     # Found Match for Glover 216 O2 --> O + O and Umist 5989 O2 --> O + O with temp range [10, 41000]
+
+         :k217 =>  1.3e-17 * (T/300)^(0.0) * (58.5/(1-omega)),     # Found Match for Glover 217 O2 --> O2⁺ + e and Umist 947 O2 --> O2⁺ + e with temp range [10, 41000]
+         :k217 =>  7.6e-11 * exp(-(3.9*Av)),     # Found Match for Glover 217 O2 --> O2⁺ + e and Umist 5988 O2 --> O2⁺ + e with temp range [10, 41000]
+
+         :k218 =>  1.3e-17 * (T/300)^(1.17) * (105.0/(1-omega)),     # Found Match for Glover 218 CO --> C + O and Umist 876 CO --> O + C with temp range [10, 41000]
+         :k218 =>  2e-10 * exp(-(3.5*Av)),     # Found Match for Glover 218 CO --> C + O and Umist 5894 CO --> O + C with temp range [10, 41000]
+
+         )
+T_low_bounds = [
+                10   # Glover reaction 1 matches with Umist 6155 with temp range [10, 41000]
+
+                10   # Glover reaction 2 matches with Umist 75 with temp range [10, 100]
+
+                200   # Glover reaction 3 matches with Umist 6093 with temp range [200, 32000]
+
+                10   # Glover reaction 4 matches with Umist 489 with temp range [10, 41000]
+
+                10   # Glover reaction 5 matches with Umist 4921 with temp range [10, 41000]
+
+                10   # Glover reaction 6 matches with Umist 1239 with temp range [10, 300]
+
+                -1   # No match for Glover reaction 7 So no temp range
+
+                3400   # Glover reaction 8 matches with Umist 140 with temp range [3400, 41000]
+
+                1833   # Glover reaction 9 matches with Umist 142 with temp range [1833, 41000]
+
+                2803   # Glover reaction 10 matches with Umist 135 with temp range [2803, 41000]
+
+                -1   # No match for Glover reaction 11 So no temp range
+
+                10   # Glover reaction 12 matches with Umist 6162 with temp range [10, 20000]
+
+                -1   # No match for Glover reaction 13 So no temp range
+
+                -1   # No match for Glover reaction 14 So no temp range
+
+
+                -1   # No match for Glover reaction 16 So no temp range
+
+                10   # Glover reaction 17 matches with Umist 6166 with temp range [10, 1000]
+
+                10   # Glover reaction 18 matches with Umist 491 with temp range [10, 41000]
+
+                -1   # No match for Glover reaction 19 So no temp range
+
+                10   # Glover reaction 20 matches with Umist 6158 with temp range [10, 41000]
+
+                10   # Glover reaction 21 matches with Umist 6170 with temp range [10, 41000]
+
+                -1   # No match for Glover reaction 22 So no temp range
+
+                -1   # No match for Glover reaction 23 So no temp range
+
+                10   # Glover reaction 24 matches with Umist 492 with temp range [10, 41000]
+
+                10   # Glover reaction 25 matches with Umist 406 with temp range [10, 41000]
+
+                -1   # No match for Glover reaction 26 So no temp range
+
+                -1   # No match for Glover reaction 27 So no temp range
+
+                -1   # No match for Glover reaction 28 So no temp range
+
+                10   # Glover reaction 29 matches with Umist 513 with temp range [10, 300]
+
+                -1   # No match for Glover reaction 30 So no temp range
+
+                1696   # Glover reaction 31 matches with Umist 145 with temp range [1696, 41000]
+                -1   # No match for Glover reaction 31 So no temp range
+
+                20   # Glover reaction 32 matches with Umist 137 with temp range [20, 41000]
+
+                -1   # No match for Glover reaction 33 So no temp range
+
+                300   # Glover reaction 34 matches with Umist 5348 with temp range [300, 2500]
+                -1   # No match for Glover reaction 34 So no temp range
+
+                300   # Glover reaction 35 matches with Umist 5374 with temp range [300, 2000]
+                -1   # No match for Glover reaction 35 So no temp range
+
+                300   # Glover reaction 36 matches with Umist 5351 with temp range [300, 2500]
+                -1   # No match for Glover reaction 36 So no temp range
+
+                10   # Glover reaction 37 matches with Umist 5173 with temp range [10, 300]
+
+                10   # Glover reaction 38 matches with Umist 5310 with temp range [10, 2000]
+
+                10   # Glover reaction 39 matches with Umist 5370 with temp range [10, 2500]
+
+                10   # Glover reaction 40 matches with Umist 5232 with temp range [10, 2500]
+                -1   # No match for Glover reaction 40 So no temp range
+
+                1900   # Glover reaction 41 matches with Umist 5231 with temp range [1900, 2600]
+                -1   # No match for Glover reaction 41 So no temp range
+
+                10   # Glover reaction 42 matches with Umist 5555 with temp range [10, 8000]
+
+                297   # Glover reaction 43 matches with Umist 5361 with temp range [297, 3532]
+
+                300   # Glover reaction 44 matches with Umist 5412 with temp range [300, 2500]
+                -1   # No match for Glover reaction 44 So no temp range
+
+                250   # Glover reaction 45 matches with Umist 5362 with temp range [250, 2581]
+                -1   # No match for Glover reaction 45 So no temp range
+
+                10   # Glover reaction 46 matches with Umist 5199 with temp range [10, 300]
+
+                10   # Glover reaction 47 matches with Umist 5643 with temp range [10, 500]
+
+
+                250   # Glover reaction 49 matches with Umist 5382 with temp range [250, 3000]
+                -1   # No match for Glover reaction 49 So no temp range
+
+                250   # Glover reaction 50 matches with Umist 5404 with temp range [250, 4000]
+                -1   # No match for Glover reaction 50 So no temp range
+
+                300   # Glover reaction 51 matches with Umist 5359 with temp range [300, 2500]
+                -1   # No match for Glover reaction 51 So no temp range
+
+                10   # Glover reaction 52 matches with Umist 5196 with temp range [10, 8000]
+
+                2590   # Glover reaction 53 matches with Umist 5377 with temp range [2590, 41000]
+
+                10   # Glover reaction 54 matches with Umist 2604 with temp range [10, 41000]
+
+                -1   # No match for Glover reaction 55 So no temp range
+
+                10   # Glover reaction 56 matches with Umist 2594 with temp range [10, 41000]
+
+                10   # Glover reaction 57 matches with Umist 2852 with temp range [10, 41000]
+
+                154   # Glover reaction 58 matches with Umist 2618 with temp range [154, 3000]
+                -1   # No match for Glover reaction 58 So no temp range
+
+                10   # Glover reaction 59 matches with Umist 3055 with temp range [10, 1000]
+
+                10   # Glover reaction 60 matches with Umist 2647 with temp range [10, 41000]
+
+                10   # Glover reaction 61 matches with Umist 2189 with temp range [10, 41000]
+
+                10   # Glover reaction 62 matches with Umist 2534 with temp range [10, 41000]
+
+                236   # Glover reaction 63 matches with Umist 3056 with temp range [236, 300]
+
+                10   # Glover reaction 64 matches with Umist 2648 with temp range [10, 41000]
+
+                10   # Glover reaction 65 matches with Umist 2211 with temp range [10, 41000]
+
+                352   # Glover reaction 66 matches with Umist 3057 with temp range [352, 41000]
+
+                10   # Glover reaction 67 matches with Umist 2311 with temp range [10, 41000]
+
+                10   # Glover reaction 68 matches with Umist 3851 with temp range [10, 41000]
+
+                10   # Glover reaction 69 matches with Umist 2686 with temp range [10, 41000]
+
+                10   # Glover reaction 70 matches with Umist 2616 with temp range [10, 41000]
+
+                5   # Glover reaction 71 matches with Umist 2951 with temp range [5, 400]
+
+                10   # Glover reaction 72 matches with Umist 2953 with temp range [10, 41000]
+
+                10   # Glover reaction 73 matches with Umist 1646 with temp range [10, 41000]
+
+                10   # Glover reaction 74 matches with Umist 2689 with temp range [10, 41000]
+
+                10   # Glover reaction 75 matches with Umist 2662 with temp range [10, 41000]
+
+                10   # Glover reaction 76 matches with Umist 2904 with temp range [10, 41000]
+
+                10   # Glover reaction 77 matches with Umist 1613 with temp range [10, 41000]
+
+                10   # Glover reaction 78 matches with Umist 1614 with temp range [10, 41000]
+
+                10   # Glover reaction 79 matches with Umist 2121 with temp range [10, 41000]
+
+                10   # Glover reaction 80 matches with Umist 1642 with temp range [10, 41000]
+
+                10   # Glover reaction 81 matches with Umist 1643 with temp range [10, 41000]
+
+                10   # Glover reaction 82 matches with Umist 2210 with temp range [10, 41000]
+
+                10   # Glover reaction 83 matches with Umist 2132 with temp range [10, 41000]
+
+                10   # Glover reaction 84 matches with Umist 2896 with temp range [10, 400]
+
+                10   # Glover reaction 85 matches with Umist 2895 with temp range [10, 400]
+
+                10   # Glover reaction 86 matches with Umist 2124 with temp range [10, 41000]
+
+                10   # Glover reaction 87 matches with Umist 2767 with temp range [10, 41000]
+                -1   # No match for Glover reaction 87 So no temp range
+
+                10   # Glover reaction 88 matches with Umist 458 with temp range [10, 300]
+                -1   # No match for Glover reaction 88 So no temp range
+
+                10   # Glover reaction 89 matches with Umist 2677 with temp range [10, 300]
+                -1   # No match for Glover reaction 89 So no temp range
+
+                10   # Glover reaction 90 matches with Umist 372 with temp range [10, 41000]
+
+                10   # Glover reaction 91 matches with Umist 359 with temp range [10, 41000]
+
+                10   # Glover reaction 92 matches with Umist 3380 with temp range [10, 41000]
+
+                10   # Glover reaction 93 matches with Umist 3293 with temp range [10, 41000]
+                -1   # No match for Glover reaction 93 So no temp range
+
+                10   # Glover reaction 94 matches with Umist 408 with temp range [10, 41000]
+
+                10   # Glover reaction 95 matches with Umist 3517 with temp range [10, 41000]
+
+                10   # Glover reaction 96 matches with Umist 378 with temp range [10, 300]
+
+                10   # Glover reaction 97 matches with Umist 3446 with temp range [10, 41000]
+                -1   # No match for Glover reaction 97 So no temp range
+
+                10   # Glover reaction 98 matches with Umist 3445 with temp range [10, 41000]
+                -1   # No match for Glover reaction 98 So no temp range
+
+                10   # Glover reaction 99 matches with Umist 518 with temp range [10, 41000]
+                -1   # No match for Glover reaction 99 So no temp range
+
+                10   # Glover reaction 100 matches with Umist 405 with temp range [10, 300]
+
+                10   # Glover reaction 101 matches with Umist 525 with temp range [10, 41000]
+                -1   # No match for Glover reaction 101 So no temp range
+
+                10   # Glover reaction 102 matches with Umist 3510 with temp range [10, 41000]
+                -1   # No match for Glover reaction 102 So no temp range
+
+                10   # Glover reaction 103 matches with Umist 248 with temp range [10, 41000]
+
+                10   # Glover reaction 104 matches with Umist 3431 with temp range [10, 41000]
+
+
+                10   # Glover reaction 106 matches with Umist 488 with temp range [10, 41000]
+
+                10   # Glover reaction 107 matches with Umist 4116 with temp range [10, 41000]
+
+                10   # Glover reaction 108 matches with Umist 4957 with temp range [10, 41000]
+
+                10   # Glover reaction 109 matches with Umist 4932 with temp range [10, 41000]
+
+                10   # Glover reaction 110 matches with Umist 1277 with temp range [10, 1000]
+                -1   # No match for Glover reaction 110 So no temp range
+
+                10   # Glover reaction 111 matches with Umist 1278 with temp range [10, 1000]
+                -1   # No match for Glover reaction 111 So no temp range
+
+                10   # Glover reaction 112 matches with Umist 1158 with temp range [10, 300]
+
+                10   # Glover reaction 113 matches with Umist 1161 with temp range [10, 1000]
+                -1   # No match for Glover reaction 113 So no temp range
+
+                10   # Glover reaction 114 matches with Umist 1160 with temp range [10, 1000]
+                -1   # No match for Glover reaction 114 So no temp range
+
+                10   # Glover reaction 115 matches with Umist 1159 with temp range [10, 1000]
+                -1   # No match for Glover reaction 115 So no temp range
+
+                10   # Glover reaction 116 matches with Umist 1175 with temp range [10, 300]
+                -1   # No match for Glover reaction 116 So no temp range
+
+                10   # Glover reaction 117 matches with Umist 1176 with temp range [10, 300]
+                -1   # No match for Glover reaction 117 So no temp range
+
+                10   # Glover reaction 118 matches with Umist 1177 with temp range [10, 1000]
+                -1   # No match for Glover reaction 118 So no temp range
+
+                10   # Glover reaction 119 matches with Umist 1427 with temp range [10, 300]
+
+                10   # Glover reaction 120 matches with Umist 1265 with temp range [10, 1000]
+                -1   # No match for Glover reaction 120 So no temp range
+
+                10   # Glover reaction 121 matches with Umist 1264 with temp range [10, 1000]
+                -1   # No match for Glover reaction 121 So no temp range
+
+                10   # Glover reaction 122 matches with Umist 1266 with temp range [10, 1000]
+                -1   # No match for Glover reaction 122 So no temp range
+
+                10   # Glover reaction 123 matches with Umist 1293 with temp range [10, 1000]
+                -1   # No match for Glover reaction 123 So no temp range
+
+                10   # Glover reaction 124 matches with Umist 1295 with temp range [10, 1000]
+                -1   # No match for Glover reaction 124 So no temp range
+
+                10   # Glover reaction 125 matches with Umist 1296 with temp range [10, 1000]
+                -1   # No match for Glover reaction 125 So no temp range
+
+                10   # Glover reaction 126 matches with Umist 1294 with temp range [10, 1000]
+                -1   # No match for Glover reaction 126 So no temp range
+
+                10   # Glover reaction 127 matches with Umist 1421 with temp range [10, 300]
+
+                10   # Glover reaction 128 matches with Umist 1232 with temp range [10, 41000]
+
+                10   # Glover reaction 129 matches with Umist 1349 with temp range [10, 300]
+
+
+                10   # Glover reaction 131 matches with Umist 1377 with temp range [10, 300]
+
+                10   # Glover reaction 132 matches with Umist 69 with temp range [10, 41000]
+
+                10   # Glover reaction 133 matches with Umist 80 with temp range [10, 41000]
+
+                10   # Glover reaction 134 matches with Umist 81 with temp range [10, 41000]
+
+                10   # Glover reaction 135 matches with Umist 84 with temp range [10, 41000]
+
+                10   # Glover reaction 136 matches with Umist 82 with temp range [10, 41000]
+
+                10   # Glover reaction 137 matches with Umist 9 with temp range [10, 41000]
+
+                10   # Glover reaction 138 matches with Umist 107 with temp range [10, 41000]
+
+                10   # Glover reaction 139 matches with Umist 83 with temp range [10, 41000]
+
+                10   # Glover reaction 140 matches with Umist 57 with temp range [10, 41000]
+
+                -1   # No match for Glover reaction 141 So no temp range
+
+                10   # Glover reaction 142 matches with Umist 6154 with temp range [10, 1000]
+
+                10   # Glover reaction 143 matches with Umist 6119 with temp range [10, 300]
+
+                10   # Glover reaction 144 matches with Umist 6101 with temp range [10, 300]
+                -1   # No match for Glover reaction 144 So no temp range
+
+                10   # Glover reaction 145 matches with Umist 6070 with temp range [10, 41000]
+
+                10   # Glover reaction 146 matches with Umist 6073 with temp range [10, 14700]
+
+                10   # Glover reaction 147 matches with Umist 6116 with temp range [10, 300]
+
+                10   # Glover reaction 148 matches with Umist 6095 with temp range [10, 300]
+                -1   # No match for Glover reaction 148 So no temp range
+
+                10   # Glover reaction 149 matches with Umist 6052 with temp range [10, 13900]
+
+                10   # Glover reaction 150 matches with Umist 6156 with temp range [10, 41000]
+
+                10   # Glover reaction 151 matches with Umist 6120 with temp range [10, 300]
+
+                10   # Glover reaction 152 matches with Umist 6129 with temp range [10, 300]
+
+                20   # Glover reaction 153 matches with Umist 6121 with temp range [20, 300]
+                -1   # No match for Glover reaction 153 So no temp range
+
+                -1   # No match for Glover reaction 154 So no temp range
+
+                -1   # No match for Glover reaction 155 So no temp range
+
+                -1   # No match for Glover reaction 156 So no temp range
+
+                -1   # No match for Glover reaction 157 So no temp range
+
+                -1   # No match for Glover reaction 158 So no temp range
+
+                -1   # No match for Glover reaction 159 So no temp range
+
+                -1   # No match for Glover reaction 160 So no temp range
+
+                -1   # No match for Glover reaction 161 So no temp range
+
+                -1   # No match for Glover reaction 162 So no temp range
+
+                -1   # No match for Glover reaction 163 So no temp range
+
+                10   # Glover reaction 164 matches with Umist 64 with temp range [10, 2500]
+
+                -1   # No match for Glover reaction 165 So no temp range
+
+                10   # Glover reaction 166 matches with Umist 883 with temp range [10, 41000]
+                10   # Glover reaction 166 matches with Umist 5902 with temp range [10, 41000]
+                -1   # No match for Glover reaction 166 So no temp range
+
+                10   # Glover reaction 167 matches with Umist 5903 with temp range [10, 41000]
+                -1   # No match for Glover reaction 167 So no temp range
+
+                10   # Glover reaction 168 matches with Umist 732 with temp range [10, 41000]
+                -1   # No match for Glover reaction 168 So no temp range
+
+                10   # Glover reaction 169 matches with Umist 5923 with temp range [10, 41000]
+                -1   # No match for Glover reaction 169 So no temp range
+
+                10   # Glover reaction 170 matches with Umist 5922 with temp range [10, 41000]
+                -1   # No match for Glover reaction 170 So no temp range
+
+                10   # Glover reaction 171 matches with Umist 726 with temp range [10, 41000]
+                10   # Glover reaction 171 matches with Umist 823 with temp range [10, 41000]
+                10   # Glover reaction 171 matches with Umist 5827 with temp range [10, 41000]
+                -1   # No match for Glover reaction 171 So no temp range
+
+                10   # Glover reaction 172 matches with Umist 737 with temp range [10, 41000]
+                10   # Glover reaction 172 matches with Umist 5706 with temp range [10, 41000]
+                -1   # No match for Glover reaction 172 So no temp range
+
+                10   # Glover reaction 173 matches with Umist 871 with temp range [10, 41000]
+                10   # Glover reaction 173 matches with Umist 5887 with temp range [10, 41000]
+                -1   # No match for Glover reaction 173 So no temp range
+
+                10   # Glover reaction 174 matches with Umist 5888 with temp range [10, 41000]
+                -1   # No match for Glover reaction 174 So no temp range
+
+                10   # Glover reaction 175 matches with Umist 5831 with temp range [10, 41000]
+                -1   # No match for Glover reaction 175 So no temp range
+
+                10   # Glover reaction 176 matches with Umist 830 with temp range [10, 41000]
+                10   # Glover reaction 176 matches with Umist 5837 with temp range [10, 41000]
+                -1   # No match for Glover reaction 176 So no temp range
+
+                10   # Glover reaction 177 matches with Umist 829 with temp range [10, 41000]
+                10   # Glover reaction 177 matches with Umist 5836 with temp range [10, 41000]
+                -1   # No match for Glover reaction 177 So no temp range
+
+                10   # Glover reaction 178 matches with Umist 5834 with temp range [10, 41000]
+                -1   # No match for Glover reaction 178 So no temp range
+
+                10   # Glover reaction 179 matches with Umist 5854 with temp range [10, 41000]
+                -1   # No match for Glover reaction 179 So no temp range
+
+                10   # Glover reaction 180 matches with Umist 5853 with temp range [10, 41000]
+                -1   # No match for Glover reaction 180 So no temp range
+
+                10   # Glover reaction 181 matches with Umist 745 with temp range [10, 41000]
+                10   # Glover reaction 181 matches with Umist 5736 with temp range [10, 41000]
+                -1   # No match for Glover reaction 181 So no temp range
+
+                10   # Glover reaction 182 matches with Umist 945 with temp range [10, 41000]
+                10   # Glover reaction 182 matches with Umist 5985 with temp range [10, 41000]
+                -1   # No match for Glover reaction 182 So no temp range
+
+                10   # Glover reaction 183 matches with Umist 955 with temp range [10, 41000]
+                10   # Glover reaction 183 matches with Umist 5997 with temp range [10, 41000]
+                -1   # No match for Glover reaction 183 So no temp range
+
+                10   # Glover reaction 184 matches with Umist 5998 with temp range [10, 41000]
+                -1   # No match for Glover reaction 184 So no temp range
+
+                -1   # No match for Glover reaction 185 So no temp range
+
+                10   # Glover reaction 186 matches with Umist 889 with temp range [10, 41000]
+                10   # Glover reaction 186 matches with Umist 5915 with temp range [10, 41000]
+                -1   # No match for Glover reaction 186 So no temp range
+
+                10   # Glover reaction 187 matches with Umist 5914 with temp range [10, 41000]
+                -1   # No match for Glover reaction 187 So no temp range
+
+                -1   # No match for Glover reaction 188 So no temp range
+
+                -1   # No match for Glover reaction 189 So no temp range
+
+                -1   # No match for Glover reaction 190 So no temp range
+
+                10   # Glover reaction 191 matches with Umist 5912 with temp range [10, 41000]
+                -1   # No match for Glover reaction 191 So no temp range
+
+                -1   # No match for Glover reaction 192 So no temp range
+
+                -1   # No match for Glover reaction 193 So no temp range
+
+                -1   # No match for Glover reaction 194 So no temp range
+
+                -1   # No match for Glover reaction 195 So no temp range
+
+                10   # Glover reaction 196 matches with Umist 947 with temp range [10, 41000]
+                10   # Glover reaction 196 matches with Umist 5988 with temp range [10, 41000]
+
+                10   # Glover reaction 197 matches with Umist 948 with temp range [10, 41000]
+                10   # Glover reaction 197 matches with Umist 5989 with temp range [10, 41000]
+
+                10   # Glover reaction 198 matches with Umist 876 with temp range [10, 41000]
+                10   # Glover reaction 198 matches with Umist 5894 with temp range [10, 41000]
+
+                10   # Glover reaction 199 matches with Umist 733 with temp range [10, 41000]
+                10   # Glover reaction 199 matches with Umist 894 with temp range [10, 41000]
+                -1   # No match for Glover reaction 199 So no temp range
+
+                10   # Glover reaction 200 matches with Umist 734 with temp range [10, 41000]
+                10   # Glover reaction 200 matches with Umist 926 with temp range [10, 41000]
+
+                10   # Glover reaction 201 matches with Umist 730 with temp range [10, 41000]
+                -1   # No match for Glover reaction 201 So no temp range
+
+                10   # Glover reaction 202 matches with Umist 732 with temp range [10, 41000]
+                -1   # No match for Glover reaction 202 So no temp range
+
+                10   # Glover reaction 203 matches with Umist 729 with temp range [10, 41000]
+                -1   # No match for Glover reaction 203 So no temp range
+
+                10   # Glover reaction 204 matches with Umist 731 with temp range [10, 41000]
+                -1   # No match for Glover reaction 204 So no temp range
+
+                10   # Glover reaction 205 matches with Umist 726 with temp range [10, 41000]
+                10   # Glover reaction 205 matches with Umist 823 with temp range [10, 41000]
+                10   # Glover reaction 205 matches with Umist 5827 with temp range [10, 41000]
+                -1   # No match for Glover reaction 205 So no temp range
+
+                10   # Glover reaction 206 matches with Umist 736 with temp range [10, 41000]
+                10   # Glover reaction 206 matches with Umist 950 with temp range [10, 41000]
+                -1   # No match for Glover reaction 206 So no temp range
+
+                10   # Glover reaction 207 matches with Umist 727 with temp range [10, 41000]
+
+                10   # Glover reaction 208 matches with Umist 726 with temp range [10, 41000]
+                10   # Glover reaction 208 matches with Umist 823 with temp range [10, 41000]
+                10   # Glover reaction 208 matches with Umist 5827 with temp range [10, 41000]
+                -1   # No match for Glover reaction 208 So no temp range
+
+                10   # Glover reaction 209 matches with Umist 871 with temp range [10, 41000]
+                10   # Glover reaction 209 matches with Umist 5887 with temp range [10, 41000]
+                -1   # No match for Glover reaction 209 So no temp range
+
+                10   # Glover reaction 210 matches with Umist 827 with temp range [10, 41000]
+                -1   # No match for Glover reaction 210 So no temp range
+
+                10   # Glover reaction 211 matches with Umist 829 with temp range [10, 41000]
+                10   # Glover reaction 211 matches with Umist 5836 with temp range [10, 41000]
+                -1   # No match for Glover reaction 211 So no temp range
+
+                10   # Glover reaction 212 matches with Umist 830 with temp range [10, 41000]
+                10   # Glover reaction 212 matches with Umist 5837 with temp range [10, 41000]
+                -1   # No match for Glover reaction 212 So no temp range
+
+                10   # Glover reaction 213 matches with Umist 745 with temp range [10, 41000]
+                10   # Glover reaction 213 matches with Umist 5736 with temp range [10, 41000]
+                -1   # No match for Glover reaction 213 So no temp range
+
+                10   # Glover reaction 214 matches with Umist 955 with temp range [10, 41000]
+                10   # Glover reaction 214 matches with Umist 5997 with temp range [10, 41000]
+                -1   # No match for Glover reaction 214 So no temp range
+
+                10   # Glover reaction 215 matches with Umist 889 with temp range [10, 41000]
+                10   # Glover reaction 215 matches with Umist 5915 with temp range [10, 41000]
+                -1   # No match for Glover reaction 215 So no temp range
+
+                10   # Glover reaction 216 matches with Umist 948 with temp range [10, 41000]
+                10   # Glover reaction 216 matches with Umist 5989 with temp range [10, 41000]
+
+                10   # Glover reaction 217 matches with Umist 947 with temp range [10, 41000]
+                10   # Glover reaction 217 matches with Umist 5988 with temp range [10, 41000]
+
+                10   # Glover reaction 218 matches with Umist 876 with temp range [10, 41000]
+                10   # Glover reaction 218 matches with Umist 5894 with temp range [10, 41000]
+
+                ]
+T_upp_bounds = [
+                41000   # Glover reaction 1 matches with Umist 6155 with temp range [10, 41000]
+
+                100   # Glover reaction 2 matches with Umist 75 with temp range [10, 100]
+
+                32000   # Glover reaction 3 matches with Umist 6093 with temp range [200, 32000]
+
+                41000   # Glover reaction 4 matches with Umist 489 with temp range [10, 41000]
+
+                41000   # Glover reaction 5 matches with Umist 4921 with temp range [10, 41000]
+
+                300   # Glover reaction 6 matches with Umist 1239 with temp range [10, 300]
+
+                1e10 # No match for Glover reaction 7 So no temp range
+
+                41000   # Glover reaction 8 matches with Umist 140 with temp range [3400, 41000]
+
+                41000   # Glover reaction 9 matches with Umist 142 with temp range [1833, 41000]
+
+                41000   # Glover reaction 10 matches with Umist 135 with temp range [2803, 41000]
+
+                1e10 # No match for Glover reaction 11 So no temp range
+
+                20000   # Glover reaction 12 matches with Umist 6162 with temp range [10, 20000]
+
+                1e10 # No match for Glover reaction 13 So no temp range
+
+                1e10 # No match for Glover reaction 14 So no temp range
+
+
+                1e10 # No match for Glover reaction 16 So no temp range
+
+                1000   # Glover reaction 17 matches with Umist 6166 with temp range [10, 1000]
+
+                41000   # Glover reaction 18 matches with Umist 491 with temp range [10, 41000]
+
+                1e10 # No match for Glover reaction 19 So no temp range
+
+                41000   # Glover reaction 20 matches with Umist 6158 with temp range [10, 41000]
+
+                41000   # Glover reaction 21 matches with Umist 6170 with temp range [10, 41000]
+
+                1e10 # No match for Glover reaction 22 So no temp range
+
+                1e10 # No match for Glover reaction 23 So no temp range
+
+                41000   # Glover reaction 24 matches with Umist 492 with temp range [10, 41000]
+
+                41000   # Glover reaction 25 matches with Umist 406 with temp range [10, 41000]
+
+                1e10 # No match for Glover reaction 26 So no temp range
+
+                1e10 # No match for Glover reaction 27 So no temp range
+
+                1e10 # No match for Glover reaction 28 So no temp range
+
+                300   # Glover reaction 29 matches with Umist 513 with temp range [10, 300]
+
+                1e10 # No match for Glover reaction 30 So no temp range
+
+                41000   # Glover reaction 31 matches with Umist 145 with temp range [1696, 41000]
+                1e10 # No match for Glover reaction 31 So no temp range
+
+                41000   # Glover reaction 32 matches with Umist 137 with temp range [20, 41000]
+
+                1e10 # No match for Glover reaction 33 So no temp range
+
+                2500   # Glover reaction 34 matches with Umist 5348 with temp range [300, 2500]
+                1e10 # No match for Glover reaction 34 So no temp range
+
+                2000   # Glover reaction 35 matches with Umist 5374 with temp range [300, 2000]
+                1e10 # No match for Glover reaction 35 So no temp range
+
+                2500   # Glover reaction 36 matches with Umist 5351 with temp range [300, 2500]
+                1e10 # No match for Glover reaction 36 So no temp range
+
+                300   # Glover reaction 37 matches with Umist 5173 with temp range [10, 300]
+
+                2000   # Glover reaction 38 matches with Umist 5310 with temp range [10, 2000]
+
+                2500   # Glover reaction 39 matches with Umist 5370 with temp range [10, 2500]
+
+                2500   # Glover reaction 40 matches with Umist 5232 with temp range [10, 2500]
+                1e10 # No match for Glover reaction 40 So no temp range
+
+                2600   # Glover reaction 41 matches with Umist 5231 with temp range [1900, 2600]
+                1e10 # No match for Glover reaction 41 So no temp range
+
+                8000   # Glover reaction 42 matches with Umist 5555 with temp range [10, 8000]
+
+                3532   # Glover reaction 43 matches with Umist 5361 with temp range [297, 3532]
+
+                2500   # Glover reaction 44 matches with Umist 5412 with temp range [300, 2500]
+                1e10 # No match for Glover reaction 44 So no temp range
+
+                2581   # Glover reaction 45 matches with Umist 5362 with temp range [250, 2581]
+                1e10 # No match for Glover reaction 45 So no temp range
+
+                300   # Glover reaction 46 matches with Umist 5199 with temp range [10, 300]
+
+                500   # Glover reaction 47 matches with Umist 5643 with temp range [10, 500]
+
+
+                3000   # Glover reaction 49 matches with Umist 5382 with temp range [250, 3000]
+                1e10 # No match for Glover reaction 49 So no temp range
+
+                4000   # Glover reaction 50 matches with Umist 5404 with temp range [250, 4000]
+                1e10 # No match for Glover reaction 50 So no temp range
+
+                2500   # Glover reaction 51 matches with Umist 5359 with temp range [300, 2500]
+                1e10 # No match for Glover reaction 51 So no temp range
+
+                8000   # Glover reaction 52 matches with Umist 5196 with temp range [10, 8000]
+
+                41000   # Glover reaction 53 matches with Umist 5377 with temp range [2590, 41000]
+
+                41000   # Glover reaction 54 matches with Umist 2604 with temp range [10, 41000]
+
+                1e10 # No match for Glover reaction 55 So no temp range
+
+                41000   # Glover reaction 56 matches with Umist 2594 with temp range [10, 41000]
+
+                41000   # Glover reaction 57 matches with Umist 2852 with temp range [10, 41000]
+
+                3000   # Glover reaction 58 matches with Umist 2618 with temp range [154, 3000]
+                1e10 # No match for Glover reaction 58 So no temp range
+
+                1000   # Glover reaction 59 matches with Umist 3055 with temp range [10, 1000]
+
+                41000   # Glover reaction 60 matches with Umist 2647 with temp range [10, 41000]
+
+                41000   # Glover reaction 61 matches with Umist 2189 with temp range [10, 41000]
+
+                41000   # Glover reaction 62 matches with Umist 2534 with temp range [10, 41000]
+
+                300   # Glover reaction 63 matches with Umist 3056 with temp range [236, 300]
+
+                41000   # Glover reaction 64 matches with Umist 2648 with temp range [10, 41000]
+
+                41000   # Glover reaction 65 matches with Umist 2211 with temp range [10, 41000]
+
+                41000   # Glover reaction 66 matches with Umist 3057 with temp range [352, 41000]
+
+                41000   # Glover reaction 67 matches with Umist 2311 with temp range [10, 41000]
+
+                41000   # Glover reaction 68 matches with Umist 3851 with temp range [10, 41000]
+
+                41000   # Glover reaction 69 matches with Umist 2686 with temp range [10, 41000]
+
+                41000   # Glover reaction 70 matches with Umist 2616 with temp range [10, 41000]
+
+                400   # Glover reaction 71 matches with Umist 2951 with temp range [5, 400]
+
+                41000   # Glover reaction 72 matches with Umist 2953 with temp range [10, 41000]
+
+                41000   # Glover reaction 73 matches with Umist 1646 with temp range [10, 41000]
+
+                41000   # Glover reaction 74 matches with Umist 2689 with temp range [10, 41000]
+
+                41000   # Glover reaction 75 matches with Umist 2662 with temp range [10, 41000]
+
+                41000   # Glover reaction 76 matches with Umist 2904 with temp range [10, 41000]
+
+                41000   # Glover reaction 77 matches with Umist 1613 with temp range [10, 41000]
+
+                41000   # Glover reaction 78 matches with Umist 1614 with temp range [10, 41000]
+
+                41000   # Glover reaction 79 matches with Umist 2121 with temp range [10, 41000]
+
+                41000   # Glover reaction 80 matches with Umist 1642 with temp range [10, 41000]
+
+                41000   # Glover reaction 81 matches with Umist 1643 with temp range [10, 41000]
+
+                41000   # Glover reaction 82 matches with Umist 2210 with temp range [10, 41000]
+
+                41000   # Glover reaction 83 matches with Umist 2132 with temp range [10, 41000]
+
+                400   # Glover reaction 84 matches with Umist 2896 with temp range [10, 400]
+
+                400   # Glover reaction 85 matches with Umist 2895 with temp range [10, 400]
+
+                41000   # Glover reaction 86 matches with Umist 2124 with temp range [10, 41000]
+
+                41000   # Glover reaction 87 matches with Umist 2767 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 87 So no temp range
+
+                300   # Glover reaction 88 matches with Umist 458 with temp range [10, 300]
+                1e10 # No match for Glover reaction 88 So no temp range
+
+                300   # Glover reaction 89 matches with Umist 2677 with temp range [10, 300]
+                1e10 # No match for Glover reaction 89 So no temp range
+
+                41000   # Glover reaction 90 matches with Umist 372 with temp range [10, 41000]
+
+                41000   # Glover reaction 91 matches with Umist 359 with temp range [10, 41000]
+
+                41000   # Glover reaction 92 matches with Umist 3380 with temp range [10, 41000]
+
+                41000   # Glover reaction 93 matches with Umist 3293 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 93 So no temp range
+
+                41000   # Glover reaction 94 matches with Umist 408 with temp range [10, 41000]
+
+                41000   # Glover reaction 95 matches with Umist 3517 with temp range [10, 41000]
+
+                300   # Glover reaction 96 matches with Umist 378 with temp range [10, 300]
+
+                41000   # Glover reaction 97 matches with Umist 3446 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 97 So no temp range
+
+                41000   # Glover reaction 98 matches with Umist 3445 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 98 So no temp range
+
+                41000   # Glover reaction 99 matches with Umist 518 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 99 So no temp range
+
+                300   # Glover reaction 100 matches with Umist 405 with temp range [10, 300]
+
+                41000   # Glover reaction 101 matches with Umist 525 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 101 So no temp range
+
+                41000   # Glover reaction 102 matches with Umist 3510 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 102 So no temp range
+
+                41000   # Glover reaction 103 matches with Umist 248 with temp range [10, 41000]
+
+                41000   # Glover reaction 104 matches with Umist 3431 with temp range [10, 41000]
+
+
+                41000   # Glover reaction 106 matches with Umist 488 with temp range [10, 41000]
+
+                41000   # Glover reaction 107 matches with Umist 4116 with temp range [10, 41000]
+
+                41000   # Glover reaction 108 matches with Umist 4957 with temp range [10, 41000]
+
+                41000   # Glover reaction 109 matches with Umist 4932 with temp range [10, 41000]
+
+                1000   # Glover reaction 110 matches with Umist 1277 with temp range [10, 1000]
+                1e10 # No match for Glover reaction 110 So no temp range
+
+                1000   # Glover reaction 111 matches with Umist 1278 with temp range [10, 1000]
+                1e10 # No match for Glover reaction 111 So no temp range
+
+                300   # Glover reaction 112 matches with Umist 1158 with temp range [10, 300]
+
+                1000   # Glover reaction 113 matches with Umist 1161 with temp range [10, 1000]
+                1e10 # No match for Glover reaction 113 So no temp range
+
+                1000   # Glover reaction 114 matches with Umist 1160 with temp range [10, 1000]
+                1e10 # No match for Glover reaction 114 So no temp range
+
+                1000   # Glover reaction 115 matches with Umist 1159 with temp range [10, 1000]
+                1e10 # No match for Glover reaction 115 So no temp range
+
+                300   # Glover reaction 116 matches with Umist 1175 with temp range [10, 300]
+                1e10 # No match for Glover reaction 116 So no temp range
+
+                300   # Glover reaction 117 matches with Umist 1176 with temp range [10, 300]
+                1e10 # No match for Glover reaction 117 So no temp range
+
+                1000   # Glover reaction 118 matches with Umist 1177 with temp range [10, 1000]
+                1e10 # No match for Glover reaction 118 So no temp range
+
+                300   # Glover reaction 119 matches with Umist 1427 with temp range [10, 300]
+
+                1000   # Glover reaction 120 matches with Umist 1265 with temp range [10, 1000]
+                1e10 # No match for Glover reaction 120 So no temp range
+
+                1000   # Glover reaction 121 matches with Umist 1264 with temp range [10, 1000]
+                1e10 # No match for Glover reaction 121 So no temp range
+
+                1000   # Glover reaction 122 matches with Umist 1266 with temp range [10, 1000]
+                1e10 # No match for Glover reaction 122 So no temp range
+
+                1000   # Glover reaction 123 matches with Umist 1293 with temp range [10, 1000]
+                1e10 # No match for Glover reaction 123 So no temp range
+
+                1000   # Glover reaction 124 matches with Umist 1295 with temp range [10, 1000]
+                1e10 # No match for Glover reaction 124 So no temp range
+
+                1000   # Glover reaction 125 matches with Umist 1296 with temp range [10, 1000]
+                1e10 # No match for Glover reaction 125 So no temp range
+
+                1000   # Glover reaction 126 matches with Umist 1294 with temp range [10, 1000]
+                1e10 # No match for Glover reaction 126 So no temp range
+
+                300   # Glover reaction 127 matches with Umist 1421 with temp range [10, 300]
+
+                41000   # Glover reaction 128 matches with Umist 1232 with temp range [10, 41000]
+
+                300   # Glover reaction 129 matches with Umist 1349 with temp range [10, 300]
+
+
+                300   # Glover reaction 131 matches with Umist 1377 with temp range [10, 300]
+
+                41000   # Glover reaction 132 matches with Umist 69 with temp range [10, 41000]
+
+                41000   # Glover reaction 133 matches with Umist 80 with temp range [10, 41000]
+
+                41000   # Glover reaction 134 matches with Umist 81 with temp range [10, 41000]
+
+                41000   # Glover reaction 135 matches with Umist 84 with temp range [10, 41000]
+
+                41000   # Glover reaction 136 matches with Umist 82 with temp range [10, 41000]
+
+                41000   # Glover reaction 137 matches with Umist 9 with temp range [10, 41000]
+
+                41000   # Glover reaction 138 matches with Umist 107 with temp range [10, 41000]
+
+                41000   # Glover reaction 139 matches with Umist 83 with temp range [10, 41000]
+
+                41000   # Glover reaction 140 matches with Umist 57 with temp range [10, 41000]
+
+                1e10 # No match for Glover reaction 141 So no temp range
+
+                1000   # Glover reaction 142 matches with Umist 6154 with temp range [10, 1000]
+
+                300   # Glover reaction 143 matches with Umist 6119 with temp range [10, 300]
+
+                300   # Glover reaction 144 matches with Umist 6101 with temp range [10, 300]
+                1e10 # No match for Glover reaction 144 So no temp range
+
+                41000   # Glover reaction 145 matches with Umist 6070 with temp range [10, 41000]
+
+                14700   # Glover reaction 146 matches with Umist 6073 with temp range [10, 14700]
+
+                300   # Glover reaction 147 matches with Umist 6116 with temp range [10, 300]
+
+                300   # Glover reaction 148 matches with Umist 6095 with temp range [10, 300]
+                1e10 # No match for Glover reaction 148 So no temp range
+
+                13900   # Glover reaction 149 matches with Umist 6052 with temp range [10, 13900]
+
+                41000   # Glover reaction 150 matches with Umist 6156 with temp range [10, 41000]
+
+                300   # Glover reaction 151 matches with Umist 6120 with temp range [10, 300]
+
+                300   # Glover reaction 152 matches with Umist 6129 with temp range [10, 300]
+
+                300   # Glover reaction 153 matches with Umist 6121 with temp range [20, 300]
+                1e10 # No match for Glover reaction 153 So no temp range
+
+                1e10 # No match for Glover reaction 154 So no temp range
+
+                1e10 # No match for Glover reaction 155 So no temp range
+
+                1e10 # No match for Glover reaction 156 So no temp range
+
+                1e10 # No match for Glover reaction 157 So no temp range
+
+                1e10 # No match for Glover reaction 158 So no temp range
+
+                1e10 # No match for Glover reaction 159 So no temp range
+
+                1e10 # No match for Glover reaction 160 So no temp range
+
+                1e10 # No match for Glover reaction 161 So no temp range
+
+                1e10 # No match for Glover reaction 162 So no temp range
+
+                1e10 # No match for Glover reaction 163 So no temp range
+
+                2500   # Glover reaction 164 matches with Umist 64 with temp range [10, 2500]
+
+                1e10 # No match for Glover reaction 165 So no temp range
+
+                41000   # Glover reaction 166 matches with Umist 883 with temp range [10, 41000]
+                41000   # Glover reaction 166 matches with Umist 5902 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 166 So no temp range
+
+                41000   # Glover reaction 167 matches with Umist 5903 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 167 So no temp range
+
+                41000   # Glover reaction 168 matches with Umist 732 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 168 So no temp range
+
+                41000   # Glover reaction 169 matches with Umist 5923 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 169 So no temp range
+
+                41000   # Glover reaction 170 matches with Umist 5922 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 170 So no temp range
+
+                41000   # Glover reaction 171 matches with Umist 726 with temp range [10, 41000]
+                41000   # Glover reaction 171 matches with Umist 823 with temp range [10, 41000]
+                41000   # Glover reaction 171 matches with Umist 5827 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 171 So no temp range
+
+                41000   # Glover reaction 172 matches with Umist 737 with temp range [10, 41000]
+                41000   # Glover reaction 172 matches with Umist 5706 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 172 So no temp range
+
+                41000   # Glover reaction 173 matches with Umist 871 with temp range [10, 41000]
+                41000   # Glover reaction 173 matches with Umist 5887 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 173 So no temp range
+
+                41000   # Glover reaction 174 matches with Umist 5888 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 174 So no temp range
+
+                41000   # Glover reaction 175 matches with Umist 5831 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 175 So no temp range
+
+                41000   # Glover reaction 176 matches with Umist 830 with temp range [10, 41000]
+                41000   # Glover reaction 176 matches with Umist 5837 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 176 So no temp range
+
+                41000   # Glover reaction 177 matches with Umist 829 with temp range [10, 41000]
+                41000   # Glover reaction 177 matches with Umist 5836 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 177 So no temp range
+
+                41000   # Glover reaction 178 matches with Umist 5834 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 178 So no temp range
+
+                41000   # Glover reaction 179 matches with Umist 5854 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 179 So no temp range
+
+                41000   # Glover reaction 180 matches with Umist 5853 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 180 So no temp range
+
+                41000   # Glover reaction 181 matches with Umist 745 with temp range [10, 41000]
+                41000   # Glover reaction 181 matches with Umist 5736 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 181 So no temp range
+
+                41000   # Glover reaction 182 matches with Umist 945 with temp range [10, 41000]
+                41000   # Glover reaction 182 matches with Umist 5985 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 182 So no temp range
+
+                41000   # Glover reaction 183 matches with Umist 955 with temp range [10, 41000]
+                41000   # Glover reaction 183 matches with Umist 5997 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 183 So no temp range
+
+                41000   # Glover reaction 184 matches with Umist 5998 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 184 So no temp range
+
+                1e10 # No match for Glover reaction 185 So no temp range
+
+                41000   # Glover reaction 186 matches with Umist 889 with temp range [10, 41000]
+                41000   # Glover reaction 186 matches with Umist 5915 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 186 So no temp range
+
+                41000   # Glover reaction 187 matches with Umist 5914 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 187 So no temp range
+
+                1e10 # No match for Glover reaction 188 So no temp range
+
+                1e10 # No match for Glover reaction 189 So no temp range
+
+                1e10 # No match for Glover reaction 190 So no temp range
+
+                41000   # Glover reaction 191 matches with Umist 5912 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 191 So no temp range
+
+                1e10 # No match for Glover reaction 192 So no temp range
+
+                1e10 # No match for Glover reaction 193 So no temp range
+
+                1e10 # No match for Glover reaction 194 So no temp range
+
+                1e10 # No match for Glover reaction 195 So no temp range
+
+                41000   # Glover reaction 196 matches with Umist 947 with temp range [10, 41000]
+                41000   # Glover reaction 196 matches with Umist 5988 with temp range [10, 41000]
+
+                41000   # Glover reaction 197 matches with Umist 948 with temp range [10, 41000]
+                41000   # Glover reaction 197 matches with Umist 5989 with temp range [10, 41000]
+
+                41000   # Glover reaction 198 matches with Umist 876 with temp range [10, 41000]
+                41000   # Glover reaction 198 matches with Umist 5894 with temp range [10, 41000]
+
+                41000   # Glover reaction 199 matches with Umist 733 with temp range [10, 41000]
+                41000   # Glover reaction 199 matches with Umist 894 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 199 So no temp range
+
+                41000   # Glover reaction 200 matches with Umist 734 with temp range [10, 41000]
+                41000   # Glover reaction 200 matches with Umist 926 with temp range [10, 41000]
+
+                41000   # Glover reaction 201 matches with Umist 730 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 201 So no temp range
+
+                41000   # Glover reaction 202 matches with Umist 732 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 202 So no temp range
+
+                41000   # Glover reaction 203 matches with Umist 729 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 203 So no temp range
+
+                41000   # Glover reaction 204 matches with Umist 731 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 204 So no temp range
+
+                41000   # Glover reaction 205 matches with Umist 726 with temp range [10, 41000]
+                41000   # Glover reaction 205 matches with Umist 823 with temp range [10, 41000]
+                41000   # Glover reaction 205 matches with Umist 5827 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 205 So no temp range
+
+                41000   # Glover reaction 206 matches with Umist 736 with temp range [10, 41000]
+                41000   # Glover reaction 206 matches with Umist 950 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 206 So no temp range
+
+                41000   # Glover reaction 207 matches with Umist 727 with temp range [10, 41000]
+
+                41000   # Glover reaction 208 matches with Umist 726 with temp range [10, 41000]
+                41000   # Glover reaction 208 matches with Umist 823 with temp range [10, 41000]
+                41000   # Glover reaction 208 matches with Umist 5827 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 208 So no temp range
+
+                41000   # Glover reaction 209 matches with Umist 871 with temp range [10, 41000]
+                41000   # Glover reaction 209 matches with Umist 5887 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 209 So no temp range
+
+                41000   # Glover reaction 210 matches with Umist 827 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 210 So no temp range
+
+                41000   # Glover reaction 211 matches with Umist 829 with temp range [10, 41000]
+                41000   # Glover reaction 211 matches with Umist 5836 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 211 So no temp range
+
+                41000   # Glover reaction 212 matches with Umist 830 with temp range [10, 41000]
+                41000   # Glover reaction 212 matches with Umist 5837 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 212 So no temp range
+
+                41000   # Glover reaction 213 matches with Umist 745 with temp range [10, 41000]
+                41000   # Glover reaction 213 matches with Umist 5736 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 213 So no temp range
+
+                41000   # Glover reaction 214 matches with Umist 955 with temp range [10, 41000]
+                41000   # Glover reaction 214 matches with Umist 5997 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 214 So no temp range
+
+                41000   # Glover reaction 215 matches with Umist 889 with temp range [10, 41000]
+                41000   # Glover reaction 215 matches with Umist 5915 with temp range [10, 41000]
+                1e10 # No match for Glover reaction 215 So no temp range
+
+                41000   # Glover reaction 216 matches with Umist 948 with temp range [10, 41000]
+                41000   # Glover reaction 216 matches with Umist 5989 with temp range [10, 41000]
+
+                41000   # Glover reaction 217 matches with Umist 947 with temp range [10, 41000]
+                41000   # Glover reaction 217 matches with Umist 5988 with temp range [10, 41000]
+
+                41000   # Glover reaction 218 matches with Umist 876 with temp range [10, 41000]
+                41000   # Glover reaction 218 matches with Umist 5894 with temp range [10, 41000]
+
+                ]

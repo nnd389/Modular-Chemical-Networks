@@ -24,7 +24,7 @@ print("Checkpoint 1\n")
 #@time begin
     # %% Set The timespan, parameters, and initial conditions
 seconds_per_year = 3600 * 24 * 365
-tspan = (0.0, 30 * seconds_per_year) # ~30 thousand yrs
+tspan = (0.0, 30000 * seconds_per_year) # ~30 thousand yrs
 # 30,000 yrs approximately equals 8e11 
 #tspan = (0, 1000 * seconds_per_year)
 #tspan = (0, 5e9)
@@ -111,34 +111,34 @@ params = Dict(
     :n_H => n_H, # n_H = 300, from glover paper, section 4
     :Av => Av,
     :cr_ion_rate => cr_ion_rate,
-    :k1 => n_H * 10^(-17.845 + 0.762 * log10(T) + 0.1523 * (log10(T))^2 - 0.03274 * (log10(T))^3),
-    :k2 => n_H * 1.5e-9,
-    :k6 => n_H * 1e-8,
-    :k12 => n_H * 1.269e-13 * ((315614/T)^(1.503)) * (1 + (604625/T)^(0.47))^(-1.923),
-    :k14 => n_H * 2.5634e-9 * (Te)^(1.78186),
-    :k15 => n_H * 6.9e-9 * T^(-0.35),
-    :k17 => n_H * 1e-11 * T^(-0.5) * (12.72 - 1.615 * log10(T) - 0.3162 * (log10(T))^2 + 0.0493 * (log10(T))^3),
-    :k19 => n_H * 1.26e-9 * T^(-0.75) * exp(-127500/T),
-    :k20 => n_H * 4.67e-12 * (T/300)^(-0.6),
-    :k21 => n_H * 1.3e-10 * T^(-0.64),
-    :k29 => n_H * 8.58e-17 * (T)^(0.757),
-    :k38 => n_H * 6.6e-11,
-    :k42 => n_H * 5e-11 * (T/300)^(0.5),
-    :k47 => n_H * 3.5e-11,
-    :k52 => n_H * 4.7e-11 * (T/300)^(-0.34),
-    :k146 => n_H * 2.1e-19,
-    :k149 => n_H * 2.5e-18,
-    :k154 => n_H * 1.32e-32 * (T/300)^-0.38,
-    :k157 => n_H * 5.99e-33 * (T/5000)^(-1.6), 
-    :k158 => n_H * 6.16e-29 * (T/300)^(-3.08),
-    :R188 => n_H * 5.0e-11 * exp(-2.55*Av + 0.0165*(Av)^2),
-    :R189 => n_H * 5.0e-11 * exp(-2.55*Av + 0.0165*(Av)^2),
-    :R190 => n_H * 5.0e-11 * exp(-2.55*Av + 0.0165*(Av)^2),
-    :R191 => n_H * 1.5e-10 * exp(-2.55*Av + 0.0165*(Av)^2),
-    :R192 => n_H * 2.5e-11 * exp(-2.55*Av + 0.0165*(Av)^2),
-    :R193 => n_H * 2.5e-11 * exp(-2.55*Av + 0.0165*(Av)^2),
-    :R194 => n_H * 7.5e-12 * exp(-2.55*Av + 0.0165*(Av)^2),
-    :R195 => n_H * 2.5e-11 * exp(-2.55*Av + 0.0165*(Av)^2)
+    :k1 => 10^(-17.845 + 0.762 * log10(T) + 0.1523 * (log10(T))^2 - 0.03274 * (log10(T))^3),
+    :k2 => 1.5e-9,
+    :k6 => 1e-8,
+    :k12 => 1.269e-13 * ((315614/T)^(1.503)) * (1 + (604625/T)^(0.47))^(-1.923),
+    :k14 => 2.5634e-9 * (Te)^(1.78186),
+    :k15 => 6.9e-9 * T^(-0.35),
+    :k17 => 1e-11 * T^(-0.5) * (12.72 - 1.615 * log10(T) - 0.3162 * (log10(T))^2 + 0.0493 * (log10(T))^3),
+    :k19 => 1.26e-9 * T^(-0.75) * exp(-127500/T),
+    :k20 => 4.67e-12 * (T/300)^(-0.6),
+    :k21 => 1.3e-10 * T^(-0.64),
+    :k29 => 8.58e-17 * (T)^(0.757),
+    :k38 => 6.6e-11,
+    :k42 => 5e-11 * (T/300)^(0.5),
+    :k47 => 3.5e-11,
+    :k52 => 4.7e-11 * (T/300)^(-0.34),
+    :k146 => 2.1e-19,
+    :k149 => 2.5e-18,
+    :k154 => 1.32e-32 * (T/300)^-0.38,
+    :k157 => 5.99e-33 * (T/5000)^(-1.6), 
+    :k158 => 6.16e-29 * (T/300)^(-3.08),
+    :R188 => 5.0e-11 * exp(-2.55*Av + 0.0165*(Av)^2),
+    :R189 => 5.0e-11 * exp(-2.55*Av + 0.0165*(Av)^2),
+    :R190 => 5.0e-11 * exp(-2.55*Av + 0.0165*(Av)^2),
+    :R191 => 1.5e-10 * exp(-2.55*Av + 0.0165*(Av)^2),
+    :R192 => 2.5e-11 * exp(-2.55*Av + 0.0165*(Av)^2),
+    :R193 => 2.5e-11 * exp(-2.55*Av + 0.0165*(Av)^2),
+    :R194 => 7.5e-12 * exp(-2.55*Av + 0.0165*(Av)^2),
+    :R195 => 2.5e-11 * exp(-2.55*Av + 0.0165*(Av)^2)
     )
 
 
@@ -266,7 +266,17 @@ reaction_equations = [
     (@reaction n_H * k17, He⁺ + e --> He ), 
     (@reaction n_H * 1.25e-15 * (T/300)^(0.25) , He⁺ + H --> He + H⁺), 
     (@reaction n_H * k19, He + H⁺--> He⁺ + H), 
-    (@reaction n_H * k20, C⁺ + e --> C ), 
+
+    
+    #(@reaction n_H * 4.67e-12 * (T/300)^(-0.6), C⁺ + e --> C ), # Glover rate for C⁺ + e --> C 
+    (@reaction n_H * 2.36e-12 * (T/300)^(-0.29) * exp(-(-17.6/T)), C⁺ + e --> C ), # Umist rate for C⁺ + e --> C 
+    #(@reaction n_H * 1.4e-10 * (T)^(-0.61), C⁺ + e --> C ), # Nelson rate 1 for C⁺ + e --> C
+
+    (@reaction 2.3e-17, C --> C⁺ + e ), # Umist rate for C --> C⁺ + e
+    #(@reaction 3e-10 * 2 * exp(-3 * Av), C --> C⁺ + e ), # Nelson rate 2 for C --> C⁺ + e
+    
+
+    
     (@reaction n_H * k21, O⁺ + e --> O ), 
     (@reaction n_H * 6.85e-8 * (0.193 + (11.26/Te))^(-1) * (11.26/Te)^(0.25) * exp(-11.26/Te) , C + e --> C⁺ + e + e), 
     (@reaction n_H * 3.59e-8 * (0.073 + (13.6/Te))^(-1) * (13.6/Te)^(0.34) * exp(-13.6/Te) , O + e --> O⁺ + e + e), 
@@ -400,16 +410,16 @@ reaction_equations = [
     (@reaction n_H * 9.9e-19 * (T/300)^(-0.38) , O+H --> OH ), 
     (@reaction n_H * 4.9e-20 * (T/300)^1.58 , O + O --> O2 ), 
     (@reaction n_H * 5.26e-18 *(T/300)^(-5.22) * exp(-90/T) , OH + H --> H2O ), 
-    (@reaction n_H * k154, H + H + H --> H2 + H), 
-    (@reaction n_H * 2.8e-31 * (T)^-0.6 , H + H + H2 --> H2 + H2), 
-    (@reaction n_H * 6.9e-32 * (T)^(-0.4) , H + H + He --> H2 + He), 
-    (@reaction n_H * k157, C + C + M --> C2 + M), 
-    (@reaction n_H * k158, C + O + M --> CO + M), 
-    (@reaction n_H * 100 * cr_ion_rate * 960, C⁺ + O + M --> CO⁺ + M), # FIX: these rely on k210, which doesn't exist?
-    (@reaction n_H * 100 * cr_ion_rate * 960, C + O⁺ + M --> CO⁺ + M), # FIX: these rely on k210, which doesn't exist?
-    (@reaction n_H * 4.33e-32 * (T/300)^(-1) , O + H + M --> OH + M), 
-    (@reaction n_H * 2.56e-31 * (T/300)^(-2) , OH + H + M --> H2O + M), 
-    (@reaction n_H * 9.2e-34 * (T/300)^(-1) , O + O + M --> O2 + M), 
+    (@reaction n_H^2 * k154, H + H + H --> H2 + H), 
+    (@reaction n_H^2 * 2.8e-31 * (T)^-0.6 , H + H + H2 --> H2 + H2), 
+    (@reaction n_H^2 * 6.9e-32 * (T)^(-0.4) , H + H + He --> H2 + He), 
+    (@reaction n_H^2 * k157, C + C + M --> C2 + M), 
+    (@reaction n_H^2 * k158, C + O + M --> CO + M), 
+    (@reaction n_H^2 * 100 * cr_ion_rate * 960, C⁺ + O + M --> CO⁺ + M), # FIX: these rely on k210, which doesn't exist?
+    (@reaction n_H^2 * 100 * cr_ion_rate * 960, C + O⁺ + M --> CO⁺ + M), # FIX: these rely on k210, which doesn't exist?
+    (@reaction n_H^2 * 4.33e-32 * (T/300)^(-1) , O + H + M --> OH + M), 
+    (@reaction n_H^2 * 2.56e-31 * (T/300)^(-2) , OH + H + M --> H2O + M), 
+    (@reaction n_H^2 * 9.2e-34 * (T/300)^(-1) , O + O + M --> O2 + M), 
     (@reaction n_H * 2e-11 * (T/300)^(0.44) , O + CH -->  HCO⁺ + e), 
     (@reaction n_H * 3e-18 * (T)^(0.5) * (1 + 1e4 * exp(-600/Td))^(-1) * (1 + 0.04*(T + Td)^(0.5) + 0.002*T + 8e-6 * T^2)^(-1) , H+H --> H2), # FIX H is H(s) here?
     
@@ -421,7 +431,7 @@ reaction_equations = [
     (@reaction 5.6e-11 * exp(-2.55*Av + 0.0165*(Av)^2), H2   -->  H+H), 
     (@reaction 4.9e-13 * exp(-1.8 * Av), H3⁺ --> H2 + H⁺),
     (@reaction 4.9e-13 * exp(-2.3 * Av), H3⁺ --> H2⁺ + H), 
-    (@reaction 3.1e-10 * exp(-3.0 * Av), C -->  C⁺ + e), 
+    (@reaction 3.1e-10 * exp(-3.0 * Av), C -->  C⁺ + e), #171
     (@reaction 2.4e-7 * exp(-0.9 * Av), C⁻ --> C + e), 
     (@reaction 8.7e-10 * exp(-1.2 * Av), CH --> C + H), 
     (@reaction 7.7e-10 * exp(-2.8 * Av), CH --> CH⁺ + e), 
@@ -489,11 +499,11 @@ sol = solve(prob, reltol=1.49012e-6, abstol=1.49012e-6, Rodas4())
 
 
 # C and C+
-plot(sol, idxs = (0,10), lw = 3, lc = "blue", title = "Glover")
-plot!(sol, idxs = (0,9), lw = 3, lc = "orange", title = "Glover")
-
+plot(sol, idxs = (0,10), lw = 3, lc = "blue", title = "Glover with Glover rates")
+plot!(sol, idxs = (0,9), lw = 3, lc = "orange", title = "Glover with Glover rates")
 
 #=
+
 # CO
 plot(sol, idxs = (0,16), lw = 3, lc = "green", title = "Glover")
 
@@ -503,11 +513,11 @@ plot(sol, idxs = (0,12), lw = 3, lc = "blue", title = "Glover")
 # He+
 plot(sol, idxs = (0,8), lw = 3, lc = "light pink", title = "Glover")
 
-# CH and CH2
+# CH and CH2 = CHx
 plot(sol, idxs = (0,17), lw = 3, lc = "blue", title = "Glover")
 plot!(sol, idxs = (0,18), lw = 3, lc = "light blue", title = "Glover")
 
-# OH, OH+, H2O, H2O+, and O2
+# OH, OH+, H2O, H2O+, and O2 = OHx
 plot(sol, idxs = (0,13), lw = 3, lc = "green", title = "Glover")
 plot!(sol, idxs = (0,27), lw = 3, lc = "dark green", title = "Glover")
 plot!(sol, idxs = (0,20), lw = 3, lc = "blue", title = "Glover")

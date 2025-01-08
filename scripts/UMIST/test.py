@@ -1,7 +1,10 @@
-my_str = ['a', 'b', 'c']
+import numpy as np
 
-file_path = "/Users/kneenaugh/Desktop/Git/AstroChemNetwork/scripts/UMIST/test.txt"  # Replace with your desired file path
+my_str = ['a']
+b = 5
+my_str.append("b is " + str(b))
 
-with open(file_path, "w") as file:
-    for i in range(len(my_str)):
-        file.writelines(my_str[i] + '\n')
+for x in my_str:
+    print(x)
+
+

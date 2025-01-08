@@ -305,10 +305,10 @@ print(all)
 
 
 
-file_path = "/Users/kneenaugh/Desktop/Git/AstroChemNetwork/scripts/UMIST/Umist.txt"  # Replace with your desired file path
-with open(file_path, "w") as file:
-    for i in range(len_fin):
-        file.writelines(final_print[i] + '\n')
+#file_path = "/Users/kneenaugh/Desktop/Git/AstroChemNetwork/scripts/UMIST/Umist.txt"  # Replace with your desired file path
+#with open(file_path, "w") as file:
+#    for i in range(len_fin):
+#       file.writelines(final_print[i] + '\n')
 
 # Two problems: replace e- with e in excel, 
 # do the same for all the pluses and minuses for all the species
