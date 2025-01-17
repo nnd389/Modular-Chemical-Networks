@@ -88,13 +88,33 @@ reaction_equations = [
     (@reaction 1.5e-10 * Go * exp(-2.5 * Av), HCO⁺ --> CO) # HCO⁺ --> CO + H
 ]
 
-    # %% Turn the network into an ODE system
+
+
+### Turn the Network into a system of ODEs ###
 @named system = ReactionSystem(reaction_equations, t)
-#odesys = convert(ODESystem, complete(system))
+print("\nCheckpoint 4: Finished creating the reaction system")
 sys = convert(ODESystem, complete(system))
+print("\nCheckpoint 5: Finished converting to an ODE System")
 ssys = structural_simplify(sys)
+print("\nCheckpoint 6: Finished Simplifying")
 prob = ODEProblem(ssys, u0, tspan, params)
-sol = solve(prob, reltol=1.49012e-6, abstol=1.49012e-6, Rodas4())
+print("\nCheckpoint 7: Finished creating the ODE Problem")
+sol = solve(prob, Rodas4())
+#sol = solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+#sol = solve(prob, lsoda(), saveat=1e3)
+print("\nCheckpoint 8: Finished solving with Rodas 4")
+print("\n")
+
+### Timing ###
+print("\nNelson:")
+print("\nTime to convert:")
+@time convert(ODESystem, complete(system))
+print("\nTime to simplify:")
+@time structural_simplify(sys)
+print("\nTime to create the simplified problem:")
+@time ODEProblem(ssys, u0, tspan, params)
+print("\nTime to solve the simplified Nelson reaction system with Rodas4(): ")
+@time solve(prob, Rodas4());
 
 
 

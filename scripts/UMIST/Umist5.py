@@ -310,6 +310,7 @@ print(all)
 #    for i in range(len_fin):
 #       file.writelines(final_print[i] + '\n')
 
+# only reactions with two reacants shouls be multiplied by n_H
 # Two problems: replace e- with e in excel, 
 # do the same for all the pluses and minuses for all the species
 # Also, this program currently neglects the 20 reactions with two tempurature ranges instead of one

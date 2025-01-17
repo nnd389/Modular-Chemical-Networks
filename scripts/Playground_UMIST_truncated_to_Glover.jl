@@ -94,7 +94,7 @@ params = Dict(
          #:k20 => n_H * 1.4e-10 * (T)^(-0.61), # Nelson rate 1 for C⁺ + e --> C
 
          :k20_backwards => 2.3e-17, # Umist rate for C --> C⁺ + e 
-         :k20_backwards => 3e-10 * 2 * exp(-3 * Av), # Nelson rate 2 for C --> C⁺ + e 
+         #:k20_backwards => 3e-10 * 2 * exp(-3 * Av), # Nelson rate 2 for C --> C⁺ + e 
 
 
 

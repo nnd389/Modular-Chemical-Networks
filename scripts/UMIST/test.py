@@ -1,10 +1,8 @@
 import numpy as np
 
-my_str = ['a']
-b = 5
-my_str.append("b is " + str(b))
-
-for x in my_str:
-    print(x)
 
 
+str = [1, 2, 3]
+print(str)
+str.pop(1)
+print(str)

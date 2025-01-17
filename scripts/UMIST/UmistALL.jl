@@ -20,7 +20,7 @@ u0 = [
       0.0,   # 1: C⁻
       0.0,   # 2: C
       0.0,   # 3: C2
-      0.0,   # 4: e
+      2e-4,  # 4: e Nelson has 2e-4
       0.0,   # 5: CH2
       0.0,   # 6: C2H2
       0.0,   # 7: CH
@@ -34,7 +34,7 @@ u0 = [
       0.0,   # 15: NH
       0.0,   # 16: HCN
       0.0,   # 17: O2
-      0.0,   # 18: O
+      4e-4,  # 18: O Nelson has 4e-4, Glover has 3.16e-4, see section 4
       0.0,   # 19: OH
       0.0,   # 20: HCO
       0.0,   # 21: C2⁻
@@ -86,7 +86,7 @@ u0 = [
       0.0,   # 67: H⁻
       0.0,   # 68: CH4
       0.0,   # 69: H
-      0.0,   # 70: H2
+      0.5,   # 70: H2 Nelson has 0.5
       0.0,   # 71: NH2
       0.0,   # 72: NH3
       0.0,   # 73: C10H⁻
@@ -119,7 +119,7 @@ u0 = [
       0.0,   # 100: HNC
       0.0,   # 101: HOC⁺
       0.0,   # 102: O2⁻
-      0.0,   # 103: C⁺
+      2e-4,  # 103: C⁺ Nelson has 2e-4, Glover has...
       0.0,   # 104: C10H⁺
       0.0,   # 105: C2H4
       0.0,   # 106: C2H4⁺
@@ -326,8 +326,8 @@ u0 = [
       0.0,   # 307: H2⁺
       0.0,   # 308: F⁺
       0.0,   # 309: F
-      0.0,   # 310: He⁺
-      0.0,   # 311: He
+      7.866e-7,   # 310: He⁺ Nelson has 7.866e-7
+      0.1,   # 311: He Nelson has 0.1
       0.0,   # 312: C3N⁺
       0.0,   # 313: HCNO
       0.0,   # 314: HCNO⁺
@@ -422,7 +422,7 @@ u0 = [
       0.0,   # 403: H2NO⁺
       0.0,   # 404: H2OCN⁺
       0.0,   # 405: H2PO⁺
-      0.0,   # 406: H3⁺
+      9.059e-9,   # 406: H3⁺ Nelson has 9.059e-9
       0.0,   # 407: H3C3O⁺
       0.0,   # 408: H3C5N⁺
       0.0,   # 409: H3C7N⁺
@@ -491,11 +491,13 @@ u0 = [
 T = 10
 omega = 0.5
 Av = 2
+n_H = 611
+cr_ion_rate = 6e-18
 params = Dict(
          :T => T,
          :Av => Av,
-         :n_H => 611,
-         :cr_ion_rate => 6e-18,
+         :n_H => n_H,
+         :cr_ion_rate => cr_ion_rate,
          :omega => omega,
          :k1 => 5e-10 * (T/300)^(0.0) * exp(-(0.0/T)),  # Reaction rate number 1 with type AD
          :k2 => 5e-10 * (T/300)^(0.0) * exp(-(0.0/T)),  # Reaction rate number 2 with type AD
@@ -12895,12 +12897,13 @@ print("\nTime to solve the simplified 1000 reaction system with Rodas4(): ")
 
 
 ### Plotting ###
+#=
 # Species number 1: C⁻
 plot(sol, idxs = (0,1), lw = 3, lc = "blue", title = "Umist: Abundance of C⁻")
-#=
+=#
 # Species number 2: C
 plot(sol, idxs = (0,2), lw = 3, lc = "blue", title = "Umist: Abundance of C")
-
+#=
 # Species number 3: C2
 plot(sol, idxs = (0,3), lw = 3, lc = "blue", title = "Umist: Abundance of C2")
 
@@ -13200,10 +13203,10 @@ plot(sol, idxs = (0,101), lw = 3, lc = "blue", title = "Umist: Abundance of HOC�
 
 # Species number 102: O2⁻
 plot(sol, idxs = (0,102), lw = 3, lc = "blue", title = "Umist: Abundance of O2⁻")
-
+=#
 # Species number 103: C⁺
 plot(sol, idxs = (0,103), lw = 3, lc = "blue", title = "Umist: Abundance of C⁺")
-
+#=
 # Species number 104: C10H⁺
 plot(sol, idxs = (0,104), lw = 3, lc = "blue", title = "Umist: Abundance of C10H⁺")
 
@@ -14301,3 +14304,6 @@ plot(sol, idxs = (0,468), lw = 3, lc = "blue", title = "Umist: Abundance of SiOH
 
 
 =#
+
+
+savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/scripts/test_plot.png")

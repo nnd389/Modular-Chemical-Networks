@@ -2,6 +2,7 @@ using OrdinaryDiffEq
 using DiffEqDevTools, Plots
 using LSODA
 using CUDA
+using DiffEqGPU, StaticArrays
 
 
 #=
@@ -25,9 +26,18 @@ and M represents the low ionization potential metals Mg, Fe, Ca, and Na.
     n_H = 611  --> Hydrogen Number Density
     shield = 1 --> "CO self-shielding factor of van Dishoeck & Black (1988), taken from Bergin et al. (1995)"
 =#
+T = 10
+Av = 2
+Go = 1.7
+n_H = 611
+shield = 1
 
 function Nelson!(du,u,p,t)
-    T, Av, Go, n_H, shield = p
+    T = p[1]
+    Av = p[2]
+    Go = p[3]
+    n_H = p[4]
+    shield = p[5]
 
     # 1: H2
     du[1] = -1.2e-17 * u[1] + 
@@ -130,6 +140,8 @@ function Nelson!(du,u,p,t)
              n_H * 2e-9 * u[2] * u[14] -
              2.0e-10 * Go * exp(-1.9 * Av) * u[14]
 
+    #return SVector{14}(du1, du2, du3, du4, du5, du6, du7, du8, du9, du10, du11, du12, du13, du14)
+
 end
 
 # Set the Timespan, Parameters, and Initial Conditions
@@ -159,6 +171,51 @@ u0 = [0.5,      # 1:  H2
 
 
 prob = ODEProblem(Nelson!, u0, tspan, params)
+
+function DEFAULT_PROB_FUNC(prob, i, repeat)
+    @. prob.u0 = randn() * prob.u0
+    prob
+end
+
+EnsembleProblem(prob::DEProblem;
+    output_func = (sol, i) -> (sol, false),
+    prob_func = (prob, i, repeat) -> (prob),
+    reduction = (u, data, I) -> (append!(u, data), false),
+    u_init = [], safetycopy = prob_func !== DEFAULT_PROB_FUNC)
+
+
+print("\na")
+@time solve(prob, Tsit5(), trajectories = 10)
+
+
+#=
+u0 = @SVector [0.0f0; 0.0f0; 0.0f0; 0.0f0; 0.0f0; 0.0f0; 0.0f0; 0.0f0; 0.0f0; 0.0f0; 0.0f0; 0.0f0; 0.0f0; 0.0f0;]
+
+seconds_per_year = 3600 * 24 * 365
+tspan = (0.0, 30000 * seconds_per_year) # ~30 thousand yrs
+
+p = @SVector [10.0f0, 2.0f0, 1.7f0, 611f0, 1]
+
+prob = ODEProblem{false}(Nelson!, u0, tspan, p)
+
+prob_func = (prob, i, repeat) -> remake(prob, p = (@SVector rand(Float32, 14)))
+monteprob = EnsembleProblem(prob, prob_func = prob_func, safetycopy = false)
+
+#sol = solve(monteprob, GPUTsit5(), EnsembleGPUKernel(CUDA.CUDABackend()), trajectories = 10_000)
+sol = solve(monteprob, Tsit5(), trajectories = 10_000)
+=#
+
+
+
+
+
+
+
+
+
+
+
+
 #=
 refsol = solve(prob, Vern9(), abstol=1e-14, reltol=1e-14)
 sol1 = solve(prob, Rodas5P())
@@ -174,11 +231,15 @@ p2 = plot(sol2, vars = (0,11), lc=colors[2], legend = false, titlefontsize = 12,
 p3 = plot(sol3, vars = (0,11), lc=colors[3], legend = false, titlefontsize = 12, lw = 3, xlabel = "", title = "HCO+ solved using lsoda")
 p4 = plot(sol4, vars = (0,11), lc=colors[4], legend = false, titlefontsize = 12, lw = 3, xlabel = "", title = "HCO+ solved using lsoda with saveat")
 combined_plot = plot(p1, p2, p3, p4, layout=(4, 1), dpi = 600, pallete=:acton)
-=#
+
+
+
 
 @time solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 @time solve(prob, Vern9(), abstol=1e-14, reltol=1e-14)
 @time solve(prob, Euler(), dt = 1e6)
+=#
+
 
 
 
