@@ -700,41 +700,48 @@ print("\nTime to solve the simplified 1000 reaction system with Rodas4(): ")
 
 
 # C and C+
-plot(sol, idxs = (0,10), lw = 3, lc = "blue", title = "Glover with Glover rates")
-plot!(sol, idxs = (0,9), lw = 3, lc = "orange", title = "Glover with Glover rates")
+plot(sol, idxs = (0,10), lw = 3, lc = "blue")
+plot!(sol, idxs = (0,9), lw = 3, lc = "orange", title = "Glover with Glover rates: C and C+")
+savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/C_and_Cp_Glover.png")
 
-#=
 # CO
-plot(sol, idxs = (0,16), lw = 3, lc = "green", title = "Glover")
+plot(sol, idxs = (0,16), lw = 3, lc = "green", title = "Glover with Glover rates: CO")
+savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/CO_Glover.png")
 
 # O 
-plot(sol, idxs = (0,12), lw = 3, lc = "blue", title = "Glover")
+plot(sol, idxs = (0,12), lw = 3, lc = "blue", title = "Glover with Glover rates: O")
+savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/O_Glover.png")
 
 # He+
-plot(sol, idxs = (0,8), lw = 3, lc = "light pink", title = "Glover")
+plot(sol, idxs = (0,8), lw = 3, lc = "light pink", title = "Glover with Glover rates: He+")
+savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/Hep_Glover.png")
 
 # CH and CH2 = CHx
-plot(sol, idxs = (0,17), lw = 3, lc = "blue", title = "Glover")
-plot!(sol, idxs = (0,18), lw = 3, lc = "light blue", title = "Glover")
+plot(sol, idxs = (0,17), lw = 3, lc = "blue")
+plot!(sol, idxs = (0,18), lw = 3, lc = "light blue", title = "Glover with Glover rates: CHx")
+savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/CH_and_CH2_Glover.png")
 
 # OH, OH+, H2O, H2O+, and O2 = OHx
-plot(sol, idxs = (0,13), lw = 3, lc = "green", title = "Glover")
-plot!(sol, idxs = (0,27), lw = 3, lc = "dark green", title = "Glover")
-plot!(sol, idxs = (0,20), lw = 3, lc = "blue", title = "Glover")
-plot!(sol, idxs = (0,28), lw = 3, lc = "light blue", title = "Glover")
-plot!(sol, idxs = (0,21), lw = 3, lc = "orange", title = "Glover")
+plot(sol, idxs = (0,13), lw = 3, lc = "green")
+plot!(sol, idxs = (0,27), lw = 3, lc = "dark green")
+plot!(sol, idxs = (0,20), lw = 3, lc = "blue")
+plot!(sol, idxs = (0,28), lw = 3, lc = "light blue")
+plot!(sol, idxs = (0,21), lw = 3, lc = "orange", title = "Glover with Glover rates: OHx")
+savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/OH_OHp_H2O_H2Op_O2_Glover.png")
 
 # H3+
-plot(sol, idxs = (0,22), lw = 3, lc = "orange", title = "Glover")
+plot(sol, idxs = (0,22), lw = 3, lc = "orange", title = "Glover with Glover rates: H3+")
+savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/H3p_Glover.png")
 
 # HCO+ 
-plot(sol, idxs = (0,15), lw = 3, lc = "orange", title = "Glover")
+plot(sol, idxs = (0,15), lw = 3, lc = "orange", title = "Glover with Glover rates: HCO+")
+savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/HCOp_Glover.png")
 
 # M 
-plot(sol, idxs = (0,33), lw = 3, lc = "light blue", title = "Glover")
-=#
+plot(sol, idxs = (0,33), lw = 3, lc = "light blue", title = "Glover with Glover rates: M")
+savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/Mg_Fe_Na_Glover.png")
 
-savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/scripts/test_plot.png")
+
 
 # LEGEND for species ID's
 # 1: H
