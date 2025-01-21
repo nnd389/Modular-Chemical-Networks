@@ -129,10 +129,10 @@ savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/CO_Nelson.png")
 
 # O 
 plot(sol, idxs = (0,8), lw = 3, lc = "blue", title = "Nelson: Abundance of O")
-savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/CO_Nelson.png")
+savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/O_Nelson.png")
 
 # He+
-plot(sol, idxs = (0,4), lw = 3, lc = "light pink", title = "Nelson: Abundance of He+")
+plot(sol, idxs = (0,5), lw = 3, lc = "light pink", title = "Nelson: Abundance of He+")
 savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/Hep_Nelson.png")
 
 # CH and CH2 = CHx
