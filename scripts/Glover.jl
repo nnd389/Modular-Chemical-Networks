@@ -698,7 +698,7 @@ print("\nTime to solve the simplified 1000 reaction system with Rodas4(): ")
 
 
 
-
+### Plotting ###
 # C and C+
 plot(sol, idxs = (0,10), lw = 3, lc = "blue")
 plot!(sol, idxs = (0,9), lw = 3, lc = "orange", title = "Glover with Glover rates: C and C+")
