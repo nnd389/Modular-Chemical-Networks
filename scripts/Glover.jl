@@ -1,5 +1,5 @@
-using Revise
-using DrWatson
+#using Revise
+#using DrWatson
 using Catalyst
 using DifferentialEquations
 using Plots
@@ -675,29 +675,49 @@ reaction_equations = [
 print("\nCheckpoint 4: Finished creating the reaction system")
 sys = convert(ODESystem, complete(system))
 print("\nCheckpoint 5: Finished converting to an ODE System")
-ssys = structural_simplify(sys)
+
+simplified_sys = structural_simplify(sys)
+completed_sys = complete(sys)
 print("\nCheckpoint 6: Finished Simplifying")
-prob = ODEProblem(ssys, u0, tspan, params)
+
+prob_simplify = ODEProblem(simplified_sys, u0, tspan, params)
+prob_complete = ODEProblem(completed_sys, u0, tspan, params)
 print("\nCheckpoint 7: Finished creating the ODE Problem")
-sol = solve(prob, Rodas4())
-#sol = solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-#sol = solve(prob, lsoda(), saveat=1e3)
-print("\nCheckpoint 8: Finished solving with Rodas 4")
+
+#sol = solve(prob, Rodas4(), saveat=1e11)
+sol_simplify = solve(prob_simplify, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e9)
+sol_complete = solve(prob_complete, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e9)
+
+#sol = solve(prob, lsoda(), saveat=1e10)
+#print("\nCheckpoint 8: Finished solving with Rodas 4")
 print("\n")
 
 ### Timing ###
 print("\nGlover:")
 print("\nTime to convert:")
 @time convert(ODESystem, complete(system))
+
 print("\nTime to simplify:")
 @time structural_simplify(sys)
+print("Time to complete:")
+@time complete(sys)
+
 print("\nTime to create the simplified problem:")
-@time ODEProblem(ssys, u0, tspan, params)
-print("\nTime to solve the simplified 1000 reaction system with Rodas4(): ")
-@time solve(prob, Rodas4());
+@time ODEProblem(simplified_sys, u0, tspan, params)
+print("Time to create the completed problem:")
+@time ODEProblem(completed_sys, u0, tspan, params)
+
+print("\nTime to solve the simplified system with Rodas4(): ")
+@time solve(prob_simplify, Rodas4());
+print("Time to solve the completed system with Rodas4(): ")
+@time solve(prob_complete, Rodas4());
 
 
+plot(sol_complete, idxs = (0,10), lw = 3, lc = "blue")
+plot!(sol_complete, idxs = (0,9), lw = 3, lc = "orange", title = "Glover with Glover rates: C and C+")
 
+
+#=
 ### Plotting ###
 # C and C+
 plot(sol, idxs = (0,10), lw = 3, lc = "blue")
@@ -741,7 +761,7 @@ savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/HCOp_Glover.png")
 plot(sol, idxs = (0,33), lw = 3, lc = "light blue", title = "Glover with Glover rates: M")
 savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/Mg_Fe_Na_Glover.png")
 
-
+=#
 
 # LEGEND for species ID's
 # 1: H
