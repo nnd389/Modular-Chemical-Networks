@@ -486,6 +486,477 @@ u0 = [
       0.0,   # 467: SiNH2⁺
       0.0]   # 468: SiOH⁺
 
+
+u0_nonzero = [
+      2e-4,   # 1: C⁻
+      2e-4,   # 2: C
+      2e-4,   # 3: C2
+      2e-4,  # 4: e Nelson has 2e-4
+      2e-4,   # 5: CH2
+      2e-4,   # 6: C2H2
+      2e-4,   # 7: CH
+      2e-4,   # 8: C2H
+      2e-4,   # 9: CO2
+      2e-4,   # 10: CO
+      2e-4,   # 11: H2O
+      2e-4,   # 12: H2CO
+      2e-4,   # 13: N
+      2e-4,   # 14: CN
+      2e-4,   # 15: NH
+      2e-4,   # 16: HCN
+      2e-4,   # 17: O2
+      4e-4,  # 18: O Nelson has 4e-4, Glover has 3.16e-4, see section 4
+      2e-4,   # 19: OH
+      2e-4,   # 20: HCO
+      2e-4,   # 21: C2⁻
+      2e-4,   # 22: C4
+      2e-4,   # 23: C3
+      2e-4,   # 24: C5
+      2e-4,   # 25: C6
+      2e-4,   # 26: C7
+      2e-4,   # 27: C8
+      2e-4,   # 28: C9
+      2e-4,   # 29: C10
+      2e-4,   # 30: C3⁻
+      2e-4,   # 31: C4⁻
+      2e-4,   # 32: C5⁻
+      2e-4,   # 33: C6⁻
+      2e-4,   # 34: C7⁻
+      2e-4,   # 35: C8⁻
+      2e-4,   # 36: C10⁻
+      2e-4,   # 37: C2H⁻
+      2e-4,   # 38: C3H
+      2e-4,   # 39: C3H⁻
+      2e-4,   # 40: C4H
+      2e-4,   # 41: C3N⁻
+      2e-4,   # 42: C4N
+      2e-4,   # 43: C4H⁻
+      2e-4,   # 44: C5H
+      2e-4,   # 45: C5H⁻
+      2e-4,   # 46: C6H
+      2e-4,   # 47: C6H⁻
+      2e-4,   # 48: C7H
+      2e-4,   # 49: C7H⁻
+      2e-4,   # 50: C8H
+      2e-4,   # 51: C8H⁻
+      2e-4,   # 52: C9H
+      2e-4,   # 53: C9⁻
+      2e-4,   # 54: C9H⁻
+      2e-4,   # 55: C10H
+      2e-4,   # 56: CH⁻
+      2e-4,   # 57: O⁻
+      2e-4,   # 58: OH⁻
+      2e-4,   # 59: S⁻
+      2e-4,   # 60: CS
+      2e-4,   # 61: CH3
+      2e-4,   # 62: CN⁻
+      2e-4,   # 63: CH3CN
+      2e-4,   # 64: CH3OH
+      2e-4,   # 65: HCO⁺
+      2e-4,   # 66: OCS
+      2e-4,   # 67: H⁻
+      2e-4,   # 68: CH4
+      2e-4,   # 69: H
+      0.5,   # 70: H2 Nelson has 0.5
+      2e-4,   # 71: NH2
+      2e-4,   # 72: NH3
+      2e-4,   # 73: C10H⁻
+      2e-4,   # 74: C10H2
+      2e-4,   # 75: H2CCC
+      2e-4,   # 76: HC3N
+      2e-4,   # 77: HC4H
+      2e-4,   # 78: C5H2
+      2e-4,   # 79: C5N⁻
+      2e-4,   # 80: HC5N
+      2e-4,   # 81: C6H2
+      2e-4,   # 82: C7H2
+      2e-4,   # 83: C8H2
+      2e-4,   # 84: C9H2
+      2e-4,   # 85: HS
+      2e-4,   # 86: C2N
+      2e-4,   # 87: C3N
+      2e-4,   # 88: C5N
+      2e-4,   # 89: C7N
+      2e-4,   # 90: HC7N
+      2e-4,   # 91: C9N
+      2e-4,   # 92: HC9N
+      2e-4,   # 93: NO
+      2e-4,   # 94: NS
+      2e-4,   # 95: NO2
+      2e-4,   # 96: SO2
+      2e-4,   # 97: C2O
+      2e-4,   # 98: SO
+      2e-4,   # 99: H⁺
+      2e-4,   # 100: HNC
+      2e-4,   # 101: HOC⁺
+      2e-4,   # 102: O2⁻
+      2e-4,  # 103: C⁺ Nelson has 2e-4, Glover has...
+      2e-4,   # 104: C10H⁺
+      2e-4,   # 105: C2H4
+      2e-4,   # 106: C2H4⁺
+      2e-4,   # 107: C2H5
+      2e-4,   # 108: C2H5⁺
+      2e-4,   # 109: C2H5OH
+      2e-4,   # 110: C2H5OH⁺
+      2e-4,   # 111: C2O⁺
+      2e-4,   # 112: C2S
+      2e-4,   # 113: C2S⁺
+      2e-4,   # 114: C3O
+      2e-4,   # 115: C3O⁺
+      2e-4,   # 116: C3S
+      2e-4,   # 117: C3S⁺
+      2e-4,   # 118: C4H3
+      2e-4,   # 119: C4H3⁺
+      2e-4,   # 120: C4S
+      2e-4,   # 121: C4S⁺
+      2e-4,   # 122: C6H6
+      2e-4,   # 123: C6H6⁺
+      2e-4,   # 124: CCP
+      2e-4,   # 125: CCP⁺
+      2e-4,   # 126: CCl
+      2e-4,   # 127: CCl⁺
+      2e-4,   # 128: CH2⁺
+      2e-4,   # 129: CH2CCH2
+      2e-4,   # 130: C3H4⁺
+      2e-4,   # 131: CH2CCH
+      2e-4,   # 132: CH2CCH⁺
+      2e-4,   # 133: CH2CN
+      2e-4,   # 134: CH2CN⁺
+      2e-4,   # 135: CH2CO
+      2e-4,   # 136: CH2CO⁺
+      2e-4,   # 137: CH3CCH
+      2e-4,   # 138: CH3CHCH2
+      2e-4,   # 139: C3H6⁺
+      2e-4,   # 140: CH3CHO
+      2e-4,   # 141: CH3CHO⁺
+      2e-4,   # 142: CH3COCH3
+      2e-4,   # 143: CH3COCH3⁺
+      2e-4,   # 144: CH3OCH3
+      2e-4,   # 145: CH3OCH3⁺
+      2e-4,   # 146: CH⁺
+      2e-4,   # 147: CP
+      2e-4,   # 148: CP⁺
+      2e-4,   # 149: ClO
+      2e-4,   # 150: ClO⁺
+      2e-4,   # 151: Fe
+      2e-4,   # 152: Fe⁺
+      2e-4,   # 153: H2CO⁺
+      2e-4,   # 154: H2S
+      2e-4,   # 155: H2S⁺
+      2e-4,   # 156: H2SiO
+      2e-4,   # 157: H2SiO⁺
+      2e-4,   # 158: C4H2⁺
+      2e-4,   # 159: HCOOCH3
+      2e-4,   # 160: COOCH4⁺
+      2e-4,   # 161: HCP
+      2e-4,   # 162: HCP⁺
+      2e-4,   # 163: HPO
+      2e-4,   # 164: HPO⁺
+      2e-4,   # 165: Mg
+      2e-4,   # 166: Mg⁺
+      2e-4,   # 167: NCCN
+      2e-4,   # 168: C2N⁺
+      2e-4,   # 169: CNC⁺
+      2e-4,   # 170: NH3⁺
+      2e-4,   # 171: NO⁺
+      2e-4,   # 172: NS⁺
+      2e-4,   # 173: Na
+      2e-4,   # 174: Na⁺
+      2e-4,   # 175: OCS⁺
+      2e-4,   # 176: P
+      2e-4,   # 177: P⁺
+      2e-4,   # 178: PH
+      2e-4,   # 179: PH⁺
+      2e-4,   # 180: PO
+      2e-4,   # 181: PO⁺
+      2e-4,   # 182: SO⁺
+      2e-4,   # 183: Si
+      2e-4,   # 184: Si⁺
+      2e-4,   # 185: SiC2
+      2e-4,   # 186: SiC2⁺
+      2e-4,   # 187: SiC2H
+      2e-4,   # 188: SiC2H⁺
+      2e-4,   # 189: SiC3
+      2e-4,   # 190: SiC3⁺
+      2e-4,   # 191: SiC
+      2e-4,   # 192: SiC⁺
+      2e-4,   # 193: SiCH2
+      2e-4,   # 194: SiCH2⁺
+      2e-4,   # 195: SiCH3
+      2e-4,   # 196: SiCH3⁺
+      2e-4,   # 197: SiH2
+      2e-4,   # 198: SiH2⁺
+      2e-4,   # 199: SiH3
+      2e-4,   # 200: SiH3⁺
+      2e-4,   # 201: SiN
+      2e-4,   # 202: SiN⁺
+      2e-4,   # 203: SiS
+      2e-4,   # 204: SiS⁺
+      2e-4,   # 205: C2⁺
+      2e-4,   # 206: S
+      2e-4,   # 207: S⁺
+      2e-4,   # 208: CN⁺
+      2e-4,   # 209: CO⁺
+      2e-4,   # 210: N2⁺
+      2e-4,   # 211: N2
+      2e-4,   # 212: O2⁺
+      2e-4,   # 213: C2H⁺
+      2e-4,   # 214: C2H2⁺
+      2e-4,   # 215: C2H3
+      2e-4,   # 216: C2H3⁺
+      2e-4,   # 217: C5H2⁺
+      2e-4,   # 218: C6H2⁺
+      2e-4,   # 219: C7H2⁺
+      2e-4,   # 220: C3H3⁺
+      2e-4,   # 221: CO2⁺
+      2e-4,   # 222: HC3N⁺
+      2e-4,   # 223: HCN⁺
+      2e-4,   # 224: C2N2⁺
+      2e-4,   # 225: C3⁺
+      2e-4,   # 226: C5⁺
+      2e-4,   # 227: CH3CH3⁺
+      2e-4,   # 228: CH3CH3
+      2e-4,   # 229: PN⁺
+      2e-4,   # 230: PN
+      2e-4,   # 231: H2O⁺
+      2e-4,   # 232: NH2⁺
+      2e-4,   # 233: O⁺
+      2e-4,   # 234: OH⁺
+      2e-4,   # 235: CH3⁺
+      2e-4,   # 236: CH4⁺
+      2e-4,   # 237: CH3OH⁺
+      2e-4,   # 238: N⁺
+      2e-4,   # 239: SO2⁺
+      2e-4,   # 240: CS⁺
+      2e-4,   # 241: Cl⁺
+      2e-4,   # 242: Cl
+      2e-4,   # 243: C10⁺
+      2e-4,   # 244: C10H2⁺
+      2e-4,   # 245: C3H2
+      2e-4,   # 246: C3H2⁺
+      2e-4,   # 247: C3H⁺
+      2e-4,   # 248: C4⁺
+      2e-4,   # 249: C4H⁺
+      2e-4,   # 250: C4P
+      2e-4,   # 251: C4P⁺
+      2e-4,   # 252: C5H⁺
+      2e-4,   # 253: C6⁺
+      2e-4,   # 254: C6H⁺
+      2e-4,   # 255: C7⁺
+      2e-4,   # 256: C7H⁺
+      2e-4,   # 257: C8⁺
+      2e-4,   # 258: C8H2⁺
+      2e-4,   # 259: C8H⁺
+      2e-4,   # 260: C9⁺
+      2e-4,   # 261: C9H2⁺
+      2e-4,   # 262: C9H⁺
+      2e-4,   # 263: CH3C4H
+      2e-4,   # 264: CH3C4H⁺
+      2e-4,   # 265: CH3C6H
+      2e-4,   # 266: C7H4⁺
+      2e-4,   # 267: CH3CN⁺
+      2e-4,   # 268: H2CS
+      2e-4,   # 269: H2CS⁺
+      2e-4,   # 270: H2S2
+      2e-4,   # 271: H2S2⁺
+      2e-4,   # 272: HC2P
+      2e-4,   # 273: HC2P⁺
+      2e-4,   # 274: HC5N⁺
+      2e-4,   # 275: HC7N⁺
+      2e-4,   # 276: HC9N⁺
+      2e-4,   # 277: HCSi
+      2e-4,   # 278: HCSi⁺
+      2e-4,   # 279: HCl
+      2e-4,   # 280: HCl⁺
+      2e-4,   # 281: HNSi
+      2e-4,   # 282: HNSi⁺
+      2e-4,   # 283: HS2
+      2e-4,   # 284: HS2⁺
+      2e-4,   # 285: HS⁺
+      2e-4,   # 286: N2O
+      2e-4,   # 287: N2O⁺
+      2e-4,   # 288: NH⁺
+      2e-4,   # 289: PH2
+      2e-4,   # 290: PH2⁺
+      2e-4,   # 291: S2
+      2e-4,   # 292: S2⁺
+      2e-4,   # 293: SiC2H2
+      2e-4,   # 294: SiC2H2⁺
+      2e-4,   # 295: SiC3H
+      2e-4,   # 296: SiC3H⁺
+      2e-4,   # 297: SiC4
+      2e-4,   # 298: SiC4⁺
+      2e-4,   # 299: SiH4
+      2e-4,   # 300: SiH4⁺
+      2e-4,   # 301: SiH
+      2e-4,   # 302: SiH⁺
+      2e-4,   # 303: SiNC
+      2e-4,   # 304: SiNC⁺
+      2e-4,   # 305: SiO
+      2e-4,   # 306: SiO⁺
+      2e-4,   # 307: H2⁺
+      2e-4,   # 308: F⁺
+      2e-4,   # 309: F
+      7.866e-7,   # 310: He⁺ Nelson has 7.866e-7
+      0.1,   # 311: He Nelson has 0.1
+      2e-4,   # 312: C3N⁺
+      2e-4,   # 313: HCNO
+      2e-4,   # 314: HCNO⁺
+      2e-4,   # 315: HNCO
+      2e-4,   # 316: HNCO⁺
+      2e-4,   # 317: HONC
+      2e-4,   # 318: HONC⁺
+      2e-4,   # 319: HNO⁺
+      2e-4,   # 320: HNO
+      2e-4,   # 321: HCOOH
+      2e-4,   # 322: HCOOH⁺
+      2e-4,   # 323: NO2⁺
+      2e-4,   # 324: C11
+      2e-4,   # 325: C2H5CN
+      2e-4,   # 326: CH2CHCNH⁺
+      2e-4,   # 327: C3P
+      2e-4,   # 328: CH2CHCCH
+      2e-4,   # 329: CH2CHCHCH2
+      2e-4,   # 330: CH2CHCN
+      2e-4,   # 331: CH2NH
+      2e-4,   # 332: CH2PH
+      2e-4,   # 333: CH3C3N
+      2e-4,   # 334: CH3C5N
+      2e-4,   # 335: CH3C7N
+      2e-4,   # 336: CNO
+      2e-4,   # 337: H2CN
+      2e-4,   # 338: H2O2
+      2e-4,   # 339: HCS
+      2e-4,   # 340: HCS⁺
+      2e-4,   # 341: HF
+      2e-4,   # 342: HNC3
+      2e-4,   # 343: HOCN
+      2e-4,   # 344: NH2CN
+      2e-4,   # 345: O2H
+      2e-4,   # 346: OCN
+      2e-4,   # 347: SiO2
+      2e-4,   # 348: C10H3⁺
+      2e-4,   # 349: C11⁺
+      2e-4,   # 350: C2H5CNH⁺
+      2e-4,   # 351: C2H5OH2⁺
+      2e-4,   # 352: C2H7⁺
+      2e-4,   # 353: C2NH⁺
+      2e-4,   # 354: C3H2O⁺
+      2e-4,   # 355: C3H5⁺
+      2e-4,   # 356: C3H7⁺
+      2e-4,   # 357: C4H4⁺
+      2e-4,   # 358: C4H5⁺
+      2e-4,   # 359: C4H7⁺
+      2e-4,   # 360: C4N⁺
+      2e-4,   # 361: C5H3⁺
+      2e-4,   # 362: C5H5⁺
+      2e-4,   # 363: C5N⁺
+      2e-4,   # 364: C6H3⁺
+      2e-4,   # 365: C6H4⁺
+      2e-4,   # 366: C6H5⁺
+      2e-4,   # 367: C6H7⁺
+      2e-4,   # 368: C7H3⁺
+      2e-4,   # 369: C7H5⁺
+      2e-4,   # 370: C7N⁺
+      2e-4,   # 371: C8H3⁺
+      2e-4,   # 372: C8H4⁺
+      2e-4,   # 373: C8H5⁺
+      2e-4,   # 374: C9H3⁺
+      2e-4,   # 375: C9H4⁺
+      2e-4,   # 376: C9H5⁺
+      2e-4,   # 377: C9N⁺
+      2e-4,   # 378: CF⁺
+      2e-4,   # 379: CH2CHCN⁺
+      2e-4,   # 380: CH2NH2⁺
+      2e-4,   # 381: CH3C3N⁺
+      2e-4,   # 382: CH3C3NH⁺
+      2e-4,   # 383: CH3C5NH⁺
+      2e-4,   # 384: CH3C7NH⁺
+      2e-4,   # 385: CH3CHOH⁺
+      2e-4,   # 386: CH3CNH⁺
+      2e-4,   # 387: CH3CO⁺
+      2e-4,   # 388: CH3COCH4⁺
+      2e-4,   # 389: CH3CS⁺
+      2e-4,   # 390: CH3OCH4⁺
+      2e-4,   # 391: CH3OH2⁺
+      2e-4,   # 392: CH4N⁺
+      2e-4,   # 393: CH5⁺
+      2e-4,   # 394: H2C4N⁺
+      2e-4,   # 395: H2C7N⁺
+      2e-4,   # 396: H2C9N⁺
+      2e-4,   # 397: H2CCl⁺
+      2e-4,   # 398: H2CNO⁺
+      2e-4,   # 399: H2Cl⁺
+      2e-4,   # 400: H2F⁺
+      2e-4,   # 401: H2NC⁺
+      2e-4,   # 402: H2NCO⁺
+      2e-4,   # 403: H2NO⁺
+      2e-4,   # 404: H2OCN⁺
+      2e-4,   # 405: H2PO⁺
+      9.059e-9,   # 406: H3⁺ Nelson has 9.059e-9
+      2e-4,   # 407: H3C3O⁺
+      2e-4,   # 408: H3C5N⁺
+      2e-4,   # 409: H3C7N⁺
+      2e-4,   # 410: H3C9N⁺
+      2e-4,   # 411: H3CO⁺
+      2e-4,   # 412: H3CS⁺
+      2e-4,   # 413: H3O⁺
+      2e-4,   # 414: H3S⁺
+      2e-4,   # 415: H3S2⁺
+      2e-4,   # 416: H3SiO⁺
+      2e-4,   # 417: H5C2O2⁺
+      2e-4,   # 418: HC2O⁺
+      2e-4,   # 419: HC2S⁺
+      2e-4,   # 420: HC3NH⁺
+      2e-4,   # 421: HC3O⁺
+      2e-4,   # 422: HC3S⁺
+      2e-4,   # 423: HC4N⁺
+      2e-4,   # 424: HC4S⁺
+      2e-4,   # 425: HC5NH⁺
+      2e-4,   # 426: HCNH⁺
+      2e-4,   # 427: HCNOH⁺
+      2e-4,   # 428: HCO2⁺
+      2e-4,   # 429: HCOOH2⁺
+      2e-4,   # 430: HF⁺
+      2e-4,   # 431: HN2O⁺
+      2e-4,   # 432: HNCOH⁺
+      2e-4,   # 433: HNS⁺
+      2e-4,   # 434: HOCN⁺
+      2e-4,   # 435: HOCS⁺
+      2e-4,   # 436: HPN⁺
+      2e-4,   # 437: HSO⁺
+      2e-4,   # 438: HSO2⁺
+      2e-4,   # 439: HSiO2⁺
+      2e-4,   # 440: HSiS⁺
+      2e-4,   # 441: HeH⁺
+      2e-4,   # 442: N2H⁺
+      2e-4,   # 443: NCCNCH3⁺
+      2e-4,   # 444: NCCNH⁺
+      2e-4,   # 445: NH2CNH⁺
+      2e-4,   # 446: NH4⁺
+      2e-4,   # 447: O2H⁺
+      2e-4,   # 448: OCN⁺
+      2e-4,   # 449: PC2H2⁺
+      2e-4,   # 450: PC2H3⁺
+      2e-4,   # 451: PC2H4⁺
+      2e-4,   # 452: PC3H⁺
+      2e-4,   # 453: PC4H⁺
+      2e-4,   # 454: PCH2⁺
+      2e-4,   # 455: PCH3⁺
+      2e-4,   # 456: PCH4⁺
+      2e-4,   # 457: PH3⁺
+      2e-4,   # 458: PNH2⁺
+      2e-4,   # 459: PNH3⁺
+      2e-4,   # 460: SiC2H3⁺
+      2e-4,   # 461: SiC3H2⁺
+      2e-4,   # 462: SiC4H⁺
+      2e-4,   # 463: SiCH4⁺
+      2e-4,   # 464: SiF⁺
+      2e-4,   # 465: SiH5⁺
+      2e-4,   # 466: SiNCH⁺
+      2e-4,   # 467: SiNH2⁺
+      2e-4]   # 468: SiOH⁺
+
 print("Initial Conditions done!")
 
 ### Parameters ###
@@ -11332,7 +11803,7 @@ reaction_equations = [
     (@reaction n_H * k4630, C6H⁻ + SiS⁺ --> C6H + SiS ), 
     (@reaction n_H * k4631, C7⁻ + C⁺ --> C + C7 ), 
     (@reaction n_H * k4632, C7⁻ + C2H2⁺ --> C7 + C2H2 ), 
-    (@reaction n_H * k4633, C7⁻ + C2H3⁺ --> C7 + C2H3 ), 
+   (@reaction n_H * k4633, C7⁻ + C2H3⁺ --> C7 + C2H3 ), 
     (@reaction n_H * k4634, C7⁻ + C4H2⁺ --> C7 + HC4H ), 
     (@reaction n_H * k4635, C7⁻ + C4H3⁺ --> C7 + C4H3 ), 
     (@reaction n_H * k4636, C7⁻ + C4S⁺ --> C7 + C4S ), 
@@ -12418,91 +12889,91 @@ reaction_equations = [
     (@reaction k5716, C10H2 --> C10H2⁺ + e ), 
     (@reaction k5717, C10H2 --> C10H + H ), 
     (@reaction k5718, C10H2 --> C7H + C3 + H ), 
-    (@reaction k5719, C10H --> C10 + H ), 
-    (@reaction k5720, C10H --> C10H⁺ + e ), 
-    (@reaction k5721, C10H --> C5 + C5 + H ), 
-    (@reaction k5722, C10H --> C5H + C5 ), 
-    (@reaction k5723, C10H --> C7 + C3 + H ), 
-    (@reaction k5724, C10H --> C7H + C3 ), 
-    (@reaction k5725, C10H --> C8 + C2 + H ), 
-    (@reaction k5726, C10H --> C9 + C + H ), 
-    (@reaction k5727, C11 --> C11⁺ + e ), 
-    (@reaction k5728, C11 --> C5 + C3 + C3 ), 
-    (@reaction k5729, C11 --> C6 + C5 ), 
-    (@reaction k5730, C11 --> C7 + C4 ), 
-    (@reaction k5731, C11 --> C8 + C3 ), 
-    (@reaction k5732, C11 --> C9 + C2 ), 
-    (@reaction k5733, C2⁺ --> C⁺ + C ), 
-    (@reaction k5734, C2⁻ --> C2 + e ), 
-    (@reaction k5735, C2 --> C2⁺ + e ), 
-    (@reaction k5736, C2 --> C + C ), 
-    (@reaction k5737, C2H⁺ --> C2⁺ + H ), 
-    (@reaction k5738, C2H⁻ --> C2H + e ), 
-    (@reaction k5739, C2H2 --> C2H2⁺ + e ), 
-    (@reaction k5740, C2H2 --> C2H + H ), 
-    (@reaction k5741, C2H3 --> C2H2 + H ), 
-    (@reaction k5742, C2H3 --> C2H3⁺ + e ), 
-    (@reaction k5743, C2H4 --> C2H2 + H2 ), 
-    (@reaction k5744, C2H4 --> C2H4⁺ + e ), 
-    (@reaction k5745, C2H5 --> C2H3 + H2 ), 
-    (@reaction k5746, C2H5 --> C2H5⁺ + e ), 
-    (@reaction k5747, C2H5CN --> CH2CHCNH⁺ + H + e ), 
-    (@reaction k5748, C2H5CN --> CN + C2H5 ), 
-    (@reaction k5749, C2H5OH --> C2H5 + OH ), 
-    (@reaction k5750, C2H5OH --> C2H5OH⁺ + e ), 
-    (@reaction k5751, C2H --> C2 + H ), 
-    (@reaction k5752, C2H --> C2H⁺ + e ), 
-    (@reaction k5753, C2N --> C2 + N ), 
-    (@reaction k5754, C2N --> CN + C ), 
-    (@reaction k5755, C2O --> C2 + O ), 
-    (@reaction k5756, C2O --> CO + C ), 
-    (@reaction k5757, C2S --> S + C2 ), 
-    (@reaction k5758, C3⁻ --> C3 + e ), 
-    (@reaction k5759, C3 --> C2 + C ), 
-    (@reaction k5760, C3H⁻ --> C3H + e ), 
-    (@reaction k5761, C3H2 --> C3H + H ), 
-    (@reaction k5762, C3H --> C3 + H ), 
-    (@reaction k5763, C3N⁻ --> C3N + e ), 
-    (@reaction k5764, C3N --> CN + C2 ), 
-    (@reaction k5765, C3O --> CO + C2 ), 
-    (@reaction k5766, C3P --> C2 + CP ), 
-    (@reaction k5767, C3S --> CS + C2 ), 
-    (@reaction k5768, C4⁻ --> C4 + e ), 
-    (@reaction k5769, C4 --> C2 + C2 ), 
-    (@reaction k5770, C4 --> C3 + C ), 
-    (@reaction k5771, C4H⁻ --> C4H + e ), 
-    (@reaction k5772, C4H3 --> C4H + H2 ), 
-    (@reaction k5773, C4H3 --> HC4H + H ), 
-    (@reaction k5774, C4H --> C2H + C2 ), 
-    (@reaction k5775, C4H --> C4 + H ), 
-    (@reaction k5776, C4N --> C3 + CN ), 
-    (@reaction k5777, C4N --> C4 + N ), 
-    (@reaction k5778, C4P --> C3 + CP ), 
-    (@reaction k5779, C4S --> CS + C3 ), 
-    (@reaction k5780, C5⁻ --> C5 + e ), 
-    (@reaction k5781, C5 --> C3 + C2 ), 
-    (@reaction k5782, C5H⁻ --> C5H + e ), 
-    (@reaction k5783, C5H2 --> C3H + C2H ), 
-    (@reaction k5784, C5H2 --> C5H + H ), 
-    (@reaction k5785, C5H --> C3 + C2H ), 
-    (@reaction k5786, C5H --> C3H + C2 ), 
-    (@reaction k5787, C5H --> C5 + H ), 
-    (@reaction k5788, C5N⁻ --> C5N + e ), 
-    (@reaction k5789, C5N --> C4 + CN ), 
-    (@reaction k5790, C6⁻ --> C6 + e ), 
-    (@reaction k5791, C6 --> C5 + C ), 
-    (@reaction k5792, C6 --> C6⁺ + e ), 
-    (@reaction k5793, C6H⁻ --> C6H + e ), 
-    (@reaction k5794, C6H2 --> C6H2⁺ + e ), 
-    (@reaction k5795, C6H2 --> C6H + H ), 
-    (@reaction k5796, C6H6 --> C2H2 + CH2CHCCH ), 
-    (@reaction k5797, C6H --> C3H + C3 ), 
-    (@reaction k5798, C6H --> C4 + C2H ), 
-    (@reaction k5799, C7⁻ --> C7 + e ), 
-    (@reaction k5800, C7 --> C6 + C ), 
-    (@reaction k5801, C7 --> C7⁺ + e ), 
-    (@reaction k5802, C7H⁻ --> C7H + e ), 
-    (@reaction k5803, C7H2 --> C7H2⁺ + e ), 
+print("\nCheckpoint 7: Finished creating the ODE Problem")
+
+#sol = solve(prob, Rodas4(), saveat=1e11)
+#sol_simplify = solve(prob_simplify, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e9)
+sol_complete = solve(prob_complete, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e9)
+
+#sol = solve(prob, lsoda(), saveat=1e10)
+#print("\nCheckpoint 8: Finished solving with Rodas 4")
+print("\n")
+
+### Timing ###
+print("\nUmist:")
+print("\nTime to convert:")
+@time convert(ODESystem, complete(system))
+
+print("\nTime to simplify:")
+@time structural_simplify(sys)
+print("Time to complete:")
+@time complete(sys)
+
+print("\nTime to create the simplified problem:")
+@time ODEProblem(simplified_sys, u0, tspan, params)
+print("Time to create the completed problem:")
+@time ODEProblem(completed_sys, u0, tspan, params)
+
+print("\nTime to solve the simplified system with Rodas4(): ")
+@time solve(prob_simplify, Rodas4());
+print("Time to solve the completed system with Rodas4(): ")
+@time solve(prob_complete, Rodas4());
+
+
+### Ensemble Problem ###
+prob = ODEProblem(completed_sys, u0, tspan, params)
+
+print("\n\n")
+function prob_func(prob, i, repeat)
+    remake(prob, u0 = rand() * prob.u0)
+    print("Time to remake the problem: ")
+    @time remake(prob, u0 = rand() * prob.u0)
+end
+
+ensemble_prob = EnsembleProblem(prob, prob_func = prob_func)
+print("Time to make (all the remakes of) the Ensemble Problem: ")
+@time EnsembleProblem(prob, prob_func = prob_func)
+
+sim = solve(ensemble_prob, Rodas4(), EnsembleDistributed(), trajectories = 3)
+print("\nTime to solve the Ensemble Problem: ")
+@time solve(ensemble_prob, Rodas4(), EnsembleDistributed(), trajectories = 3)
+
+plot(sim, idxs = (0,2), linealpha = 1, lw = 3, title = "Umist Ensemble Prob C, C+ some non-zero u0")
+plot!(sim, idxs = (0,9), linealpha = 0.4, lw = 3)
+savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/scripts/TACC/Ensemble1_Umist.png")
+
+
+
+### Plotting ###
+#=
+# Species C and C⁺ (Initial Values: C = 0, C⁺ = 2e-4)
+plot(sol_complete, idxs = (0,2), lw = 3, lc = "blue")
+plot!(sol_complete, idxs = (0,103), lw = 3, lc = "orange", title = "Umist: Abundance of C and C⁺")
+savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/scripts/TACC/C_and_Cp_Umist.png")
+
+# Species CO (Initial Value: CO = 0)
+plot(sol, idxs = (0,10), lw = 3, lc = "green", title = "Umist: Abundance of CO")
+#savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/CO_Umist.png")
+
+# Species O (Initial Value: O = 4e-4)
+plot(sol, idxs = (0,18), lw = 3, lc = "blue", title = "Umist: Abundance of O")
+#savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/O_Umist.png")
+
+# Species He⁺ (Initial Value: He⁺ = 7.866e-7)
+plot(sol, idxs = (0,310), lw = 3, lc = "light pink", title = "Umist: Abundance of He⁺")
+#savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/Hep_Umist.png")
+
+# Species CH and CH2 = CHx (Initial Values: CH = 0, CH2 = 0)
+plot(sol, idxs = (0,7), lw = 3, lc = "blue") # CH
+plot!(sol, idxs = (0,5), lw = 3, lc = "light blue", title = "Umist: Abundance of CHx") # CH2
+#savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/CH_and_CH2_Umist.png")
+
+# Species OH, OH+, H2O, H2O+, and O2 = OHx (Initial Values: OH = 0, OH+ = 0, H2O = 0, H2O+ = 0, and O2 = 0)
+plot(sol, idxs = (0,19), lw = 3, lc = "green") # OH
+plot!(sol, idxs = (0,234), lw = 3, lc = "dark green") # OH+
+plot!(sol, idxs = (0,11), lw = 3, lc = "blue") # H2O
+plot!(sol, idxs = (0,231), lw = 3, lc = "light blue") # H2O+
+plot!(sol, idxs = (0,17), lw = 3, lc = "orange", title = "Umist: Abundance of OHx") # O2
     (@reaction k5804, C7H2 --> C7H + H ), 
     (@reaction k5805, C7H --> C7 + H ), 
     (@reaction k5806, C7H --> C7H⁺ + e ), 
@@ -12883,51 +13354,49 @@ print("\nCheckpoint 4: Finished creating the reaction system")
 sys = convert(ODESystem, complete(system))
 print("\nCheckpoint 5: Finished converting to an ODE System")
 
-simplified_sys = structural_simplify(sys)
+#simplified_sys = structural_simplify(sys)
 completed_sys = complete(sys)
-print("\nCheckpoint 6: Finished Simplifying")
+print("\nCheckpoint 6: Finished Complete function")
 
-prob_simplify = ODEProblem(simplified_sys, u0, tspan, params)
+#prob_simplify = ODEProblem(simplified_sys, u0, tspan, params)
 prob_complete = ODEProblem(completed_sys, u0, tspan, params)
 print("\nCheckpoint 7: Finished creating the ODE Problem")
 
-#sol = solve(prob, Rodas4(), saveat=1e11)
-sol_simplify = solve(prob_simplify, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e9)
-sol_complete = solve(prob_complete, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e9)
+#sol_simplify = solve(prob_simplify, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+sol_complete = solve(prob_complete, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+print("\nCheckpoint 8: Finished solving")
 
-#sol = solve(prob, lsoda(), saveat=1e10)
-#print("\nCheckpoint 8: Finished solving with Rodas 4")
-print("\n")
 
 ### Timing ###
-print("\nGlover:")
+print("\n\nUmist:")
 print("\nTime to convert:")
 @time convert(ODESystem, complete(system))
 
-print("\nTime to simplify:")
-@time structural_simplify(sys)
+#print("\nTime to simplify:")
+#@time structural_simplify(sys)
 print("Time to complete:")
 @time complete(sys)
 
-print("\nTime to create the simplified problem:")
-@time ODEProblem(simplified_sys, u0, tspan, params)
+#print("\nTime to create the simplified problem:")
+#@time ODEProblem(simplified_sys, u0, tspan, params)
 print("Time to create the completed problem:")
 @time ODEProblem(completed_sys, u0, tspan, params)
 
-print("\nTime to solve the simplified system with Rodas4(): ")
-@time solve(prob_simplify, Rodas4());
+#print("\nTime to solve the simplified system with Rodas4(): ")
+#@time solve(prob_simplify, Rodas4());
 print("Time to solve the completed system with Rodas4(): ")
 @time solve(prob_complete, Rodas4());
-
+print("Time to solve with lsoda useing saveat")
+@time solve(prob_complete, lsoda(), saveat = 1e10)
 
 ### Ensemble Problem ###
+print("\nEnsemble problem timing:")
 prob = ODEProblem(completed_sys, u0, tspan, params)
 
-print("\n\n")
 function prob_func(prob, i, repeat)
     remake(prob, u0 = rand() * prob.u0)
-    print("Time to remake the problem: ")
-    @ time remake(prob, u0 = rand() * prob.u0)
+    #print("Time to remake the problem: ")
+    #@time remake(prob, u0 = rand() * prob.u0)
 end
 
 ensemble_prob = EnsembleProblem(prob, prob_func = prob_func)
@@ -12935,13 +13404,14 @@ print("Time to make (all the remakes of) the Ensemble Problem: ")
 @time EnsembleProblem(prob, prob_func = prob_func)
 
 sim = solve(ensemble_prob, Rodas4(), EnsembleDistributed(), trajectories = 3)
-print("\nTime to solve the Ensemble Problem: ")
+print("Time to solve the Ensemble Problem with Rodas4: ")
 @time solve(ensemble_prob, Rodas4(), EnsembleDistributed(), trajectories = 3)
+print("Time to solve the Ensemble Problem with lsoda useing saveat: ")
+@time solve(ensemble_prob, lsoda(), saveat = 1e10, EnsembleDistributed(), trajectories = 3)
 
 plot(sim, idxs = (0,2), linealpha = 1, lw = 3, title = "Umist Ensemble Prob C, C+ some non-zero u0")
 plot!(sim, idxs = (0,9), linealpha = 0.4, lw = 3)
-savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/scripts/TACC/Ensemble1_Umist.png")
-
+savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/scripts/TACC/Ensemble2_Umist.png")
 
 
 ### Plotting ###
@@ -13847,476 +14317,6 @@ plot(sol, idxs = (0,283), lw = 3, lc = "blue", title = "Umist: Abundance of HS2"
 
 # Species number 284: HS2⁺
 plot(sol, idxs = (0,284), lw = 3, lc = "blue", title = "Umist: Abundance of HS2⁺")
-
-# Species number 285: HS⁺
-plot(sol, idxs = (0,285), lw = 3, lc = "blue", title = "Umist: Abundance of HS⁺")
-
-# Species number 286: N2O
-plot(sol, idxs = (0,286), lw = 3, lc = "blue", title = "Umist: Abundance of N2O")
-
-# Species number 287: N2O⁺
-plot(sol, idxs = (0,287), lw = 3, lc = "blue", title = "Umist: Abundance of N2O⁺")
-
-# Species number 288: NH⁺
-plot(sol, idxs = (0,288), lw = 3, lc = "blue", title = "Umist: Abundance of NH⁺")
-
-# Species number 289: PH2
-plot(sol, idxs = (0,289), lw = 3, lc = "blue", title = "Umist: Abundance of PH2")
-
-# Species number 290: PH2⁺
-plot(sol, idxs = (0,290), lw = 3, lc = "blue", title = "Umist: Abundance of PH2⁺")
-
-# Species number 291: S2
-plot(sol, idxs = (0,291), lw = 3, lc = "blue", title = "Umist: Abundance of S2")
-
-# Species number 292: S2⁺
-plot(sol, idxs = (0,292), lw = 3, lc = "blue", title = "Umist: Abundance of S2⁺")
-
-# Species number 293: SiC2H2
-plot(sol, idxs = (0,293), lw = 3, lc = "blue", title = "Umist: Abundance of SiC2H2")
-
-# Species number 294: SiC2H2⁺
-plot(sol, idxs = (0,294), lw = 3, lc = "blue", title = "Umist: Abundance of SiC2H2⁺")
-
-# Species number 295: SiC3H
-plot(sol, idxs = (0,295), lw = 3, lc = "blue", title = "Umist: Abundance of SiC3H")
-
-# Species number 296: SiC3H⁺
-plot(sol, idxs = (0,296), lw = 3, lc = "blue", title = "Umist: Abundance of SiC3H⁺")
-
-# Species number 297: SiC4
-plot(sol, idxs = (0,297), lw = 3, lc = "blue", title = "Umist: Abundance of SiC4")
-
-# Species number 298: SiC4⁺
-plot(sol, idxs = (0,298), lw = 3, lc = "blue", title = "Umist: Abundance of SiC4⁺")
-
-# Species number 299: SiH4
-plot(sol, idxs = (0,299), lw = 3, lc = "blue", title = "Umist: Abundance of SiH4")
-
-# Species number 300: SiH4⁺
-plot(sol, idxs = (0,300), lw = 3, lc = "blue", title = "Umist: Abundance of SiH4⁺")
-
-# Species number 301: SiH
-plot(sol, idxs = (0,301), lw = 3, lc = "blue", title = "Umist: Abundance of SiH")
-
-# Species number 302: SiH⁺
-plot(sol, idxs = (0,302), lw = 3, lc = "blue", title = "Umist: Abundance of SiH⁺")
-
-# Species number 303: SiNC
-plot(sol, idxs = (0,303), lw = 3, lc = "blue", title = "Umist: Abundance of SiNC")
-
-# Species number 304: SiNC⁺
-plot(sol, idxs = (0,304), lw = 3, lc = "blue", title = "Umist: Abundance of SiNC⁺")
-
-# Species number 305: SiO
-plot(sol, idxs = (0,305), lw = 3, lc = "blue", title = "Umist: Abundance of SiO")
-
-# Species number 306: SiO⁺
-plot(sol, idxs = (0,306), lw = 3, lc = "blue", title = "Umist: Abundance of SiO⁺")
-
-# Species number 307: H2⁺
-plot(sol, idxs = (0,307), lw = 3, lc = "blue", title = "Umist: Abundance of H2⁺")
-
-# Species number 308: F⁺
-plot(sol, idxs = (0,308), lw = 3, lc = "blue", title = "Umist: Abundance of F⁺")
-
-# Species number 309: F
-plot(sol, idxs = (0,309), lw = 3, lc = "blue", title = "Umist: Abundance of F")
-
-# Species number 310: He⁺
-plot(sol, idxs = (0,310), lw = 3, lc = "blue", title = "Umist: Abundance of He⁺")
-
-# Species number 311: He
-plot(sol, idxs = (0,311), lw = 3, lc = "blue", title = "Umist: Abundance of He")
-
-# Species number 312: C3N⁺
-plot(sol, idxs = (0,312), lw = 3, lc = "blue", title = "Umist: Abundance of C3N⁺")
-
-# Species number 313: HCNO
-plot(sol, idxs = (0,313), lw = 3, lc = "blue", title = "Umist: Abundance of HCNO")
-
-# Species number 314: HCNO⁺
-plot(sol, idxs = (0,314), lw = 3, lc = "blue", title = "Umist: Abundance of HCNO⁺")
-
-# Species number 315: HNCO
-plot(sol, idxs = (0,315), lw = 3, lc = "blue", title = "Umist: Abundance of HNCO")
-
-# Species number 316: HNCO⁺
-plot(sol, idxs = (0,316), lw = 3, lc = "blue", title = "Umist: Abundance of HNCO⁺")
-
-# Species number 317: HONC
-plot(sol, idxs = (0,317), lw = 3, lc = "blue", title = "Umist: Abundance of HONC")
-
-# Species number 318: HONC⁺
-plot(sol, idxs = (0,318), lw = 3, lc = "blue", title = "Umist: Abundance of HONC⁺")
-
-# Species number 319: HNO⁺
-plot(sol, idxs = (0,319), lw = 3, lc = "blue", title = "Umist: Abundance of HNO⁺")
-
-# Species number 320: HNO
-plot(sol, idxs = (0,320), lw = 3, lc = "blue", title = "Umist: Abundance of HNO")
-
-# Species number 321: HCOOH
-plot(sol, idxs = (0,321), lw = 3, lc = "blue", title = "Umist: Abundance of HCOOH")
-
-# Species number 322: HCOOH⁺
-plot(sol, idxs = (0,322), lw = 3, lc = "blue", title = "Umist: Abundance of HCOOH⁺")
-
-# Species number 323: NO2⁺
-plot(sol, idxs = (0,323), lw = 3, lc = "blue", title = "Umist: Abundance of NO2⁺")
-
-# Species number 324: C11
-plot(sol, idxs = (0,324), lw = 3, lc = "blue", title = "Umist: Abundance of C11")
-
-# Species number 325: C2H5CN
-plot(sol, idxs = (0,325), lw = 3, lc = "blue", title = "Umist: Abundance of C2H5CN")
-
-# Species number 326: CH2CHCNH⁺
-plot(sol, idxs = (0,326), lw = 3, lc = "blue", title = "Umist: Abundance of CH2CHCNH⁺")
-
-# Species number 327: C3P
-plot(sol, idxs = (0,327), lw = 3, lc = "blue", title = "Umist: Abundance of C3P")
-
-# Species number 328: CH2CHCCH
-plot(sol, idxs = (0,328), lw = 3, lc = "blue", title = "Umist: Abundance of CH2CHCCH")
-
-# Species number 329: CH2CHCHCH2
-plot(sol, idxs = (0,329), lw = 3, lc = "blue", title = "Umist: Abundance of CH2CHCHCH2")
-
-# Species number 330: CH2CHCN
-plot(sol, idxs = (0,330), lw = 3, lc = "blue", title = "Umist: Abundance of CH2CHCN")
-
-# Species number 331: CH2NH
-plot(sol, idxs = (0,331), lw = 3, lc = "blue", title = "Umist: Abundance of CH2NH")
-
-# Species number 332: CH2PH
-plot(sol, idxs = (0,332), lw = 3, lc = "blue", title = "Umist: Abundance of CH2PH")
-
-# Species number 333: CH3C3N
-plot(sol, idxs = (0,333), lw = 3, lc = "blue", title = "Umist: Abundance of CH3C3N")
-
-# Species number 334: CH3C5N
-plot(sol, idxs = (0,334), lw = 3, lc = "blue", title = "Umist: Abundance of CH3C5N")
-
-# Species number 335: CH3C7N
-plot(sol, idxs = (0,335), lw = 3, lc = "blue", title = "Umist: Abundance of CH3C7N")
-
-# Species number 336: CNO
-plot(sol, idxs = (0,336), lw = 3, lc = "blue", title = "Umist: Abundance of CNO")
-
-# Species number 337: H2CN
-plot(sol, idxs = (0,337), lw = 3, lc = "blue", title = "Umist: Abundance of H2CN")
-
-# Species number 338: H2O2
-plot(sol, idxs = (0,338), lw = 3, lc = "blue", title = "Umist: Abundance of H2O2")
-
-# Species number 339: HCS
-plot(sol, idxs = (0,339), lw = 3, lc = "blue", title = "Umist: Abundance of HCS")
-
-# Species number 340: HCS⁺
-plot(sol, idxs = (0,340), lw = 3, lc = "blue", title = "Umist: Abundance of HCS⁺")
-
-# Species number 341: HF
-plot(sol, idxs = (0,341), lw = 3, lc = "blue", title = "Umist: Abundance of HF")
-
-# Species number 342: HNC3
-plot(sol, idxs = (0,342), lw = 3, lc = "blue", title = "Umist: Abundance of HNC3")
-
-# Species number 343: HOCN
-plot(sol, idxs = (0,343), lw = 3, lc = "blue", title = "Umist: Abundance of HOCN")
-
-# Species number 344: NH2CN
-plot(sol, idxs = (0,344), lw = 3, lc = "blue", title = "Umist: Abundance of NH2CN")
-
-# Species number 345: O2H
-plot(sol, idxs = (0,345), lw = 3, lc = "blue", title = "Umist: Abundance of O2H")
-
-# Species number 346: OCN
-plot(sol, idxs = (0,346), lw = 3, lc = "blue", title = "Umist: Abundance of OCN")
-
-# Species number 347: SiO2
-plot(sol, idxs = (0,347), lw = 3, lc = "blue", title = "Umist: Abundance of SiO2")
-
-# Species number 348: C10H3⁺
-plot(sol, idxs = (0,348), lw = 3, lc = "blue", title = "Umist: Abundance of C10H3⁺")
-
-# Species number 349: C11⁺
-plot(sol, idxs = (0,349), lw = 3, lc = "blue", title = "Umist: Abundance of C11⁺")
-
-# Species number 350: C2H5CNH⁺
-plot(sol, idxs = (0,350), lw = 3, lc = "blue", title = "Umist: Abundance of C2H5CNH⁺")
-
-# Species number 351: C2H5OH2⁺
-plot(sol, idxs = (0,351), lw = 3, lc = "blue", title = "Umist: Abundance of C2H5OH2⁺")
-
-# Species number 352: C2H7⁺
-plot(sol, idxs = (0,352), lw = 3, lc = "blue", title = "Umist: Abundance of C2H7⁺")
-
-# Species number 353: C2NH⁺
-plot(sol, idxs = (0,353), lw = 3, lc = "blue", title = "Umist: Abundance of C2NH⁺")
-
-# Species number 354: C3H2O⁺
-plot(sol, idxs = (0,354), lw = 3, lc = "blue", title = "Umist: Abundance of C3H2O⁺")
-
-# Species number 355: C3H5⁺
-plot(sol, idxs = (0,355), lw = 3, lc = "blue", title = "Umist: Abundance of C3H5⁺")
-
-# Species number 356: C3H7⁺
-plot(sol, idxs = (0,356), lw = 3, lc = "blue", title = "Umist: Abundance of C3H7⁺")
-
-# Species number 357: C4H4⁺
-plot(sol, idxs = (0,357), lw = 3, lc = "blue", title = "Umist: Abundance of C4H4⁺")
-
-# Species number 358: C4H5⁺
-plot(sol, idxs = (0,358), lw = 3, lc = "blue", title = "Umist: Abundance of C4H5⁺")
-
-# Species number 359: C4H7⁺
-plot(sol, idxs = (0,359), lw = 3, lc = "blue", title = "Umist: Abundance of C4H7⁺")
-
-# Species number 360: C4N⁺
-plot(sol, idxs = (0,360), lw = 3, lc = "blue", title = "Umist: Abundance of C4N⁺")
-
-# Species number 361: C5H3⁺
-plot(sol, idxs = (0,361), lw = 3, lc = "blue", title = "Umist: Abundance of C5H3⁺")
-
-# Species number 362: C5H5⁺
-plot(sol, idxs = (0,362), lw = 3, lc = "blue", title = "Umist: Abundance of C5H5⁺")
-
-# Species number 363: C5N⁺
-plot(sol, idxs = (0,363), lw = 3, lc = "blue", title = "Umist: Abundance of C5N⁺")
-
-# Species number 364: C6H3⁺
-plot(sol, idxs = (0,364), lw = 3, lc = "blue", title = "Umist: Abundance of C6H3⁺")
-
-# Species number 365: C6H4⁺
-plot(sol, idxs = (0,365), lw = 3, lc = "blue", title = "Umist: Abundance of C6H4⁺")
-
-# Species number 366: C6H5⁺
-plot(sol, idxs = (0,366), lw = 3, lc = "blue", title = "Umist: Abundance of C6H5⁺")
-
-# Species number 367: C6H7⁺
-plot(sol, idxs = (0,367), lw = 3, lc = "blue", title = "Umist: Abundance of C6H7⁺")
-
-# Species number 368: C7H3⁺
-plot(sol, idxs = (0,368), lw = 3, lc = "blue", title = "Umist: Abundance of C7H3⁺")
-
-# Species number 369: C7H5⁺
-plot(sol, idxs = (0,369), lw = 3, lc = "blue", title = "Umist: Abundance of C7H5⁺")
-
-# Species number 370: C7N⁺
-plot(sol, idxs = (0,370), lw = 3, lc = "blue", title = "Umist: Abundance of C7N⁺")
-
-# Species number 371: C8H3⁺
-plot(sol, idxs = (0,371), lw = 3, lc = "blue", title = "Umist: Abundance of C8H3⁺")
-
-# Species number 372: C8H4⁺
-plot(sol, idxs = (0,372), lw = 3, lc = "blue", title = "Umist: Abundance of C8H4⁺")
-
-# Species number 373: C8H5⁺
-plot(sol, idxs = (0,373), lw = 3, lc = "blue", title = "Umist: Abundance of C8H5⁺")
-
-# Species number 374: C9H3⁺
-plot(sol, idxs = (0,374), lw = 3, lc = "blue", title = "Umist: Abundance of C9H3⁺")
-
-# Species number 375: C9H4⁺
-plot(sol, idxs = (0,375), lw = 3, lc = "blue", title = "Umist: Abundance of C9H4⁺")
-
-# Species number 376: C9H5⁺
-plot(sol, idxs = (0,376), lw = 3, lc = "blue", title = "Umist: Abundance of C9H5⁺")
-
-# Species number 377: C9N⁺
-plot(sol, idxs = (0,377), lw = 3, lc = "blue", title = "Umist: Abundance of C9N⁺")
-
-# Species number 378: CF⁺
-plot(sol, idxs = (0,378), lw = 3, lc = "blue", title = "Umist: Abundance of CF⁺")
-
-# Species number 379: CH2CHCN⁺
-plot(sol, idxs = (0,379), lw = 3, lc = "blue", title = "Umist: Abundance of CH2CHCN⁺")
-
-# Species number 380: CH2NH2⁺
-plot(sol, idxs = (0,380), lw = 3, lc = "blue", title = "Umist: Abundance of CH2NH2⁺")
-
-# Species number 381: CH3C3N⁺
-plot(sol, idxs = (0,381), lw = 3, lc = "blue", title = "Umist: Abundance of CH3C3N⁺")
-
-# Species number 382: CH3C3NH⁺
-plot(sol, idxs = (0,382), lw = 3, lc = "blue", title = "Umist: Abundance of CH3C3NH⁺")
-
-# Species number 383: CH3C5NH⁺
-plot(sol, idxs = (0,383), lw = 3, lc = "blue", title = "Umist: Abundance of CH3C5NH⁺")
-
-# Species number 384: CH3C7NH⁺
-plot(sol, idxs = (0,384), lw = 3, lc = "blue", title = "Umist: Abundance of CH3C7NH⁺")
-
-# Species number 385: CH3CHOH⁺
-plot(sol, idxs = (0,385), lw = 3, lc = "blue", title = "Umist: Abundance of CH3CHOH⁺")
-
-# Species number 386: CH3CNH⁺
-plot(sol, idxs = (0,386), lw = 3, lc = "blue", title = "Umist: Abundance of CH3CNH⁺")
-
-# Species number 387: CH3CO⁺
-plot(sol, idxs = (0,387), lw = 3, lc = "blue", title = "Umist: Abundance of CH3CO⁺")
-
-# Species number 388: CH3COCH4⁺
-plot(sol, idxs = (0,388), lw = 3, lc = "blue", title = "Umist: Abundance of CH3COCH4⁺")
-
-# Species number 389: CH3CS⁺
-plot(sol, idxs = (0,389), lw = 3, lc = "blue", title = "Umist: Abundance of CH3CS⁺")
-
-# Species number 390: CH3OCH4⁺
-plot(sol, idxs = (0,390), lw = 3, lc = "blue", title = "Umist: Abundance of CH3OCH4⁺")
-
-# Species number 391: CH3OH2⁺
-plot(sol, idxs = (0,391), lw = 3, lc = "blue", title = "Umist: Abundance of CH3OH2⁺")
-
-# Species number 392: CH4N⁺
-plot(sol, idxs = (0,392), lw = 3, lc = "blue", title = "Umist: Abundance of CH4N⁺")
-
-# Species number 393: CH5⁺
-plot(sol, idxs = (0,393), lw = 3, lc = "blue", title = "Umist: Abundance of CH5⁺")
-
-# Species number 394: H2C4N⁺
-plot(sol, idxs = (0,394), lw = 3, lc = "blue", title = "Umist: Abundance of H2C4N⁺")
-
-# Species number 395: H2C7N⁺
-plot(sol, idxs = (0,395), lw = 3, lc = "blue", title = "Umist: Abundance of H2C7N⁺")
-
-# Species number 396: H2C9N⁺
-plot(sol, idxs = (0,396), lw = 3, lc = "blue", title = "Umist: Abundance of H2C9N⁺")
-
-# Species number 397: H2CCl⁺
-plot(sol, idxs = (0,397), lw = 3, lc = "blue", title = "Umist: Abundance of H2CCl⁺")
-
-# Species number 398: H2CNO⁺
-plot(sol, idxs = (0,398), lw = 3, lc = "blue", title = "Umist: Abundance of H2CNO⁺")
-
-# Species number 399: H2Cl⁺
-plot(sol, idxs = (0,399), lw = 3, lc = "blue", title = "Umist: Abundance of H2Cl⁺")
-
-# Species number 400: H2F⁺
-plot(sol, idxs = (0,400), lw = 3, lc = "blue", title = "Umist: Abundance of H2F⁺")
-
-# Species number 401: H2NC⁺
-plot(sol, idxs = (0,401), lw = 3, lc = "blue", title = "Umist: Abundance of H2NC⁺")
-
-# Species number 402: H2NCO⁺
-plot(sol, idxs = (0,402), lw = 3, lc = "blue", title = "Umist: Abundance of H2NCO⁺")
-
-# Species number 403: H2NO⁺
-plot(sol, idxs = (0,403), lw = 3, lc = "blue", title = "Umist: Abundance of H2NO⁺")
-
-# Species number 404: H2OCN⁺
-plot(sol, idxs = (0,404), lw = 3, lc = "blue", title = "Umist: Abundance of H2OCN⁺")
-
-# Species number 405: H2PO⁺
-plot(sol, idxs = (0,405), lw = 3, lc = "blue", title = "Umist: Abundance of H2PO⁺")
-
-# Species number 406: H3⁺
-plot(sol, idxs = (0,406), lw = 3, lc = "blue", title = "Umist: Abundance of H3⁺")
-
-# Species number 407: H3C3O⁺
-plot(sol, idxs = (0,407), lw = 3, lc = "blue", title = "Umist: Abundance of H3C3O⁺")
-
-# Species number 408: H3C5N⁺
-plot(sol, idxs = (0,408), lw = 3, lc = "blue", title = "Umist: Abundance of H3C5N⁺")
-
-# Species number 409: H3C7N⁺
-plot(sol, idxs = (0,409), lw = 3, lc = "blue", title = "Umist: Abundance of H3C7N⁺")
-
-# Species number 410: H3C9N⁺
-plot(sol, idxs = (0,410), lw = 3, lc = "blue", title = "Umist: Abundance of H3C9N⁺")
-
-# Species number 411: H3CO⁺
-plot(sol, idxs = (0,411), lw = 3, lc = "blue", title = "Umist: Abundance of H3CO⁺")
-
-# Species number 412: H3CS⁺
-plot(sol, idxs = (0,412), lw = 3, lc = "blue", title = "Umist: Abundance of H3CS⁺")
-
-# Species number 413: H3O⁺
-plot(sol, idxs = (0,413), lw = 3, lc = "blue", title = "Umist: Abundance of H3O⁺")
-
-# Species number 414: H3S⁺
-plot(sol, idxs = (0,414), lw = 3, lc = "blue", title = "Umist: Abundance of H3S⁺")
-
-# Species number 415: H3S2⁺
-plot(sol, idxs = (0,415), lw = 3, lc = "blue", title = "Umist: Abundance of H3S2⁺")
-
-# Species number 416: H3SiO⁺
-plot(sol, idxs = (0,416), lw = 3, lc = "blue", title = "Umist: Abundance of H3SiO⁺")
-
-# Species number 417: H5C2O2⁺
-plot(sol, idxs = (0,417), lw = 3, lc = "blue", title = "Umist: Abundance of H5C2O2⁺")
-
-# Species number 418: HC2O⁺
-plot(sol, idxs = (0,418), lw = 3, lc = "blue", title = "Umist: Abundance of HC2O⁺")
-
-# Species number 419: HC2S⁺
-plot(sol, idxs = (0,419), lw = 3, lc = "blue", title = "Umist: Abundance of HC2S⁺")
-
-# Species number 420: HC3NH⁺
-plot(sol, idxs = (0,420), lw = 3, lc = "blue", title = "Umist: Abundance of HC3NH⁺")
-
-# Species number 421: HC3O⁺
-plot(sol, idxs = (0,421), lw = 3, lc = "blue", title = "Umist: Abundance of HC3O⁺")
-
-# Species number 422: HC3S⁺
-plot(sol, idxs = (0,422), lw = 3, lc = "blue", title = "Umist: Abundance of HC3S⁺")
-
-# Species number 423: HC4N⁺
-plot(sol, idxs = (0,423), lw = 3, lc = "blue", title = "Umist: Abundance of HC4N⁺")
-
-# Species number 424: HC4S⁺
-plot(sol, idxs = (0,424), lw = 3, lc = "blue", title = "Umist: Abundance of HC4S⁺")
-
-# Species number 425: HC5NH⁺
-plot(sol, idxs = (0,425), lw = 3, lc = "blue", title = "Umist: Abundance of HC5NH⁺")
-
-# Species number 426: HCNH⁺
-plot(sol, idxs = (0,426), lw = 3, lc = "blue", title = "Umist: Abundance of HCNH⁺")
-
-# Species number 427: HCNOH⁺
-plot(sol, idxs = (0,427), lw = 3, lc = "blue", title = "Umist: Abundance of HCNOH⁺")
-
-# Species number 428: HCO2⁺
-plot(sol, idxs = (0,428), lw = 3, lc = "blue", title = "Umist: Abundance of HCO2⁺")
-
-# Species number 429: HCOOH2⁺
-plot(sol, idxs = (0,429), lw = 3, lc = "blue", title = "Umist: Abundance of HCOOH2⁺")
-
-# Species number 430: HF⁺
-plot(sol, idxs = (0,430), lw = 3, lc = "blue", title = "Umist: Abundance of HF⁺")
-
-# Species number 431: HN2O⁺
-plot(sol, idxs = (0,431), lw = 3, lc = "blue", title = "Umist: Abundance of HN2O⁺")
-
-# Species number 432: HNCOH⁺
-plot(sol, idxs = (0,432), lw = 3, lc = "blue", title = "Umist: Abundance of HNCOH⁺")
-
-# Species number 433: HNS⁺
-plot(sol, idxs = (0,433), lw = 3, lc = "blue", title = "Umist: Abundance of HNS⁺")
-
-# Species number 434: HOCN⁺
-plot(sol, idxs = (0,434), lw = 3, lc = "blue", title = "Umist: Abundance of HOCN⁺")
-
-# Species number 435: HOCS⁺
-plot(sol, idxs = (0,435), lw = 3, lc = "blue", title = "Umist: Abundance of HOCS⁺")
-
-# Species number 436: HPN⁺
-plot(sol, idxs = (0,436), lw = 3, lc = "blue", title = "Umist: Abundance of HPN⁺")
-
-# Species number 437: HSO⁺
-plot(sol, idxs = (0,437), lw = 3, lc = "blue", title = "Umist: Abundance of HSO⁺")
-
-# Species number 438: HSO2⁺
-plot(sol, idxs = (0,438), lw = 3, lc = "blue", title = "Umist: Abundance of HSO2⁺")
-
-# Species number 439: HSiO2⁺
-plot(sol, idxs = (0,439), lw = 3, lc = "blue", title = "Umist: Abundance of HSiO2⁺")
-
-# Species number 440: HSiS⁺
-plot(sol, idxs = (0,440), lw = 3, lc = "blue", title = "Umist: Abundance of HSiS⁺")
-
-# Species number 441: HeH⁺
 plot(sol, idxs = (0,441), lw = 3, lc = "blue", title = "Umist: Abundance of HeH⁺")
 
 # Species number 442: N2H⁺
