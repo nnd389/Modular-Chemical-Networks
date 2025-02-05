@@ -135,7 +135,7 @@ function prob_func(prob, i, repeat)
 end
 
 ensemble_prob = EnsembleProblem(prob, prob_func = prob_func)
-sim = solve(ensemble_prob, Rodas4(), EnsembleDistributed(), trajectories = 5)
+sim = solve(ensemble_prob, lsoda(), saveat = 1e10, EnsembleDistributed(), trajectories = 5)
 
 plot(sim, idxs = (0,6), linealpha = 1, lw = 3, title = "Nelson Catalyst: Ensemble problem for C and C+")
 plot!(sim, idxs = (0,12), linealpha = 0.4, lw = 3)
