@@ -1,5 +1,5 @@
-using Revise
-using DrWatson
+#using Revise
+#using DrWatson
 using Catalyst
 using DifferentialEquations
 using Plots
@@ -14,22 +14,18 @@ using LSODA
 # FIX K165 - rate is correct, but has an H(s) in it?
 # FIX K218 - has x_H2 and x_CO in the rate def, currently commented out
 # check, k218 and k198 are the same reaction
-
 # FIX av value, see equation 2 in paper
 # FIX Td
-
 #look for corrected version? look at astroph 
 
 
-#@time begin
-    # %% Set The timespan, parameters, and initial conditions
+### Timespan ###
 seconds_per_year = 3600 * 24 * 365
 tspan = (0.0, 30000 * seconds_per_year) # ~30 thousand yrs
 # 30,000 yrs approximately equals 8e11 
-#tspan = (0, 1000 * seconds_per_year)
-#tspan = (0, 5e9)
 
 
+### Initial Conditions ###
 # Nelson has CHx (CH and CH2) and OHx (OH, H2O, O2) start at zero
 u0 = [  0,        # 1: H FIX
         2e-4,     # 2: e Nelson has 2e-4
@@ -66,43 +62,50 @@ u0 = [  0,        # 1: H FIX
         2e-7      # 33: M Nelson has 2e-7
         ]
 
+#=
+u0 = [  2e-4,        # 1: H FIX
+        2e-4,     # 2: e Nelson has 2e-4
+        2e-4,        # 3: H- FIX
+        0.5,      # 4: H2 Nelson has 0.5
+        2e-4,        # 5: H+ FIX
+        2e-4,        # 6: H2+ FIX
+        0.1,      # 7: He Nelson has 0.1
+        7.866e-7, # 8: He+ Nelson has 7.866e-7
+        2e-4,     # 9: C+ Nelson has 2e-4, Glover has...
+        2e-4,        # 10: C Nelson has 0, Glover has 1.41e-4, see section 4
+        2e-4,        # 11: O+ FIX
+        4e-4,     # 12: O Nelson has 4e-4, Glover has 3.16e-4, see section 4
+        2e-4,        # 13: OH Nelson has 0 for OHx
+        2e-4,        # 14: HOC+ FIX
+        2e-4,        # 15: HCO+ Nelson has 0
+        2e-4,        # 16: CO Nelson has 0
+        2e-4,        # 17: CH FIX
+        2e-4,        # 18: CH2 Nelson has 0 for CHx
+        2e-4,        # 19: C2 FIX
+        2e-4,        # 20: H2O Nelson has 0
+        2e-4,        # 21: O2 Nelson has 0, OHx FIX-------CHECK IF THIS IS O2+ FIND O2
+        9.059e-9, # 22: H3+ Nelson has 9.059e-9
+        2e-4,        # 23: CH+ FIX
+        2e-4,        # 24: CH2+ FIX
+        2e-4,        # 25: CO+ FIX
+        2e-4,        # 26: CH3+ Nelson has 0 for CHx
+        2e-4,        # 27: OH+ FIX
+        2e-4,        # 28: H2O+ FIX
+        2e-4,        # 29: H3O+ FIX
+        2e-4,        # 30: O2+ FIX
+        2e-4,        # 31: C- FIX
+        2e-4,        # 32: O- FIX
+        2e-7      # 33: M Nelson has 2e-7
+        ]
+=#
 
-
-#Te = 0.06032129704818 # 700k = 0.06032129704818 ev
-#Te = 0.02585198444922 # 300k = 0.02585198444922 ev
-#Te = 0.008617328149741 # 100k = 0.008617328149741 ev
-#Te = 0.00430866407487 # 50k = 0.00430866407487 ev
-#Te = 0.0008617328149741 # 10k = 0.0008617328149741 ev
-
-
-
-
-
-
+### Parameters ###
 T = 10 # from glover paper, T=60 section 4, nelson has 10k
 Td = 10
 Te = 0.0008617328149741 # 10k = 0.0008617328149741 ev
 n_H = 611 # Nelson has 611
 Av = 2 # Glover Section 2 gives formula: n_H/(1.87e21)
 cr_ion_rate = 6e-18 # I tried 6e-18, DESPOTIC suggests 2.0e-16
-
-
-
-
-
-
-
-
-
-#=
-# These are the parameters that make Glover looks very similar to Nelson over 30000 years
-T = 110 # from glover paper, T=60 section 4, nelson has 10k
-Td = 110
-Te = 0.009479060964715 # 110k = 0.009479060964715 ev
-n_H = 46 # Nelson has 611
-Av = 2 # Glover Section 2 gives formula: n_H/(1.87e21)
-cr_ion_rate = 6e-18 # I tried 6e-18, DESPOTIC suggests 2.0e-16
-=#
 
 params = Dict(
     :T => T,  
@@ -335,7 +338,7 @@ params = Dict(
     #:R218 => , 
     )
 
-
+### Tempurature ranges conditionals ### should change this to run in a loop for efficiency and readability
 if T > 6000
     params[:k1] = 10^(-16.420 + 0.1998 * (log10(T))^2 - 5.447e-3 * (log10(T))^4 + 4.0415e-5 * (log10(T))^6)
 end
@@ -438,10 +441,10 @@ end
 @parameters T n_H Av k1 k2 k6 k12 k14 k15 k17 k19 k20 k21 k29 k38 k42 k47 k52 k146 k149 k154 k157 k158 R188 R189 R190 R191 R192 R193 R194 R195
 
 
-# %% Define the network
+### Define the network ###
 reaction_equations = [
-    (@reaction n_H * k1, H + e --> H⁻),    #k1
-    (@reaction n_H * k2, H⁻ + H --> H2 + e), #k2
+    (@reaction n_H * k1, H + e --> H⁻), 
+    (@reaction n_H * k2, H⁻ + H --> H2 + e), 
     (@reaction n_H * k3, H + H⁺ --> H2⁺ ), 
     (@reaction n_H * k4, H + H2⁺ --> H2 + H⁺), 
     (@reaction n_H * k5, H⁻ + H⁺--> H + H), 
@@ -591,7 +594,7 @@ reaction_equations = [
     (@reaction n_H * k148, C⁺ + H2 --> CH2⁺ ), 
     (@reaction n_H * k149, C⁺ + O --> CO⁺ ), 
     (@reaction n_H * k150, O + e --> O⁻ ), 
-    (@reaction n_H * k151, O+H --> OH ), 
+    (@reaction n_H * k151, O + H --> OH ), 
     (@reaction n_H * k152, O + O --> O2 ), 
     (@reaction n_H * k153, OH + H --> H2O ), 
     (@reaction n_H^2 * k154, H + H + H --> H2 + H), 
@@ -605,9 +608,7 @@ reaction_equations = [
     (@reaction n_H^2 * k162, OH + H + M --> H2O + M), 
     (@reaction n_H^2 * k163, O + O + M --> O2 + M), 
     (@reaction n_H * k164, O + CH -->  HCO⁺ + e), 
-    (@reaction n_H * k165, H+H --> H2), # FIX H is H(s) here?
-    
-
+    (@reaction n_H * k165, H + H --> H2), # FIX H is H(s) here?
 
     # Photochemical Reactions (R166) start below
     (@reaction R166, H⁻ --> H + e), 
@@ -644,7 +645,6 @@ reaction_equations = [
     (@reaction R197, O2 --> O + O), 
     (@reaction R198, CO   --> C + O), #from UMIST
 
-
     # Cosmic Ray Reactions (R199) start below 
     (@reaction R199, H --> H⁺ + e), 
     (@reaction R200, He --> He⁺ + e), # cr_rate = 6e-18, Nelson match CR Ionization reaction 2
@@ -672,54 +672,83 @@ reaction_equations = [
 
 ### Turn the Network into a system of ODEs ###
 @named system = ReactionSystem(reaction_equations, t)
-print("\nCheckpoint 4: Finished creating the reaction system")
+#@named sys = ODESystem(reaction_equations, t) # this doesn't work but I have hope for it one day, see https://github.com/SciML/MethodOfLines.jl/issues/117
+
 sys = convert(ODESystem, complete(system))
-print("\nCheckpoint 5: Finished converting to an ODE System")
-ssys = structural_simplify(sys)
-print("\nCheckpoint 6: Finished Simplifying")
-prob = ODEProblem(ssys, u0, tspan, params)
-print("\nCheckpoint 7: Finished creating the ODE Problem")
-sol = solve(prob, Rodas4())
-#sol = solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-#sol = solve(prob, lsoda(), saveat=1e3)
-print("\nCheckpoint 8: Finished solving with Rodas 4")
-print("\n")
+
+#simplified_sys = structural_simplify(sys)
+completed_sys = complete(sys)
+
+#prob_simplify = ODEProblem(simplified_sys, u0, tspan, params)
+prob_complete = ODEProblem(completed_sys, u0, tspan, params)
+
+#sol_simplify = solve(prob_simplify, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e9)
+sol_complete = solve(prob_complete, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e9)
 
 ### Timing ###
-print("\nGlover:")
+print("\n\nGlover:")
 print("\nTime to convert:")
 @time convert(ODESystem, complete(system))
-print("\nTime to simplify:")
-@time structural_simplify(sys)
-print("\nTime to create the simplified problem:")
-@time ODEProblem(ssys, u0, tspan, params)
-print("\nTime to solve the simplified 1000 reaction system with Rodas4(): ")
-@time solve(prob, Rodas4());
 
+#print("\nTime to simplify:")
+#@time structural_simplify(sys)
+print("Time to complete:")
+@time complete(sys)
 
+#print("\nTime to create the simplified problem:")
+#@time ODEProblem(simplified_sys, u0, tspan, params)
+print("Time to create the completed problem:")
+@time ODEProblem(completed_sys, u0, tspan, params)
 
+#print("\nTime to solve the simplified system with Rodas4(): ")
+#@time solve(prob_simplify, Rodas4());
+print("Time to solve the completed system with Rodas4(): ")
+@time solve(prob_complete, Rodas4());
 
+### Ensemble Problem ###
+prob = ODEProblem(completed_sys, u0, tspan, params)
+
+print("\n\n")
+function prob_func(prob, i, repeat)
+    remake(prob, u0 = rand() * prob.u0)
+    #print("Time to remake the problem:")
+    #@time remake(prob, u0 = rand() * prob.u0)
+end
+
+ensemble_prob = EnsembleProblem(prob, prob_func = prob_func)
+print("Time to make (all the remakes of) the Ensemble Problem:")
+@time EnsembleProblem(prob, prob_func = prob_func)
+
+sim = solve(ensemble_prob, Rodas4(), EnsembleDistributed(), trajectories = 5)
+print("\nTime to solve the Ensemble Problem")
+@time solve(ensemble_prob, Rodas4(), EnsembleDistributed(), trajectories = 5)
+
+plot(sim, idxs = (0,10), linealpha = 1, lw = 3, title = "Glover Catalyst: Ensemble prob C, C+ all non-zero u0")
+plot!(sim, idxs = (0,9), linealpha = 0.4, lw = 3)
+
+#=
+### Plotting ###
 # C and C+
 plot(sol, idxs = (0,10), lw = 3, lc = "blue")
 plot!(sol, idxs = (0,9), lw = 3, lc = "orange", title = "Glover with Glover rates: C and C+")
-savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/C_and_Cp_Glover.png")
+#savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/C_and_Cp_Glover.png")
 
 # CO
 plot(sol, idxs = (0,16), lw = 3, lc = "green", title = "Glover with Glover rates: CO")
-savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/CO_Glover.png")
+#savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/CO_Glover.png")
 
 # O 
 plot(sol, idxs = (0,12), lw = 3, lc = "blue", title = "Glover with Glover rates: O")
-savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/O_Glover.png")
+#savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/O_Glover.png")
 
 # He+
 plot(sol, idxs = (0,8), lw = 3, lc = "light pink", title = "Glover with Glover rates: He+")
-savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/Hep_Glover.png")
+#savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/Hep_Glover.png")
 
 # CH and CH2 = CHx
 plot(sol, idxs = (0,17), lw = 3, lc = "blue")
 plot!(sol, idxs = (0,18), lw = 3, lc = "light blue", title = "Glover with Glover rates: CHx")
-savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/CH_and_CH2_Glover.png")
+#savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/CH_and_CH2_Glover.png")
 
 # OH, OH+, H2O, H2O+, and O2 = OHx
 plot(sol, idxs = (0,13), lw = 3, lc = "green")
@@ -727,21 +756,21 @@ plot!(sol, idxs = (0,27), lw = 3, lc = "dark green")
 plot!(sol, idxs = (0,20), lw = 3, lc = "blue")
 plot!(sol, idxs = (0,28), lw = 3, lc = "light blue")
 plot!(sol, idxs = (0,21), lw = 3, lc = "orange", title = "Glover with Glover rates: OHx")
-savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/OH_OHp_H2O_H2Op_O2_Glover.png")
+#savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/OH_OHp_H2O_H2Op_O2_Glover.png")
 
 # H3+
 plot(sol, idxs = (0,22), lw = 3, lc = "orange", title = "Glover with Glover rates: H3+")
-savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/H3p_Glover.png")
+#savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/H3p_Glover.png")
 
 # HCO+ 
 plot(sol, idxs = (0,15), lw = 3, lc = "orange", title = "Glover with Glover rates: HCO+")
-savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/HCOp_Glover.png")
+#savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/HCOp_Glover.png")
 
 # M 
 plot(sol, idxs = (0,33), lw = 3, lc = "light blue", title = "Glover with Glover rates: M")
-savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/Mg_Fe_Na_Glover.png")
+#savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/Mg_Fe_Na_Glover.png")
 
-
+=#
 
 # LEGEND for species ID's
 # 1: H
