@@ -12878,52 +12878,95 @@ print("\nCheckpoint 3: Finished reading reaction equations")
 
 ### Turn the Network into a system of ODEs ###
 @named system = ReactionSystem(reaction_equations, t)
-print("\nCheckpoint 4")
-sys = convert(ODESystem, complete(system))
-print("\nCheckpoint 5")
-ssys = structural_simplify(sys)
-print("\nCheckpoint 6")
-prob = ODEProblem(ssys, u0, tspan, params)
-print("\nCheckpoint 7")
-sol = solve(prob, Rodas4())
-print("\nCheckpoint 8")
+print("\nCheckpoint 4: Finished creating the reaction system")
 
+sys = convert(ODESystem, complete(system))
+print("\nCheckpoint 5: Finished converting to an ODE System")
+
+simplified_sys = structural_simplify(sys)
+completed_sys = complete(sys)
+print("\nCheckpoint 6: Finished Simplifying")
+
+prob_simplify = ODEProblem(simplified_sys, u0, tspan, params)
+prob_complete = ODEProblem(completed_sys, u0, tspan, params)
+print("\nCheckpoint 7: Finished creating the ODE Problem")
+
+#sol = solve(prob, Rodas4(), saveat=1e11)
+sol_simplify = solve(prob_simplify, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e9)
+sol_complete = solve(prob_complete, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e9)
+
+#sol = solve(prob, lsoda(), saveat=1e10)
+#print("\nCheckpoint 8: Finished solving with Rodas 4")
+print("\n")
 
 ### Timing ###
+print("\nGlover:")
 print("\nTime to convert:")
 @time convert(ODESystem, complete(system))
+
 print("\nTime to simplify:")
 @time structural_simplify(sys)
+print("Time to complete:")
+@time complete(sys)
+
 print("\nTime to create the simplified problem:")
-@time ODEProblem(ssys, u0, tspan, params)
-print("\nTime to solve the simplified 1000 reaction system with Rodas4(): ")
-@time solve(prob, Rodas4());
+@time ODEProblem(simplified_sys, u0, tspan, params)
+print("Time to create the completed problem:")
+@time ODEProblem(completed_sys, u0, tspan, params)
+
+print("\nTime to solve the simplified system with Rodas4(): ")
+@time solve(prob_simplify, Rodas4());
+print("Time to solve the completed system with Rodas4(): ")
+@time solve(prob_complete, Rodas4());
+
+
+### Ensemble Problem ###
+prob = ODEProblem(completed_sys, u0, tspan, params)
+
+print("\n\n")
+function prob_func(prob, i, repeat)
+    remake(prob, u0 = rand() * prob.u0)
+    print("Time to remake the problem: ")
+    @ time remake(prob, u0 = rand() * prob.u0)
+end
+
+ensemble_prob = EnsembleProblem(prob, prob_func = prob_func)
+print("Time to make (all the remakes of) the Ensemble Problem: ")
+@time EnsembleProblem(prob, prob_func = prob_func)
+
+sim = solve(ensemble_prob, Rodas4(), EnsembleDistributed(), trajectories = 3)
+print("\nTime to solve the Ensemble Problem: ")
+@time solve(ensemble_prob, Rodas4(), EnsembleDistributed(), trajectories = 3)
+
+plot(sim, idxs = (0,2), linealpha = 1, lw = 3, title = "Umist Ensemble Prob C, C+ some non-zero u0")
+plot!(sim, idxs = (0,9), linealpha = 0.4, lw = 3)
+savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/scripts/TACC/Ensemble1_Umist.png")
 
 
 
 ### Plotting ###
-
+#=
 # Species C and C⁺ (Initial Values: C = 0, C⁺ = 2e-4)
-plot(sol, idxs = (0,2), lw = 3, lc = "blue")
-plot!(sol, idxs = (0,103), lw = 3, lc = "orange", title = "Umist: Abundance of C and C⁺")
-savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/C_and_Cp_Umist.png")
+plot(sol_complete, idxs = (0,2), lw = 3, lc = "blue")
+plot!(sol_complete, idxs = (0,103), lw = 3, lc = "orange", title = "Umist: Abundance of C and C⁺")
+savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/scripts/TACC/C_and_Cp_Umist.png")
 
 # Species CO (Initial Value: CO = 0)
 plot(sol, idxs = (0,10), lw = 3, lc = "green", title = "Umist: Abundance of CO")
-savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/CO_Umist.png")
+#savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/CO_Umist.png")
 
 # Species O (Initial Value: O = 4e-4)
 plot(sol, idxs = (0,18), lw = 3, lc = "blue", title = "Umist: Abundance of O")
-savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/O_Umist.png")
+#savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/O_Umist.png")
 
 # Species He⁺ (Initial Value: He⁺ = 7.866e-7)
 plot(sol, idxs = (0,310), lw = 3, lc = "light pink", title = "Umist: Abundance of He⁺")
-savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/Hep_Umist.png")
+#savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/Hep_Umist.png")
 
 # Species CH and CH2 = CHx (Initial Values: CH = 0, CH2 = 0)
 plot(sol, idxs = (0,7), lw = 3, lc = "blue") # CH
 plot!(sol, idxs = (0,5), lw = 3, lc = "light blue", title = "Umist: Abundance of CHx") # CH2
-savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/CH_and_CH2_Umist.png")
+#savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/CH_and_CH2_Umist.png")
 
 # Species OH, OH+, H2O, H2O+, and O2 = OHx (Initial Values: OH = 0, OH+ = 0, H2O = 0, H2O+ = 0, and O2 = 0)
 plot(sol, idxs = (0,19), lw = 3, lc = "green") # OH
@@ -12931,15 +12974,15 @@ plot!(sol, idxs = (0,234), lw = 3, lc = "dark green") # OH+
 plot!(sol, idxs = (0,11), lw = 3, lc = "blue") # H2O
 plot!(sol, idxs = (0,231), lw = 3, lc = "light blue") # H2O+
 plot!(sol, idxs = (0,17), lw = 3, lc = "orange", title = "Umist: Abundance of OHx") # O2
-savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/OH_OHp_H2O_H2Op_O2_Umist.png")
+#savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/OH_OHp_H2O_H2Op_O2_Umist.png")
 
 # Species H3⁺ (Initial Value: H3⁺ = 9.059e-9)
 plot(sol, idxs = (0,406), lw = 3, lc = "orange", title = "Umist: Abundance of H3⁺")
-savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/H3p_Umist.png")
+#savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/H3p_Umist.png")
 
 # Species HCO⁺
 plot(sol, idxs = (0,65), lw = 3, lc = "orange", title = "Umist: Abundance of HCO⁺")
-savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/HCOp_Umist.png")
+#savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/HCOp_Umist.png")
 
 # Species Mg, Fe, Ca, and Na = M
 # consider including their ions?
@@ -12949,8 +12992,8 @@ plot!(sol, idxs = (0,151), lw = 3, lc = "green") # Fe
 plot!(sol, idxs = (0,152), lw = 3, lc = "light green") # Fe⁺
 plot!(sol, idxs = (0,173), lw = 3, lc = "pink") # Na
 plot!(sol, idxs = (0,174), lw = 3, lc = "light pink", title = "Umist: Abundance of M") # Na⁺
-savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/Mg_Fe_Na_Umist.png")
-
+#savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/Mg_Fe_Na_Umist.png")
+=#
 
 #=
 # Species number 1: C⁻
