@@ -7,7 +7,7 @@
 using Catalyst
 using DifferentialEquations
 using Plots
-using Sundials, LSODA
+using LSODA
 using OrdinaryDiffEq
 using Symbolics
 using DiffEqDevTools
@@ -15,9 +15,7 @@ using ODEInterface, ODEInterfaceDiffEq
 using ModelingToolkit
 
 
-
-
-    # %% Set The timespan, parameters, and initial conditions
+### Set The timespan, parameters, and initial conditions ###
 seconds_per_year = 3600 * 24 * 365
 tspan = (0.0, 30000 * seconds_per_year) # ~30 thousand yrs
 
@@ -44,13 +42,13 @@ u0 = [0.5,    # 1:  H2   yep?
     2.0e-7]   # 14: M    yep
 
 
-    # %% Network admin things
+### Network admin things ###
 #allvars = @strdict params tspan u0
 @variables t 
 @species H2(t) H3⁺(t) e(t) He(t) He⁺(t) C(t) CHx(t) O(t) OHx(t) CO(t) HCO⁺(t) C⁺(t) M⁺(t) M(t)
 @parameters T Av Go n_H shield
 
-    # %% Define the network
+### Define the network ###
 reaction_equations = [
     # Cosmic-ray Ionization
     (@reaction 1.2e-17, H2 --> H3⁺ + e), # H2 --> H3⁺ + e + H
@@ -89,71 +87,102 @@ reaction_equations = [
 ]
 
 
-
 ### Turn the Network into a system of ODEs ###
 @named system = ReactionSystem(reaction_equations, t)
-print("\nCheckpoint 4: Finished creating the reaction system")
+#@named sys = ODESystem(reaction_equations, t) # this doesn't work but I have hope for it one day, see https://github.com/SciML/MethodOfLines.jl/issues/117
+
 sys = convert(ODESystem, complete(system))
-print("\nCheckpoint 5: Finished converting to an ODE System")
-ssys = structural_simplify(sys)
-print("\nCheckpoint 6: Finished Simplifying")
-prob = ODEProblem(ssys, u0, tspan, params)
-print("\nCheckpoint 7: Finished creating the ODE Problem")
-sol = solve(prob, Rodas4())
-#sol = solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-#sol = solve(prob, lsoda(), saveat=1e3)
-print("\nCheckpoint 8: Finished solving with Rodas 4")
-print("\n")
+
+simplified_sys = structural_simplify(sys)
+completed_sys = complete(sys)
+
+prob_simplify = ODEProblem(simplified_sys, u0, tspan, params)
+prob_complete = ODEProblem(completed_sys, u0, tspan, params)
+
+#sol = solve(prob, Rodas4(), saveat=1e11)
+sol_simplify = solve(prob_simplify, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e9)
+sol_complete = solve(prob_complete, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e9)
 
 ### Timing ###
-print("\nNelson:")
+print("\n\nNelson:")
 print("\nTime to convert:")
 @time convert(ODESystem, complete(system))
+
 print("\nTime to simplify:")
 @time structural_simplify(sys)
-print("\nTime to create the simplified problem:")
-@time ODEProblem(ssys, u0, tspan, params)
-print("\nTime to solve the simplified Nelson reaction system with Rodas4(): ")
-@time solve(prob, Rodas4());
+print("Time to complete:")
+@time complete(sys)
 
-### Plotting ###
+print("\nTime to create the simplified problem:")
+@time ODEProblem(simplified_sys, u0, tspan, params)
+print("Time to create the completed problem:")
+@time ODEProblem(completed_sys, u0, tspan, params)
+
+print("\nTime to solve the simplified system with Rodas4(): ")
+@time solve(prob_simplify, Rodas4());
+print("Time to solve the completed system with Rodas4(): ")
+@time solve(prob_complete, Rodas4());
+
+
+### Ensemble Problem ###
+prob = ODEProblem(completed_sys, u0, tspan, params)
+
+print("\n\n")
+function prob_func(prob, i, repeat)
+    remake(prob, u0 = rand() * prob.u0)
+    print("Time to remake the problem:")
+    @time remake(prob, u0 = rand() * prob.u0)
+end
+
+ensemble_prob = EnsembleProblem(prob, prob_func = prob_func)
+sim = solve(ensemble_prob, Rodas4(), EnsembleDistributed(), trajectories = 5)
+
+plot(sim, idxs = (0,6), linealpha = 1, lw = 3, title = "Nelson Catalyst: Ensemble problem for C and C+")
+plot!(sim, idxs = (0,12), linealpha = 0.4, lw = 3)
+
+#=
+### Plotting ### (ordering is off)
+
 # C and C+
 plot(sol, idxs = (0,6), lw = 3, lc = "blue")
 plot!(sol, idxs = (0,12), lw = 3, lc = "orange", title = "Nelson: Abundance of C and C+")
-savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/C_and_Cp_Nelson.png")
-
+#savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/C_and_Cp_Nelson.png")
 
 # CO
 plot(sol, idxs = (0,10), lw = 3, lc = "green", title = "Nelson: Abundance of CO")
-savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/CO_Nelson.png")
+#savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/CO_Nelson.png")
 
 # O 
 plot(sol, idxs = (0,8), lw = 3, lc = "blue", title = "Nelson: Abundance of O")
-savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/O_Nelson.png")
+#savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/O_Nelson.png")
 
 # He+
 plot(sol, idxs = (0,5), lw = 3, lc = "light pink", title = "Nelson: Abundance of He+")
-savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/Hep_Nelson.png")
+#savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/Hep_Nelson.png")
 
 # CH and CH2 = CHx
 plot(sol, idxs = (0,7), lw = 3, lc = "blue", title = "Nelson: CHx")
-savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/CH_and_CH2_Nelson.png")
+#savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/CH_and_CH2_Nelson.png")
 
 # OH, OH+, H2O, H2O+, and O2 = OHx
 plot(sol, idxs = (0,9), lw = 3, lc = "green", title = "Nelson: OHx")
-savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/OH_OHp_H2O_H2Op_O2_Nelson.png")
+#savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/OH_OHp_H2O_H2Op_O2_Nelson.png")
 
 # H3+
 plot(sol, idxs = (0,2), lw = 3, lc = "orange", title = "Nelson")
-savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/H3p_Nelson.png")
+#savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/H3p_Nelson.png")
 
 # HCO+ 
 plot(sol, idxs = (0,11), lw = 3, lc = "orange", title = "Nelson")
-savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/HCOp_Nelson.png")
+#savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/HCOp_Nelson.png")
 
 # M 
 plot(sol, idxs = (0,14), lw = 3, lc = "light blue", title = "Nelson")
-savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/Mg_Fe_Na_Nelson.png")
+#savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/Mg_Fe_Na_Nelson.png")
+
+=#
+
+
 
 
 

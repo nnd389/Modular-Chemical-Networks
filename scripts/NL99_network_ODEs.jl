@@ -1,3 +1,13 @@
+using Catalyst
+using DifferentialEquations
+using Plots
+using Sundials, LSODA
+using OrdinaryDiffEq
+using Symbolics
+using DiffEqDevTools
+using ODEInterface, ODEInterfaceDiffEq
+using ModelingToolkit
+
 #=
 The ODE function defined below models the reduced carbon-oxygen 
 chemistry network of Nelson & Langer (1999, ApJ, 524, 923).
@@ -157,41 +167,61 @@ end
 prob = ODEProblem(NL99_network_odes, u0, tspan, params)
 sol = solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 
+
+
+
+### Ensemble Problem ###
+    
+#prob = ODEProblem((u, p, t) -> 1.01u, 0.5, (0.0, 1.0))
+prob = ODEProblem(NL99_network_odes, u0, tspan, params)
+
+function prob_func(prob, i, repeat)
+    remake(prob, u0 = rand() * prob.u0)
+end
+
+ensemble_prob = EnsembleProblem(prob, prob_func = prob_func)
+sim = solve(ensemble_prob,lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10, EnsembleDistributed(), trajectories = 5)
+#saveat=1e10
+plot(sim, idxs = (0,6), linealpha = 1, lw = 3, title = "Nelson ODEs: Ensemble problem for C and C+")
+plot!(sim, idxs = (0,12), linealpha = 0.4, lw = 3)
+
+
 ### Plotting ###
+#=
 # C and C+
 plot(sol, idxs = (0,6), lw = 3, lc = "blue")
 plot!(sol, idxs = (0,12), lw = 3, lc = "orange", title = "Nelson: Abundance of C and C+")
-savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/C_and_Cp_Nelson.png")
-
+#savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/C_and_Cp_Nelson.png")
 
 # CO
 plot(sol, idxs = (0,10), lw = 3, lc = "green", title = "Nelson: Abundance of CO")
-savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/CO_Nelson.png")
+#savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/CO_Nelson.png")
 
 # O 
 plot(sol, idxs = (0,8), lw = 3, lc = "blue", title = "Nelson: Abundance of O")
-savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/O_Nelson.png")
+#savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/O_Nelson.png")
 
 # He+
 plot(sol, idxs = (0,5), lw = 3, lc = "light pink", title = "Nelson: Abundance of He+")
-savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/Hep_Nelson.png")
+#savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/Hep_Nelson.png")
 
 # CH and CH2 = CHx
 plot(sol, idxs = (0,7), lw = 3, lc = "blue", title = "Nelson: CHx")
-savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/CH_and_CH2_Nelson.png")
+#savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/CH_and_CH2_Nelson.png")
 
 # OH, OH+, H2O, H2O+, and O2 = OHx
 plot(sol, idxs = (0,9), lw = 3, lc = "green", title = "Nelson: OHx")
-savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/OH_OHp_H2O_H2Op_O2_Nelson.png")
+#savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/OH_OHp_H2O_H2Op_O2_Nelson.png")
 
 # H3+
 plot(sol, idxs = (0,2), lw = 3, lc = "orange", title = "Nelson: H3+")
-savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/H3p_Nelson.png")
+#savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/H3p_Nelson.png")
 
 # HCO+ 
 plot(sol, idxs = (0,11), lw = 3, lc = "orange", title = "Nelson: HCO+")
-savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/HCOp_Nelson.png")
+#savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/HCOp_Nelson.png")
 
 # M 
 plot(sol, idxs = (0,14), lw = 3, lc = "light blue", title = "Nelson: M")
-savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/Mg_Fe_Na_Nelson.png")
+#savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/Mg_Fe_Na_Nelson.png")
+=#
