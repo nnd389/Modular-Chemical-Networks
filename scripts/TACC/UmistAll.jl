@@ -12901,24 +12901,24 @@ print("\nTime to solve the simplified 1000 reaction system with Rodas4(): ")
 # Species C and C⁺ (Initial Values: C = 0, C⁺ = 2e-4)
 plot(sol, idxs = (0,2), lw = 3, lc = "blue")
 plot!(sol, idxs = (0,103), lw = 3, lc = "orange", title = "Umist: Abundance of C and C⁺")
-savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/C_and_Cp_Umist.png")
+#savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/C_and_Cp_Umist.png")
 
 # Species CO (Initial Value: CO = 0)
 plot(sol, idxs = (0,10), lw = 3, lc = "green", title = "Umist: Abundance of CO")
-savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/CO_Umist.png")
+#savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/CO_Umist.png")
 
 # Species O (Initial Value: O = 4e-4)
 plot(sol, idxs = (0,18), lw = 3, lc = "blue", title = "Umist: Abundance of O")
-savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/O_Umist.png")
+#savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/O_Umist.png")
 
 # Species He⁺ (Initial Value: He⁺ = 7.866e-7)
 plot(sol, idxs = (0,310), lw = 3, lc = "light pink", title = "Umist: Abundance of He⁺")
-savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/Hep_Umist.png")
+#savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/Hep_Umist.png")
 
 # Species CH and CH2 = CHx (Initial Values: CH = 0, CH2 = 0)
 plot(sol, idxs = (0,7), lw = 3, lc = "blue") # CH
 plot!(sol, idxs = (0,5), lw = 3, lc = "light blue", title = "Umist: Abundance of CHx") # CH2
-savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/CH_and_CH2_Umist.png")
+#savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/CH_and_CH2_Umist.png")
 
 # Species OH, OH+, H2O, H2O+, and O2 = OHx (Initial Values: OH = 0, OH+ = 0, H2O = 0, H2O+ = 0, and O2 = 0)
 plot(sol, idxs = (0,19), lw = 3, lc = "green") # OH
@@ -12926,15 +12926,15 @@ plot!(sol, idxs = (0,234), lw = 3, lc = "dark green") # OH+
 plot!(sol, idxs = (0,11), lw = 3, lc = "blue") # H2O
 plot!(sol, idxs = (0,231), lw = 3, lc = "light blue") # H2O+
 plot!(sol, idxs = (0,17), lw = 3, lc = "orange", title = "Umist: Abundance of OHx") # O2
-savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/OH_OHp_H2O_H2Op_O2_Umist.png")
+#savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/OH_OHp_H2O_H2Op_O2_Umist.png")
 
 # Species H3⁺ (Initial Value: H3⁺ = 9.059e-9)
 plot(sol, idxs = (0,406), lw = 3, lc = "orange", title = "Umist: Abundance of H3⁺")
-savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/H3p_Umist.png")
+#savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/H3p_Umist.png")
 
 # Species HCO⁺
 plot(sol, idxs = (0,65), lw = 3, lc = "orange", title = "Umist: Abundance of HCO⁺")
-savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/HCOp_Umist.png")
+#savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/HCOp_Umist.png")
 
 # Species Mg, Fe, Ca, and Na = M 
 # consider including their ions?
@@ -12944,7 +12944,7 @@ plot!(sol, idxs = (0,151), lw = 3, lc = "green") # Fe
 plot!(sol, idxs = (0,152), lw = 3, lc = "light green") # Fe⁺
 plot!(sol, idxs = (0,173), lw = 3, lc = "pink") # Na
 plot!(sol, idxs = (0,174), lw = 3, lc = "light pink", title = "Umist: Abundance of M") # Na⁺
-savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/Mg_Fe_Na_Umist.png")
+#savefig("/work/10230/ninadlt/ls6/AstroChemNetwork/Modular-Chemical-Networks/plots/Mg_Fe_Na_Umist.png")
 
 
 #=
