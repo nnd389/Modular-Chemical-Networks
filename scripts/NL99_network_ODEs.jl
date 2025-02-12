@@ -164,14 +164,19 @@ du[14] = n_H * (3.8e-10 * u[13] * u[3]) / (T^0.65) -
 
 end
 
+### Create and Solve the ODE and Timing ###
+print("\n\nNelson ODEs:")
+
+print("\nTime to create the ODE problem:")
 prob = ODEProblem(NL99_network_odes, u0, tspan, params)
+@time ODEProblem(NL99_network_odes, u0, tspan, params)
+
+print("Time to solve the problem with lsoda: ")
 sol = solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 
 
-
-
 ### Ensemble Problem ###
-    
+print("\n\nEnsemble timing: ")
 #prob = ODEProblem((u, p, t) -> 1.01u, 0.5, (0.0, 1.0))
 prob = ODEProblem(NL99_network_odes, u0, tspan, params)
 
@@ -179,11 +184,30 @@ function prob_func(prob, i, repeat)
     remake(prob, u0 = rand() * prob.u0)
 end
 
+print("\nTime to make (all the remakes of) the Ensemble Problem:")
 ensemble_prob = EnsembleProblem(prob, prob_func = prob_func)
-sim = solve(ensemble_prob,lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10, EnsembleDistributed(), trajectories = 5)
-#saveat=1e10
+@time EnsembleProblem(prob, prob_func = prob_func)
+
+print("Time to solve the Ensemble Problem")
+@time solve(ensemble_prob,lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10, EnsembleDistributed(), trajectories = 100)
+sim = solve(ensemble_prob,lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10, EnsembleDistributed(), trajectories = 100)
+
 plot(sim, idxs = (0,6), linealpha = 1, lw = 3, title = "Nelson ODEs: Ensemble problem for C and C+")
 plot!(sim, idxs = (0,12), linealpha = 0.4, lw = 3)
+
+
+
+### We're gonna for loop this baddie ###
+print("\n\nFor loop timing: ")
+@time begin
+for i in 1:100
+    u0_rand = rand(14)
+    prob_for = ODEProblem(NL99_network_odes, u0_rand, tspan, params)
+    sol_for = solve(prob_for, Rodas4(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+    #plot!(sol_for, idxs = (0,10), lw = 3, lc = "blue")
+    #plot!(sol_for, idxs = (0,9), lw = 3, lc = "orange", title = "Glover with Glover rates: C and C+")
+end
+end
 
 
 ### Plotting ###

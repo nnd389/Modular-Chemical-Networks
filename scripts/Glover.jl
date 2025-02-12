@@ -107,6 +107,10 @@ n_H = 611 # Nelson has 611
 Av = 2 # Glover Section 2 gives formula: n_H/(1.87e21)
 cr_ion_rate = 6e-18 # I tried 6e-18, DESPOTIC suggests 2.0e-16
 
+# can calculate AV with av = baseav +col_dens / 1.6e21
+# can calculate col_dens
+
+
 params = Dict(
     :T => T,  
     :Te => Te,
@@ -670,61 +674,66 @@ reaction_equations = [
 ]
 
 
-### Turn the Network into a system of ODEs ###
+### Turn the Network into a system of ODEs ----and---- Timing ###
+print("\n\nGlover:")
 @named system = ReactionSystem(reaction_equations, t)
 #@named sys = ODESystem(reaction_equations, t) # this doesn't work but I have hope for it one day, see https://github.com/SciML/MethodOfLines.jl/issues/117
 
-sys = convert(ODESystem, complete(system))
-
-#simplified_sys = structural_simplify(sys)
-completed_sys = complete(sys)
-
-#prob_simplify = ODEProblem(simplified_sys, u0, tspan, params)
-prob_complete = ODEProblem(completed_sys, u0, tspan, params)
-
-#sol_simplify = solve(prob_simplify, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e9)
-sol_complete = solve(prob_complete, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e9)
-
-### Timing ###
-print("\n\nGlover:")
 print("\nTime to convert:")
 @time convert(ODESystem, complete(system))
+sys = convert(ODESystem, complete(system))
 
-#print("\nTime to simplify:")
-#@time structural_simplify(sys)
 print("Time to complete:")
 @time complete(sys)
+completed_sys = complete(sys)
 
-#print("\nTime to create the simplified problem:")
-#@time ODEProblem(simplified_sys, u0, tspan, params)
 print("Time to create the completed problem:")
 @time ODEProblem(completed_sys, u0, tspan, params)
+prob_complete = ODEProblem(completed_sys, u0, tspan, params)
 
-#print("\nTime to solve the simplified system with Rodas4(): ")
-#@time solve(prob_simplify, Rodas4());
 print("Time to solve the completed system with Rodas4(): ")
 @time solve(prob_complete, Rodas4());
+sol_complete = solve(prob_complete, Rodas4(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=10e9)
+
+#plot(sol_complete, idxs = (0,10), lw = 3, lc = "blue")
+#plot!(sol_complete, idxs = (0,9), lw = 3, lc = "orange", title = "Glover with Glover rates: C and C+")
+
 
 ### Ensemble Problem ###
+print("\nEnsemble timing: ")
 prob = ODEProblem(completed_sys, u0, tspan, params)
 
 print("\n\n")
 function prob_func(prob, i, repeat)
     remake(prob, u0 = rand() * prob.u0)
-    #print("Time to remake the problem:")
-    #@time remake(prob, u0 = rand() * prob.u0)
 end
 
-ensemble_prob = EnsembleProblem(prob, prob_func = prob_func)
 print("Time to make (all the remakes of) the Ensemble Problem:")
 @time EnsembleProblem(prob, prob_func = prob_func)
+ensemble_prob = EnsembleProblem(prob, prob_func = prob_func)
 
-sim = solve(ensemble_prob, Rodas4(), EnsembleDistributed(), trajectories = 5)
 print("\nTime to solve the Ensemble Problem")
-@time solve(ensemble_prob, Rodas4(), EnsembleDistributed(), trajectories = 5)
+@time solve(ensemble_prob, Rodas4(), EnsembleDistributed(), trajectories = 10)
+sim = solve(ensemble_prob, Rodas4(), EnsembleDistributed(), trajectories = 10)
 
-plot(sim, idxs = (0,10), linealpha = 1, lw = 3, title = "Glover Catalyst: Ensemble prob C, C+ all non-zero u0")
-plot!(sim, idxs = (0,9), linealpha = 0.4, lw = 3)
+
+plot(sim, idxs = (0,2), linealpha = 1, lw = 3, title = "Glover Catalyst: Ensemble prob C, C+ all non-zero u0")
+#plot!(sim1, idxs = (0,9), linealpha = 0.4, lw = 3)
+
+
+### We're gonna for loop this baddie ###
+print("\nFor loop timing: ")
+@time begin
+for i in 1:10
+    u0_rand = rand(33)
+    prob_for = ODEProblem(completed_sys, u0_rand, tspan, params)
+    sol_for = solve(prob_for, Rodas4(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=10e9)
+    #plot!(sol_for, idxs = (0,10), lw = 3, lc = "blue")
+    #plot!(sol_for, idxs = (0,9), lw = 3, lc = "orange", title = "Glover with Glover rates: C and C+")
+end
+end
+
+
 
 #=
 ### Plotting ###

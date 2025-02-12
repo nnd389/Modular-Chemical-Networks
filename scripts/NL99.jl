@@ -121,9 +121,12 @@ print("Time to create the completed problem:")
 print("\nTime to solve the simplified system with Rodas4(): ")
 @time solve(prob_simplify, Rodas4());
 print("Time to solve the completed system with Rodas4(): ")
-@time solve(prob_complete, Rodas4());
+@time solve(prob_complete, lsoda(), saveat = 1e10);
 
+plot(sol, idxs = (0,6), lw = 3, lc = "blue")
+plot!(sol, idxs = (0,12), lw = 3, lc = "orange", title = "Nelson: Abundance of C and C+")
 
+#=
 ### Ensemble Problem ###
 prob = ODEProblem(completed_sys, u0, tspan, params)
 
@@ -140,7 +143,7 @@ sim = solve(ensemble_prob, lsoda(), saveat = 1e10, EnsembleDistributed(), trajec
 plot(sim, idxs = (0,6), linealpha = 1, lw = 3, title = "Nelson Catalyst: Ensemble problem for C and C+")
 plot!(sim, idxs = (0,12), linealpha = 0.4, lw = 3)
 
-#=
+
 ### Plotting ### (ordering is off)
 
 # C and C+
