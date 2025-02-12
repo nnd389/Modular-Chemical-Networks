@@ -675,7 +675,7 @@ reaction_equations = [
 
 
 ### Turn the Network into a system of ODEs ----and---- Timing ###
-print("\n\nGlover:")
+print("\n\nGlover Catalyst:")
 @named system = ReactionSystem(reaction_equations, t)
 #@named sys = ODESystem(reaction_equations, t) # this doesn't work but I have hope for it one day, see https://github.com/SciML/MethodOfLines.jl/issues/117
 
@@ -703,19 +703,29 @@ sol_complete = solve(prob_complete, Rodas4(), reltol=1.49012e-8, abstol=1.49012e
 print("\nEnsemble timing: ")
 prob = ODEProblem(completed_sys, u0, tspan, params)
 
-print("\n\n")
 function prob_func(prob, i, repeat)
     remake(prob, u0 = rand() * prob.u0)
 end
 
-print("Time to make (all the remakes of) the Ensemble Problem:")
+print("\nTime to make (all the remakes of) the Ensemble Problem:")
 @time EnsembleProblem(prob, prob_func = prob_func)
 ensemble_prob = EnsembleProblem(prob, prob_func = prob_func)
 
-print("\nTime to solve the Ensemble Problem")
-@time solve(ensemble_prob, Rodas4(), EnsembleDistributed(), trajectories = 10)
-sim = solve(ensemble_prob, Rodas4(), EnsembleDistributed(), trajectories = 10)
+print("Time to solve the Ensemble Problem using EnsembleSerial")
+@time solve(ensemble_prob, Rodas4(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10, EnsembleSerial(); trajectories = 100)
+#sim = solve(ensemble_prob,lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10, EnsembleSplitThreads(); trajectories = 100)
 
+print("Time to solve the Ensemble Problem using EnsembleSplitThreads")
+@time solve(ensemble_prob, Rodas4(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10, EnsembleSplitThreads(); trajectories = 100)
+#sim = solve(ensemble_prob,lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10, EnsembleSplitThreads(); trajectories = 100)
+
+print("Time to solve the Ensemble Problem using EnsembleThreads")
+@time solve(ensemble_prob, Rodas4(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=10e9, EnsembleThreads(); trajectories = 100)
+#sim = solve(ensemble_prob, Rodas4(), EnsembleThreads(), trajectories = 100)
+
+print("Time to solve the Ensemble Problem using EnsembleDistributed")
+@time solve(ensemble_prob, Rodas4(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=10e9, EnsembleDistributed(); trajectories = 100)
+#sim = solve(ensemble_prob, Rodas4(), EnsembleThreads(), trajectories = 100)
 
 plot(sim, idxs = (0,2), linealpha = 1, lw = 3, title = "Glover Catalyst: Ensemble prob C, C+ all non-zero u0")
 #plot!(sim1, idxs = (0,9), linealpha = 0.4, lw = 3)
@@ -724,7 +734,7 @@ plot(sim, idxs = (0,2), linealpha = 1, lw = 3, title = "Glover Catalyst: Ensembl
 ### We're gonna for loop this baddie ###
 print("\nFor loop timing: ")
 @time begin
-for i in 1:10
+for i in 1:100
     u0_rand = rand(33)
     prob_for = ODEProblem(completed_sys, u0_rand, tspan, params)
     sol_for = solve(prob_for, Rodas4(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=10e9)

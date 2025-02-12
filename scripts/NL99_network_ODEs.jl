@@ -45,12 +45,27 @@ u0 = [0.5,      # 1:  H2   yep?
       0.0002,   # 12: C+   yep
       2.0e-7,   # 13: M+   yep
       2.0e-7]   # 14: M    yep
-
-params = (10,  # T
+#=
+u0 = [0.5,      # 1:  H2   yep?
+      9.059e-9, # 2:  H3+  yep
+      2.0e-4,   # 3:  e    yep
+      0.1,      # 4:  He   SEE lines 535 NL99
+      7.866e-7, # 5:  He+  yep? should be 2.622e-5
+      0.01,      # 6:  C    yep
+      0.01,      # 7:  CHx  yep
+      0.0004,   # 8:  O    yep
+      0.01,      # 9:  OHx  yep
+      0.01,      # 10: CO   yep
+      0.01,      # 11: HCO+ yep
+      0.0002,   # 12: C+   yep
+      2.0e-7,   # 13: M+   yep
+      2.0e-7]   # 14: M    yep
+=#
+params = [10,  # T
           2,   # Av
           1.7, # Go
           611, # n_H
-          1)   # shield
+          1]   # shield
 #allvars = @strdict params tspan u0
 
 
@@ -168,15 +183,16 @@ end
 print("\n\nNelson ODEs:")
 
 print("\nTime to create the ODE problem:")
-prob = ODEProblem(NL99_network_odes, u0, tspan, params)
 @time ODEProblem(NL99_network_odes, u0, tspan, params)
+prob = ODEProblem(NL99_network_odes, u0, tspan, params)
 
 print("Time to solve the problem with lsoda: ")
+@time solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 sol = solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 
 
 ### Ensemble Problem ###
-print("\n\nEnsemble timing: ")
+print("\nEnsemble timing: ")
 #prob = ODEProblem((u, p, t) -> 1.01u, 0.5, (0.0, 1.0))
 prob = ODEProblem(NL99_network_odes, u0, tspan, params)
 
@@ -185,20 +201,33 @@ function prob_func(prob, i, repeat)
 end
 
 print("\nTime to make (all the remakes of) the Ensemble Problem:")
-ensemble_prob = EnsembleProblem(prob, prob_func = prob_func)
 @time EnsembleProblem(prob, prob_func = prob_func)
+ensemble_prob = EnsembleProblem(prob, prob_func = prob_func)
 
-print("Time to solve the Ensemble Problem")
+print("Time to solve the Ensemble Problem using EnsembleSerial")
+@time solve(ensemble_prob,lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10, EnsembleSerial(); trajectories = 100)
+#sim = solve(ensemble_prob,lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10, EnsembleSplitThreads(); trajectories = 100)
+
+print("Time to solve the Ensemble Problem using EnsembleSplitThreads")
+@time solve(ensemble_prob,lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10, EnsembleSplitThreads(); trajectories = 100)
+#sim = solve(ensemble_prob,lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10, EnsembleSplitThreads(); trajectories = 100)
+
+print("Time to solve the Ensemble Problem using EnsembleThreads")
+@time solve(ensemble_prob,lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10, EnsembleThreads(); trajectories = 100)
+#sim = solve(ensemble_prob,lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10, EnsembleThreads(); trajectories = 100)
+
+print("Time to solve the Ensemble Problem using EnsembleDistributed")
 @time solve(ensemble_prob,lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10, EnsembleDistributed(), trajectories = 100)
-sim = solve(ensemble_prob,lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10, EnsembleDistributed(), trajectories = 100)
+#sim = solve(ensemble_prob,lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10, EnsembleDistributed(), trajectories = 100)
 
-plot(sim, idxs = (0,6), linealpha = 1, lw = 3, title = "Nelson ODEs: Ensemble problem for C and C+")
-plot!(sim, idxs = (0,12), linealpha = 0.4, lw = 3)
+#plot(sim, idxs = (0,6), linealpha = 1, lw = 3, title = "Nelson ODEs: Ensemble problem for C and C+")
+#plot!(sim, idxs = (0,12), linealpha = 0.4, lw = 3)
 
 
 
-### We're gonna for loop this baddie ###
-print("\n\nFor loop timing: ")
+### We're gonna for loop and GPU this baddie###
+# CAUTION! The second for loop always runs faster than the first regardless for some reason, I think it has to do with setting up the @time macro?
+print("\nFor loop timing: ")
 @time begin
 for i in 1:100
     u0_rand = rand(14)
@@ -208,6 +237,20 @@ for i in 1:100
     #plot!(sol_for, idxs = (0,9), lw = 3, lc = "orange", title = "Glover with Glover rates: C and C+")
 end
 end
+
+#My computer doesnt have a cuda gpu
+#=
+print("For loop timing with GPU: ")
+@time begin
+for i in 1:100
+    u0_rand = rand(14)
+    prob_for = ODEProblem(NL99_network_odes, u0_rand, tspan, params)
+    sol_for = solve(prob_for, Rodas4(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+    #plot!(sol_for, idxs = (0,10), lw = 3, lc = "blue")
+    #plot!(sol_for, idxs = (0,9), lw = 3, lc = "orange", title = "Glover with Glover rates: C and C+")
+end
+end
+=#
 
 
 ### Plotting ###

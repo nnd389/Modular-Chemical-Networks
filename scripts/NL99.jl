@@ -87,63 +87,82 @@ reaction_equations = [
 ]
 
 
-### Turn the Network into a system of ODEs ###
+### Turn the Network into a system of ODEs and Timing ###
+print("\n\nNelson Catalyst:")
 @named system = ReactionSystem(reaction_equations, t)
 #@named sys = ODESystem(reaction_equations, t) # this doesn't work but I have hope for it one day, see https://github.com/SciML/MethodOfLines.jl/issues/117
 
-sys = convert(ODESystem, complete(system))
-
-simplified_sys = structural_simplify(sys)
-completed_sys = complete(sys)
-
-prob_simplify = ODEProblem(simplified_sys, u0, tspan, params)
-prob_complete = ODEProblem(completed_sys, u0, tspan, params)
-
-#sol = solve(prob, Rodas4(), saveat=1e11)
-sol_simplify = solve(prob_simplify, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e9)
-sol_complete = solve(prob_complete, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e9)
-
-### Timing ###
-print("\n\nNelson:")
 print("\nTime to convert:")
 @time convert(ODESystem, complete(system))
+sys = convert(ODESystem, complete(system))
 
-print("\nTime to simplify:")
-@time structural_simplify(sys)
+#print("Time to simplify:")
+#@time complete(sys)
+#simplified_sys = complete(sys)
 print("Time to complete:")
 @time complete(sys)
+completed_sys = complete(sys)
 
-print("\nTime to create the simplified problem:")
-@time ODEProblem(simplified_sys, u0, tspan, params)
+
 print("Time to create the completed problem:")
 @time ODEProblem(completed_sys, u0, tspan, params)
+prob_complete = ODEProblem(completed_sys, u0, tspan, params)
 
-print("\nTime to solve the simplified system with Rodas4(): ")
-@time solve(prob_simplify, Rodas4());
 print("Time to solve the completed system with Rodas4(): ")
 @time solve(prob_complete, lsoda(), saveat = 1e10);
+sol_complete = solve(prob_complete, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e9)
 
-plot(sol, idxs = (0,6), lw = 3, lc = "blue")
-plot!(sol, idxs = (0,12), lw = 3, lc = "orange", title = "Nelson: Abundance of C and C+")
+#plot(sol, idxs = (0,6), lw = 3, lc = "blue")
+#plot!(sol, idxs = (0,12), lw = 3, lc = "orange", title = "Nelson: Abundance of C and C+")
 
-#=
+
 ### Ensemble Problem ###
+print("\nEnsemble timing: ")
 prob = ODEProblem(completed_sys, u0, tspan, params)
+#prob = ODEProblem(simplified_sys, u0, tspan, params)
 
-print("\n\n")
 function prob_func(prob, i, repeat)
     remake(prob, u0 = rand() * prob.u0)
-    print("Time to remake the problem:")
-    @time remake(prob, u0 = rand() * prob.u0)
 end
 
+print("\nTime to make (all the remakes of) the Ensemble Problem:")
+@time EnsembleProblem(prob, prob_func = prob_func)
 ensemble_prob = EnsembleProblem(prob, prob_func = prob_func)
-sim = solve(ensemble_prob, lsoda(), saveat = 1e10, EnsembleDistributed(), trajectories = 5)
 
-plot(sim, idxs = (0,6), linealpha = 1, lw = 3, title = "Nelson Catalyst: Ensemble problem for C and C+")
-plot!(sim, idxs = (0,12), linealpha = 0.4, lw = 3)
+print("Time to solve the Ensemble Problem using EnsembleSerial")
+@time solve(ensemble_prob,lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10, EnsembleSerial(); trajectories = 100)
+#sim = solve(ensemble_prob,lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10, EnsembleSplitThreads(); trajectories = 100)
+
+print("Time to solve the Ensemble Problem using EnsembleSplitThreads")
+@time solve(ensemble_prob,lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10, EnsembleSplitThreads(); trajectories = 100)
+#sim = solve(ensemble_prob,lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10, EnsembleSplitThreads(); trajectories = 100)
+
+print("Time to solve the Ensemble Problem using EnsembleThreads")
+@time solve(ensemble_prob,lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10, EnsembleThreads(); trajectories = 100)
+#sim = solve(ensemble_prob,lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10, EnsembleThreads(); trajectories = 100)
+
+print("Time to solve the Ensemble Problem using EnsembleDistributed")
+@time solve(ensemble_prob,lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10, EnsembleDistributed(), trajectories = 100)
+#sim = solve(ensemble_prob,lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10, EnsembleDistributed(), trajectories = 100)
+
+#plot(sim, idxs = (0,6), linealpha = 1, lw = 3, title = "Nelson Catalyst: Ensemble problem for C and C+")
+#plot!(sim, idxs = (0,12), linealpha = 0.4, lw = 3)
 
 
+### We're gonna for loop and GPU this baddie###
+# CAUTION! The second for loop always runs faster than the first regardless for some reason, I think it has to do with setting up the @time macro?
+print("\nFor loop timing: ")
+@time begin
+for i in 1:100
+    u0_rand = rand(14)
+    prob_complete_for = ODEProblem(completed_sys, u0_rand, tspan, params)
+    sol_complete_for = solve(prob_complete_for, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e9)
+    #plot!(sol_for, idxs = (0,10), lw = 3, lc = "blue")
+    #plot!(sol_for, idxs = (0,9), lw = 3, lc = "orange", title = "Glover with Glover rates: C and C+")
+end
+end
+
+#=
 ### Plotting ### (ordering is off)
 
 # C and C+
