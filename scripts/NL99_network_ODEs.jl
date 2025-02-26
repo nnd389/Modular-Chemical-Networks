@@ -45,22 +45,7 @@ u0 = [0.5,      # 1:  H2   yep?
       0.0002,   # 12: C+   yep
       2.0e-7,   # 13: M+   yep
       2.0e-7]   # 14: M    yep
-#=
-u0 = [0.5,      # 1:  H2   yep?
-      9.059e-9, # 2:  H3+  yep
-      2.0e-4,   # 3:  e    yep
-      0.1,      # 4:  He   SEE lines 535 NL99
-      7.866e-7, # 5:  He+  yep? should be 2.622e-5
-      0.01,      # 6:  C    yep
-      0.01,      # 7:  CHx  yep
-      0.0004,   # 8:  O    yep
-      0.01,      # 9:  OHx  yep
-      0.01,      # 10: CO   yep
-      0.01,      # 11: HCO+ yep
-      0.0002,   # 12: C+   yep
-      2.0e-7,   # 13: M+   yep
-      2.0e-7]   # 14: M    yep
-=#
+
 params = [10,  # T
           2,   # Av
           1.7, # Go
@@ -182,20 +167,85 @@ end
 ### Create and Solve the ODE and Timing ###
 print("\n\nNelson ODEs:")
 
-print("\nTime to create the ODE problem:")
-@time ODEProblem(NL99_network_odes, u0, tspan, params)
+#print("\nTime to create the ODE problem:")
+#@time ODEProblem(NL99_network_odes, u0, tspan, params)
 prob = ODEProblem(NL99_network_odes, u0, tspan, params)
 
-print("Time to solve the problem with lsoda: ")
+print("\nTime to solve Nelson ONCE with lsoda: ")
+@time solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 @time solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 sol = solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+num_runs = 100
+
+
+
+
+
+
+### We're gonna for loop and CPU this baddie###
+# CAUTION! The second for loop always runs faster than the first regardless for some reason, I think it has to do with setting up the @time macro?
+print("\nFor loop timing for ", num_runs, " runs: ")
+@time begin
+    for i in 1:num_runs
+        u0_rand = rand(Float32,14) .* u0
+        prob_for = ODEProblem(NL99_network_odes, u0_rand, tspan, params)
+        sol_for = solve(prob_for, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+    end
+end
+@time begin
+    for i in 1:num_runs
+        u0_rand = rand(Float32,14) .* u0
+        prob_for = ODEProblem(NL99_network_odes, u0_rand, tspan, params)
+        sol_for = solve(prob_for, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+    end
+end
+@time begin
+    for i in 1:num_runs
+        u0_rand = rand(Float32,14) .* u0
+        prob_for = ODEProblem(NL99_network_odes, u0_rand, tspan, params)
+        sol_for = solve(prob_for, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+    end
+end
+@time begin
+    for i in 1:num_runs
+        u0_rand = rand(Float32,14) .* u0
+        prob_for = ODEProblem(NL99_network_odes, u0_rand, tspan, params)
+        sol_for = solve(prob_for, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+    end
+end
+@time begin
+    for i in 1:num_runs
+        u0_rand = rand(Float32,14) .* u0
+        prob_for = ODEProblem(NL99_network_odes, u0_rand, tspan, params)
+        sol_for = solve(prob_for, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+    end
+end
+
+
+
+
 
 
 ### Ensemble Problem ###
-print("\nEnsemble timing: ")
-#prob = ODEProblem((u, p, t) -> 1.01u, 0.5, (0.0, 1.0))
-prob = ODEProblem(NL99_network_odes, u0, tspan, params)
+tspan_ens = (0.0f0, 946080000000.0f0) # ~30 thousand yrs
+prob_ens = ODEProblem(NL99_network_odes, u0, tspan_ens, params)
+prob_func_nelson = (prob_ens, i, repeat) -> remake(prob_ens, u0 = rand(Float32,14) .* u0)
+monteprob_nelson = EnsembleProblem(prob, prob_func = prob_func_nelson, safetycopy = false);
+sol_ensemble = solve(monteprob_nelson, lsoda(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=10000000000.0f0)
+print("\nEnsemble Timing to solve ", num_runs, " random Lorenz systems on CPUs:")
+@time solve(monteprob_nelson, lsoda(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, lsoda(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, lsoda(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, lsoda(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, lsoda(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 
+
+
+
+
+#=
 function prob_func(prob, i, repeat)
     remake(prob, u0 = rand() * prob.u0)
 end
@@ -222,35 +272,16 @@ print("Time to solve the Ensemble Problem using EnsembleDistributed")
 
 #plot(sim, idxs = (0,6), linealpha = 1, lw = 3, title = "Nelson ODEs: Ensemble problem for C and C+")
 #plot!(sim, idxs = (0,12), linealpha = 0.4, lw = 3)
-
-
-
-### We're gonna for loop and GPU this baddie###
-# CAUTION! The second for loop always runs faster than the first regardless for some reason, I think it has to do with setting up the @time macro?
-print("\nFor loop timing: ")
-@time begin
-for i in 1:100
-    u0_rand = rand(14)
-    prob_for = ODEProblem(NL99_network_odes, u0_rand, tspan, params)
-    sol_for = solve(prob_for, Rodas4(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-    #plot!(sol_for, idxs = (0,10), lw = 3, lc = "blue")
-    #plot!(sol_for, idxs = (0,9), lw = 3, lc = "orange", title = "Glover with Glover rates: C and C+")
-end
-end
-
-#My computer doesnt have a cuda gpu
-#=
-print("For loop timing with GPU: ")
-@time begin
-for i in 1:100
-    u0_rand = rand(14)
-    prob_for = ODEProblem(NL99_network_odes, u0_rand, tspan, params)
-    sol_for = solve(prob_for, Rodas4(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-    #plot!(sol_for, idxs = (0,10), lw = 3, lc = "blue")
-    #plot!(sol_for, idxs = (0,9), lw = 3, lc = "orange", title = "Glover with Glover rates: C and C+")
-end
-end
 =#
+
+
+
+
+
+
+
+
+
 
 
 ### Plotting ###
