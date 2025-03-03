@@ -1,0 +1,443 @@
+Initial Conditions done!Parameters done!
+(i is:125) Tempurature below the tempurature range [88, 494] for reaction number 125
+(i is:134) Tempurature below the tempurature range [1340, 41000] for reaction number 134
+(i is:135) Tempurature below the tempurature range [2803, 41000] for reaction number 135
+(i is:136) Tempurature below the tempurature range [1763, 41000] for reaction number 136
+(i is:137) Tempurature below the tempurature range [20, 41000] for reaction number 137
+(i is:138) Tempurature below the tempurature range [1743, 41000] for reaction number 138
+(i is:139) Tempurature below the tempurature range [1696, 41000] for reaction number 139
+(i is:140) Tempurature below the tempurature range [3400, 41000] for reaction number 140
+(i is:141) Tempurature below the tempurature range [1340, 41000] for reaction number 141
+(i is:142) Tempurature below the tempurature range [1833, 41000] for reaction number 142
+(i is:143) Tempurature below the tempurature range [1763, 41000] for reaction number 143
+(i is:144) Tempurature below the tempurature range [1743, 41000] for reaction number 144
+(i is:145) Tempurature below the tempurature range [1696, 41000] for reaction number 145
+(i is:146) Tempurature below the tempurature range [200, 700] for reaction number 146
+(i is:388) Tempurature below the tempurature range [205, 565] for reaction number 388
+(i is:393) Tempurature below the tempurature range [200, 520] for reaction number 393
+(i is:653) Tempurature below the tempurature range [2000, 10000] for reaction number 653
+(i is:667) Tempurature below the tempurature range [200, 700] for reaction number 667
+(i is:1004) Tempurature below the tempurature range [50, 1000] for reaction number 1004
+(i is:1005) Tempurature below the tempurature range [50, 1000] for reaction number 1005
+(i is:1006) Tempurature below the tempurature range [50, 1000] for reaction number 1006
+(i is:1007) Tempurature below the tempurature range [50, 1000] for reaction number 1007
+(i is:1008) Tempurature below the tempurature range [50, 1000] for reaction number 1008
+(i is:1009) Tempurature below the tempurature range [50, 1000] for reaction number 1009
+(i is:1409) Tempurature below the tempurature range [12, 12400] for reaction number 1409
+(i is:1410) Tempurature below the tempurature range [12, 12400] for reaction number 1410
+(i is:1944) Tempurature below the tempurature range [298, 299] for reaction number 1944
+(i is:2334) Tempurature below the tempurature range [298, 299] for reaction number 2334
+(i is:2504) Tempurature below the tempurature range [200, 520] for reaction number 2504
+(i is:2618) Tempurature below the tempurature range [154, 3000] for reaction number 2618
+(i is:2628) Tempurature below the tempurature range [66, 300] for reaction number 2628
+(i is:2652) Tempurature below the tempurature range [15, 41000] for reaction number 2652
+(i is:2659) Tempurature below the tempurature range [80, 510] for reaction number 2659
+(i is:2663) Tempurature below the tempurature range [96, 300] for reaction number 2663
+(i is:2673) Tempurature below the tempurature range [80, 510] for reaction number 2673
+(i is:2676) Tempurature below the tempurature range [212, 300] for reaction number 2676
+(i is:2688) Tempurature below the tempurature range [80, 300] for reaction number 2688
+(i is:2690) Tempurature below the tempurature range [328, 41000] for reaction number 2690
+(i is:2763) Tempurature below the tempurature range [200, 520] for reaction number 2763
+(i is:2924) Tempurature below the tempurature range [200, 520] for reaction number 2924
+(i is:3056) Tempurature below the tempurature range [236, 300] for reaction number 3056
+(i is:3057) Tempurature below the tempurature range [352, 41000] for reaction number 3057
+(i is:3097) Tempurature below the tempurature range [205, 565] for reaction number 3097
+(i is:3864) Tempurature below the tempurature range [205, 565] for reaction number 3864
+(i is:3865) Tempurature below the tempurature range [20, 5565] for reaction number 3865
+(i is:3867) Tempurature below the tempurature range [23, 41000] for reaction number 3867
+(i is:5087) Tempurature below the tempurature range [24, 300] for reaction number 5087
+(i is:5088) Tempurature below the tempurature range [24, 300] for reaction number 5088
+(i is:5089) Tempurature below the tempurature range [24, 300] for reaction number 5089
+(i is:5090) Tempurature below the tempurature range [77, 296] for reaction number 5090
+(i is:5091) Tempurature below the tempurature range [24, 300] for reaction number 5091
+(i is:5093) Tempurature below the tempurature range [90, 200] for reaction number 5093
+(i is:5094) Tempurature below the tempurature range [298, 1300] for reaction number 5094
+(i is:5097) Tempurature below the tempurature range [39, 300] for reaction number 5097
+(i is:5098) Tempurature below the tempurature range [1100, 1500] for reaction number 5098
+(i is:5099) Tempurature below the tempurature range [15, 300] for reaction number 5099
+(i is:5101) Tempurature below the tempurature range [200, 362] for reaction number 5101
+(i is:5102) Tempurature below the tempurature range [300, 3500] for reaction number 5102
+(i is:5103) Tempurature below the tempurature range [300, 1330] for reaction number 5103
+(i is:5104) Tempurature below the tempurature range [39, 300] for reaction number 5104
+(i is:5105) Tempurature below the tempurature range [15, 300] for reaction number 5105
+(i is:5106) Tempurature below the tempurature range [150, 3000] for reaction number 5106
+(i is:5107) Tempurature below the tempurature range [150, 3000] for reaction number 5107
+(i is:5108) Tempurature below the tempurature range [15, 2000] for reaction number 5108
+(i is:5116) Tempurature below the tempurature range [15, 295] for reaction number 5116
+(i is:5119) Tempurature below the tempurature range [297, 360] for reaction number 5119
+(i is:5129) Tempurature below the tempurature range [15, 300] for reaction number 5129
+(i is:5130) Tempurature below the tempurature range [15, 300] for reaction number 5130
+(i is:5132) Tempurature below the tempurature range [15, 300] for reaction number 5132
+(i is:5163) Tempurature below the tempurature range [1000, 4000] for reaction number 5163
+(i is:5174) Tempurature below the tempurature range [603, 41000] for reaction number 5174
+(i is:5175) Tempurature below the tempurature range [1934, 41000] for reaction number 5175
+(i is:5176) Tempurature below the tempurature range [681, 41000] for reaction number 5176
+(i is:5184) Tempurature below the tempurature range [196, 300] for reaction number 5184
+(i is:5185) Tempurature below the tempurature range [2000, 5000] for reaction number 5185
+(i is:5186) Tempurature below the tempurature range [300, 300] for reaction number 5186
+(i is:5189) Tempurature below the tempurature range [1000, 4000] for reaction number 5189
+(i is:5191) Tempurature below the tempurature range [133, 300] for reaction number 5191
+(i is:5194) Tempurature below the tempurature range [133, 300] for reaction number 5194
+(i is:5200) Tempurature below the tempurature range [493, 41000] for reaction number 5200
+(i is:5209) Tempurature below the tempurature range [200, 1000] for reaction number 5209
+(i is:5210) Tempurature below the tempurature range [200, 1000] for reaction number 5210
+(i is:5211) Tempurature below the tempurature range [1100, 2720] for reaction number 5211
+(i is:5212) Tempurature below the tempurature range [300, 3000] for reaction number 5212
+(i is:5213) Tempurature below the tempurature range [1600, 2300] for reaction number 5213
+(i is:5214) Tempurature below the tempurature range [300, 2500] for reaction number 5214
+(i is:5215) Tempurature below the tempurature range [296, 2500] for reaction number 5215
+(i is:5216) Tempurature below the tempurature range [83, 300] for reaction number 5216
+(i is:5217) Tempurature below the tempurature range [109, 300] for reaction number 5217
+(i is:5220) Tempurature below the tempurature range [1500, 2000] for reaction number 5220
+(i is:5221) Tempurature below the tempurature range [295, 295] for reaction number 5221
+(i is:5222) Tempurature below the tempurature range [116, 300] for reaction number 5222
+(i is:5223) Tempurature below the tempurature range [300, 2000] for reaction number 5223
+(i is:5226) Tempurature below the tempurature range [1000, 1828] for reaction number 5226
+(i is:5227) Tempurature below the tempurature range [1000, 1828] for reaction number 5227
+(i is:5228) Tempurature below the tempurature range [1000, 1828] for reaction number 5228
+(i is:5229) Tempurature below the tempurature range [1000, 1828] for reaction number 5229
+(i is:5230) Tempurature below the tempurature range [300, 2500] for reaction number 5230
+(i is:5231) Tempurature below the tempurature range [1900, 2600] for reaction number 5231
+(i is:5233) Tempurature below the tempurature range [1200, 1812] for reaction number 5233
+(i is:5234) Tempurature below the tempurature range [1900, 2300] for reaction number 5234
+(i is:5236) Tempurature below the tempurature range [100, 300] for reaction number 5236
+(i is:5237) Tempurature below the tempurature range [100, 300] for reaction number 5237
+(i is:5241) Tempurature below the tempurature range [39, 300] for reaction number 5241
+(i is:5242) Tempurature below the tempurature range [39, 300] for reaction number 5242
+(i is:5243) Tempurature below the tempurature range [1300, 2000] for reaction number 5243
+(i is:5244) Tempurature below the tempurature range [300, 900] for reaction number 5244
+(i is:5245) Tempurature below the tempurature range [300, 2651] for reaction number 5245
+(i is:5246) Tempurature below the tempurature range [200, 3000] for reaction number 5246
+(i is:5247) Tempurature below the tempurature range [1950, 2300] for reaction number 5247
+(i is:5248) Tempurature below the tempurature range [50, 300] for reaction number 5248
+(i is:5249) Tempurature below the tempurature range [300, 2500] for reaction number 5249
+(i is:5250) Tempurature below the tempurature range [300, 3000] for reaction number 5250
+(i is:5251) Tempurature below the tempurature range [300, 2500] for reaction number 5251
+(i is:5252) Tempurature below the tempurature range [300, 2500] for reaction number 5252
+(i is:5254) Tempurature below the tempurature range [300, 2000] for reaction number 5254
+(i is:5255) Tempurature below the tempurature range [300, 2500] for reaction number 5255
+(i is:5256) Tempurature below the tempurature range [298, 298] for reaction number 5256
+(i is:5257) Tempurature below the tempurature range [1100, 2080] for reaction number 5257
+(i is:5258) Tempurature below the tempurature range [298, 3000] for reaction number 5258
+(i is:5259) Tempurature below the tempurature range [1700, 2000] for reaction number 5259
+(i is:5260) Tempurature below the tempurature range [1165, 41000] for reaction number 5260
+(i is:5262) Tempurature below the tempurature range [354, 925] for reaction number 5262
+(i is:5264) Tempurature below the tempurature range [298, 2500] for reaction number 5264
+(i is:5265) Tempurature below the tempurature range [700, 700] for reaction number 5265
+(i is:5266) Tempurature below the tempurature range [300, 1000] for reaction number 5266
+(i is:5269) Tempurature below the tempurature range [39, 300] for reaction number 5269
+(i is:5270) Tempurature below the tempurature range [39, 300] for reaction number 5270
+(i is:5271) Tempurature below the tempurature range [39, 300] for reaction number 5271
+(i is:5272) Tempurature below the tempurature range [39, 300] for reaction number 5272
+(i is:5273) Tempurature below the tempurature range [39, 300] for reaction number 5273
+(i is:5274) Tempurature below the tempurature range [58, 293] for reaction number 5274
+(i is:5275) Tempurature below the tempurature range [58, 293] for reaction number 5275
+(i is:5277) Tempurature below the tempurature range [160, 2500] for reaction number 5277
+(i is:5278) Tempurature below the tempurature range [300, 2500] for reaction number 5278
+(i is:5279) Tempurature below the tempurature range [178, 3000] for reaction number 5279
+(i is:5280) Tempurature below the tempurature range [1140, 1480] for reaction number 5280
+(i is:5281) Tempurature below the tempurature range [23, 710] for reaction number 5281
+(i is:5282) Tempurature below the tempurature range [23, 700] for reaction number 5282
+(i is:5283) Tempurature below the tempurature range [23, 726] for reaction number 5283
+(i is:5284) Tempurature below the tempurature range [23, 726] for reaction number 5284
+(i is:5285) Tempurature below the tempurature range [77, 170] for reaction number 5285
+(i is:5287) Tempurature below the tempurature range [23, 700] for reaction number 5287
+(i is:5288) Tempurature below the tempurature range [23, 700] for reaction number 5288
+(i is:5289) Tempurature below the tempurature range [15, 300] for reaction number 5289
+(i is:5290) Tempurature below the tempurature range [15, 300] for reaction number 5290
+(i is:5291) Tempurature below the tempurature range [298, 753] for reaction number 5291
+(i is:5292) Tempurature below the tempurature range [23, 300] for reaction number 5292
+(i is:5293) Tempurature below the tempurature range [100, 300] for reaction number 5293
+(i is:5294) Tempurature below the tempurature range [66, 300] for reaction number 5294
+(i is:5295) Tempurature below the tempurature range [16, 300] for reaction number 5295
+(i is:5297) Tempurature below the tempurature range [1000, 4000] for reaction number 5297
+(i is:5298) Tempurature below the tempurature range [222, 584] for reaction number 5298
+(i is:5299) Tempurature below the tempurature range [990, 1100] for reaction number 5299
+(i is:5300) Tempurature below the tempurature range [23, 1300] for reaction number 5300
+(i is:5301) Tempurature below the tempurature range [13, 708] for reaction number 5301
+(i is:5302) Tempurature below the tempurature range [13, 708] for reaction number 5302
+(i is:5303) Tempurature below the tempurature range [13, 708] for reaction number 5303
+(i is:5308) Tempurature below the tempurature range [100, 300] for reaction number 5308
+(i is:5309) Tempurature below the tempurature range [251, 300] for reaction number 5309
+(i is:5313) Tempurature below the tempurature range [166, 300] for reaction number 5313
+(i is:5315) Tempurature below the tempurature range [133, 300] for reaction number 5315
+(i is:5319) Tempurature below the tempurature range [25, 2500] for reaction number 5319
+(i is:5320) Tempurature below the tempurature range [300, 2500] for reaction number 5320
+(i is:5325) Tempurature below the tempurature range [185, 1140] for reaction number 5325
+(i is:5327) Tempurature below the tempurature range [3800, 7000] for reaction number 5327
+(i is:5328) Tempurature below the tempurature range [297, 2500] for reaction number 5328
+(i is:5330) Tempurature below the tempurature range [300, 2500] for reaction number 5330
+(i is:5334) Tempurature below the tempurature range [297, 2500] for reaction number 5334
+(i is:5335) Tempurature below the tempurature range [300, 1500] for reaction number 5335
+(i is:5336) Tempurature below the tempurature range [500, 4430] for reaction number 5336
+(i is:5337) Tempurature below the tempurature range [13, 1565] for reaction number 5337
+(i is:5338) Tempurature below the tempurature range [13, 4526] for reaction number 5338
+(i is:5339) Tempurature below the tempurature range [1067, 41000] for reaction number 5339
+(i is:5340) Tempurature below the tempurature range [296, 296] for reaction number 5340
+(i is:5342) Tempurature below the tempurature range [300, 2500] for reaction number 5342
+(i is:5343) Tempurature below the tempurature range [300, 2500] for reaction number 5343
+(i is:5344) Tempurature below the tempurature range [300, 6000] for reaction number 5344
+(i is:5345) Tempurature below the tempurature range [250, 2500] for reaction number 5345
+(i is:5346) Tempurature below the tempurature range [354, 2939] for reaction number 5346
+(i is:5347) Tempurature below the tempurature range [220, 2200] for reaction number 5347
+(i is:5348) Tempurature below the tempurature range [300, 2500] for reaction number 5348
+(i is:5349) Tempurature below the tempurature range [300, 2500] for reaction number 5349
+(i is:5350) Tempurature below the tempurature range [300, 2500] for reaction number 5350
+(i is:5351) Tempurature below the tempurature range [300, 2500] for reaction number 5351
+(i is:5352) Tempurature below the tempurature range [200, 3500] for reaction number 5352
+(i is:5353) Tempurature below the tempurature range [160, 765] for reaction number 5353
+(i is:5354) Tempurature below the tempurature range [268, 300] for reaction number 5354
+(i is:5355) Tempurature below the tempurature range [1600, 2850] for reaction number 5355
+(i is:5356) Tempurature below the tempurature range [200, 2500] for reaction number 5356
+(i is:5357) Tempurature below the tempurature range [2601, 2788] for reaction number 5357
+(i is:5358) Tempurature below the tempurature range [300, 2500] for reaction number 5358
+(i is:5359) Tempurature below the tempurature range [300, 2500] for reaction number 5359
+(i is:5360) Tempurature below the tempurature range [300, 2500] for reaction number 5360
+(i is:5361) Tempurature below the tempurature range [297, 3532] for reaction number 5361
+(i is:5362) Tempurature below the tempurature range [250, 2581] for reaction number 5362
+(i is:5363) Tempurature below the tempurature range [910, 3137] for reaction number 5363
+(i is:5364) Tempurature below the tempurature range [300, 2500] for reaction number 5364
+(i is:5365) Tempurature below the tempurature range [240, 380] for reaction number 5365
+(i is:5366) Tempurature below the tempurature range [300, 1000] for reaction number 5366
+(i is:5367) Tempurature below the tempurature range [1015, 41000] for reaction number 5367
+(i is:5368) Tempurature below the tempurature range [295, 6920] for reaction number 5368
+(i is:5369) Tempurature below the tempurature range [300, 2500] for reaction number 5369
+(i is:5371) Tempurature below the tempurature range [200, 2000] for reaction number 5371
+(i is:5372) Tempurature below the tempurature range [300, 2500] for reaction number 5372
+(i is:5373) Tempurature below the tempurature range [300, 2500] for reaction number 5373
+(i is:5374) Tempurature below the tempurature range [300, 2000] for reaction number 5374
+(i is:5376) Tempurature below the tempurature range [300, 15223] for reaction number 5376
+(i is:5377) Tempurature below the tempurature range [2590, 41000] for reaction number 5377
+(i is:5379) Tempurature below the tempurature range [250, 5000] for reaction number 5379
+(i is:5380) Tempurature below the tempurature range [300, 2500] for reaction number 5380
+(i is:5381) Tempurature below the tempurature range [300, 2500] for reaction number 5381
+(i is:5382) Tempurature below the tempurature range [250, 3000] for reaction number 5382
+(i is:5383) Tempurature below the tempurature range [190, 2560] for reaction number 5383
+(i is:5384) Tempurature below the tempurature range [300, 2500] for reaction number 5384
+(i is:5385) Tempurature below the tempurature range [200, 2500] for reaction number 5385
+(i is:5386) Tempurature below the tempurature range [1200, 1812] for reaction number 5386
+(i is:5389) Tempurature below the tempurature range [550, 3000] for reaction number 5389
+(i is:5390) Tempurature below the tempurature range [200, 3000] for reaction number 5390
+(i is:5391) Tempurature below the tempurature range [350, 3000] for reaction number 5391
+(i is:5392) Tempurature below the tempurature range [300, 2500] for reaction number 5392
+(i is:5393) Tempurature below the tempurature range [300, 4000] for reaction number 5393
+(i is:5394) Tempurature below the tempurature range [300, 4000] for reaction number 5394
+(i is:5395) Tempurature below the tempurature range [300, 2900] for reaction number 5395
+(i is:5396) Tempurature below the tempurature range [73, 3000] for reaction number 5396
+(i is:5397) Tempurature below the tempurature range [200, 2500] for reaction number 5397
+(i is:5398) Tempurature below the tempurature range [80, 300] for reaction number 5398
+(i is:5399) Tempurature below the tempurature range [24, 300] for reaction number 5399
+(i is:5400) Tempurature below the tempurature range [300, 3000] for reaction number 5400
+(i is:5401) Tempurature below the tempurature range [1500, 4524] for reaction number 5401
+(i is:5402) Tempurature below the tempurature range [523, 41000] for reaction number 5402
+(i is:5403) Tempurature below the tempurature range [691, 41000] for reaction number 5403
+(i is:5404) Tempurature below the tempurature range [250, 4000] for reaction number 5404
+(i is:5405) Tempurature below the tempurature range [245, 2500] for reaction number 5405
+(i is:5406) Tempurature below the tempurature range [230, 2500] for reaction number 5406
+(i is:5407) Tempurature below the tempurature range [230, 2500] for reaction number 5407
+(i is:5408) Tempurature below the tempurature range [500, 2500] for reaction number 5408
+(i is:5409) Tempurature below the tempurature range [295, 1490] for reaction number 5409
+(i is:5411) Tempurature below the tempurature range [261, 525] for reaction number 5411
+(i is:5412) Tempurature below the tempurature range [300, 2500] for reaction number 5412
+(i is:5413) Tempurature below the tempurature range [278, 300] for reaction number 5413
+(i is:5414) Tempurature below the tempurature range [664, 41000] for reaction number 5414
+(i is:5415) Tempurature below the tempurature range [370, 41000] for reaction number 5415
+(i is:5418) Tempurature below the tempurature range [303, 376] for reaction number 5418
+(i is:5419) Tempurature below the tempurature range [300, 2500] for reaction number 5419
+(i is:5420) Tempurature below the tempurature range [300, 2500] for reaction number 5420
+(i is:5421) Tempurature below the tempurature range [295, 2500] for reaction number 5421
+(i is:5422) Tempurature below the tempurature range [298, 298] for reaction number 5422
+(i is:5423) Tempurature below the tempurature range [200, 2500] for reaction number 5423
+(i is:5424) Tempurature below the tempurature range [300, 2500] for reaction number 5424
+(i is:5425) Tempurature below the tempurature range [200, 1200] for reaction number 5425
+(i is:5433) Tempurature below the tempurature range [293, 2500] for reaction number 5433
+(i is:5434) Tempurature below the tempurature range [1840, 41000] for reaction number 5434
+(i is:5439) Tempurature below the tempurature range [291, 701] for reaction number 5439
+(i is:5469) Tempurature below the tempurature range [1000, 4000] for reaction number 5469
+(i is:5473) Tempurature below the tempurature range [253, 352] for reaction number 5473
+(i is:5475) Tempurature below the tempurature range [291, 523] for reaction number 5475
+(i is:5476) Tempurature below the tempurature range [38, 300] for reaction number 5476
+(i is:5477) Tempurature below the tempurature range [200, 2500] for reaction number 5477
+(i is:5478) Tempurature below the tempurature range [33, 300] for reaction number 5478
+(i is:5482) Tempurature below the tempurature range [50, 300] for reaction number 5482
+(i is:5483) Tempurature below the tempurature range [33, 300] for reaction number 5483
+(i is:5485) Tempurature below the tempurature range [302, 41000] for reaction number 5485
+(i is:5486) Tempurature below the tempurature range [300, 300] for reaction number 5486
+(i is:5488) Tempurature below the tempurature range [300, 300] for reaction number 5488
+(i is:5489) Tempurature below the tempurature range [200, 2500] for reaction number 5489
+(i is:5492) Tempurature below the tempurature range [100, 2500] for reaction number 5492
+(i is:5494) Tempurature below the tempurature range [200, 14000] for reaction number 5494
+(i is:5497) Tempurature below the tempurature range [300, 2500] for reaction number 5497
+(i is:5502) Tempurature below the tempurature range [133, 300] for reaction number 5502
+(i is:5503) Tempurature below the tempurature range [275, 300] for reaction number 5503
+(i is:5504) Tempurature below the tempurature range [25, 300] for reaction number 5504
+(i is:5510) Tempurature below the tempurature range [298, 2500] for reaction number 5510
+(i is:5511) Tempurature below the tempurature range [210, 3000] for reaction number 5511
+(i is:5512) Tempurature below the tempurature range [1500, 2150] for reaction number 5512
+(i is:5513) Tempurature below the tempurature range [250, 3000] for reaction number 5513
+(i is:5514) Tempurature below the tempurature range [298, 2500] for reaction number 5514
+(i is:5517) Tempurature below the tempurature range [300, 2000] for reaction number 5517
+(i is:5518) Tempurature below the tempurature range [33, 300] for reaction number 5518
+(i is:5519) Tempurature below the tempurature range [600, 3000] for reaction number 5519
+(i is:5520) Tempurature below the tempurature range [1300, 1700] for reaction number 5520
+(i is:5522) Tempurature below the tempurature range [298, 298] for reaction number 5522
+(i is:5523) Tempurature below the tempurature range [300, 3000] for reaction number 5523
+(i is:5526) Tempurature below the tempurature range [298, 3300] for reaction number 5526
+(i is:5527) Tempurature below the tempurature range [298, 3300] for reaction number 5527
+(i is:5528) Tempurature below the tempurature range [298, 3300] for reaction number 5528
+(i is:5529) Tempurature below the tempurature range [300, 3500] for reaction number 5529
+(i is:5530) Tempurature below the tempurature range [298, 3300] for reaction number 5530
+(i is:5532) Tempurature below the tempurature range [250, 3000] for reaction number 5532
+(i is:5533) Tempurature below the tempurature range [298, 3000] for reaction number 5533
+(i is:5534) Tempurature below the tempurature range [298, 3000] for reaction number 5534
+(i is:5535) Tempurature below the tempurature range [298, 3000] for reaction number 5535
+(i is:5536) Tempurature below the tempurature range [133, 300] for reaction number 5536
+(i is:5538) Tempurature below the tempurature range [912, 1425] for reaction number 5538
+(i is:5539) Tempurature below the tempurature range [300, 5000] for reaction number 5539
+(i is:5540) Tempurature below the tempurature range [1200, 6312] for reaction number 5540
+(i is:5541) Tempurature below the tempurature range [1573, 4700] for reaction number 5541
+(i is:5542) Tempurature below the tempurature range [780, 41000] for reaction number 5542
+(i is:5543) Tempurature below the tempurature range [290, 2660] for reaction number 5543
+(i is:5544) Tempurature below the tempurature range [290, 2660] for reaction number 5544
+(i is:5545) Tempurature below the tempurature range [582, 41000] for reaction number 5545
+(i is:5546) Tempurature below the tempurature range [2420, 3870] for reaction number 5546
+(i is:5547) Tempurature below the tempurature range [298, 298] for reaction number 5547
+(i is:5548) Tempurature below the tempurature range [25, 300] for reaction number 5548
+(i is:5549) Tempurature below the tempurature range [200, 3460] for reaction number 5549
+(i is:5550) Tempurature below the tempurature range [200, 2980] for reaction number 5550
+(i is:5551) Tempurature below the tempurature range [200, 1250] for reaction number 5551
+(i is:5556) Tempurature below the tempurature range [200, 2500] for reaction number 5556
+(i is:5558) Tempurature below the tempurature range [290, 2300] for reaction number 5558
+(i is:5559) Tempurature below the tempurature range [300, 2000] for reaction number 5559
+(i is:5560) Tempurature below the tempurature range [226, 2500] for reaction number 5560
+(i is:5561) Tempurature below the tempurature range [298, 2500] for reaction number 5561
+(i is:5565) Tempurature below the tempurature range [298, 298] for reaction number 5565
+(i is:5566) Tempurature below the tempurature range [295, 295] for reaction number 5566
+(i is:5592) Tempurature below the tempurature range [300, 2500] for reaction number 5592
+(i is:5593) Tempurature below the tempurature range [200, 1000] for reaction number 5593
+(i is:5594) Tempurature below the tempurature range [200, 1000] for reaction number 5594
+(i is:5595) Tempurature below the tempurature range [200, 1000] for reaction number 5595
+(i is:5597) Tempurature below the tempurature range [298, 2500] for reaction number 5597
+(i is:5599) Tempurature below the tempurature range [200, 5000] for reaction number 5599
+(i is:5601) Tempurature below the tempurature range [300, 6000] for reaction number 5601
+(i is:5603) Tempurature below the tempurature range [150, 906] for reaction number 5603
+(i is:5604) Tempurature below the tempurature range [964, 41000] for reaction number 5604
+(i is:5605) Tempurature below the tempurature range [200, 2500] for reaction number 5605
+(i is:5608) Tempurature below the tempurature range [250, 2500] for reaction number 5608
+(i is:5609) Tempurature below the tempurature range [200, 2500] for reaction number 5609
+(i is:5610) Tempurature below the tempurature range [300, 2500] for reaction number 5610
+(i is:5611) Tempurature below the tempurature range [200, 2000] for reaction number 5611
+(i is:5613) Tempurature below the tempurature range [300, 4000] for reaction number 5613
+(i is:5614) Tempurature below the tempurature range [300, 2600] for reaction number 5614
+(i is:5615) Tempurature below the tempurature range [300, 2600] for reaction number 5615
+(i is:5624) Tempurature below the tempurature range [116, 300] for reaction number 5624
+(i is:5626) Tempurature below the tempurature range [298, 2500] for reaction number 5626
+(i is:5627) Tempurature below the tempurature range [298, 2000] for reaction number 5627
+(i is:5628) Tempurature below the tempurature range [1400, 4700] for reaction number 5628
+(i is:5629) Tempurature below the tempurature range [300, 4100] for reaction number 5629
+(i is:5630) Tempurature below the tempurature range [300, 4100] for reaction number 5630
+(i is:5633) Tempurature below the tempurature range [298, 2500] for reaction number 5633
+(i is:5634) Tempurature below the tempurature range [200, 2500] for reaction number 5634
+(i is:5635) Tempurature below the tempurature range [200, 5000] for reaction number 5635
+(i is:5637) Tempurature below the tempurature range [133, 300] for reaction number 5637
+(i is:5638) Tempurature below the tempurature range [200, 2500] for reaction number 5638
+(i is:5640) Tempurature below the tempurature range [500, 2500] for reaction number 5640
+(i is:5641) Tempurature below the tempurature range [1200, 1900] for reaction number 5641
+(i is:5642) Tempurature below the tempurature range [200, 2500] for reaction number 5642
+(i is:5648) Tempurature below the tempurature range [298, 2500] for reaction number 5648
+(i is:5649) Tempurature below the tempurature range [440, 3760] for reaction number 5649
+(i is:5650) Tempurature below the tempurature range [92, 300] for reaction number 5650
+(i is:5659) Tempurature below the tempurature range [280, 1000] for reaction number 5659
+(i is:5664) Tempurature below the tempurature range [300, 2500] for reaction number 5664
+(i is:5665) Tempurature below the tempurature range [500, 2500] for reaction number 5665
+(i is:5666) Tempurature below the tempurature range [500, 2500] for reaction number 5666
+(i is:5669) Tempurature below the tempurature range [298, 1500] for reaction number 5669
+(i is:5670) Tempurature below the tempurature range [500, 2500] for reaction number 5670
+(i is:5671) Tempurature below the tempurature range [500, 2500] for reaction number 5671
+(i is:5672) Tempurature below the tempurature range [80, 3150] for reaction number 5672
+(i is:5676) Tempurature below the tempurature range [200, 3000] for reaction number 5676
+(i is:5677) Tempurature below the tempurature range [298, 298] for reaction number 5677
+(i is:5678) Tempurature below the tempurature range [200, 2500] for reaction number 5678
+(i is:5679) Tempurature below the tempurature range [200, 2500] for reaction number 5679
+(i is:5680) Tempurature below the tempurature range [298, 2840] for reaction number 5680
+(i is:5681) Tempurature below the tempurature range [500, 2500] for reaction number 5681
+(i is:5683) Tempurature below the tempurature range [298, 4000] for reaction number 5683
+(i is:5684) Tempurature below the tempurature range [1000, 5000] for reaction number 5684
+(i is:5685) Tempurature below the tempurature range [298, 2710] for reaction number 5685
+(i is:5686) Tempurature below the tempurature range [300, 550] for reaction number 5686
+(i is:5687) Tempurature below the tempurature range [200, 3000] for reaction number 5687
+(i is:5688) Tempurature below the tempurature range [503, 41000] for reaction number 5688
+(i is:5689) Tempurature below the tempurature range [200, 2500] for reaction number 5689
+(i is:5690Detected locale "C" with character encoding "ANSI_X3.4-1968", which is not UTF-8.
+Qt depends on a UTF-8 locale, and has switched to "C.UTF-8" instead.
+If this causes problems, reconfigure your locale. See the locale(1) manual
+for more information.
+qt.qpa.xcb: could not connect to display localhost:36.0
+qt.qpa.plugin: From 6.5.0, xcb-cursor0 or libxcb-cursor0 is needed to load the Qt xcb platform plugin.
+qt.qpa.plugin: Could not load the Qt platform plugin "xcb" in "" even though it was found.
+This application failed to start because no Qt platform plugin could be initialized. Reinstalling the application may fix this problem.
+
+Available platform plugins are: eglfs, linuxfb, minimal, minimalegl, offscreen, vkkhrdisplay, vnc, xcb.
+
+Aborted (core dumped)
+connect: Connection refused
+GKS: can't connect to GKS socket application
+
+GKS: Open failed in routine OPEN_WS
+GKS: GKS not in proper state. GKS must be either in the state WSOP or WSAC in routine ACTIVATE_WS
+┌ Warning: At t=0.00044064243448530325, dt was forced below floating point epsilon 5.421010862427522e-20, and step error estimate = 2.5173643870310225. Aborting. There is either an error in your model specification or the true solution is unstable (or the true solution can not be represented in the precision of Float64).
+└ @ SciMLBase ~/.julia/packages/SciMLBase/RJzsP/src/integrator_interface.jl:623
+┌ Warning: At t=0.00044064243448530325, dt was forced below floating point epsilon 5.421010862427522e-20, and step error estimate = 2.5173643870310225. Aborting. There is either an error in your model specification or the true solution is unstable (or the true solution can not be represented in the precision of Float64).
+└ @ SciMLBase ~/.julia/packages/SciMLBase/RJzsP/src/integrator_interface.jl:623
+┌ Warning: At t=0.0010219159394728751, dt was forced below floating point epsilon 2.168404344971009e-19, and step error estimate = 997.3377839753714. Aborting. There is either an error in your model specification or the true solution is unstable (or the true solution can not be represented in the precision of Float64).
+└ @ SciMLBase ~/.julia/packages/SciMLBase/RJzsP/src/integrator_interface.jl:623
+┌ Warning: At t=0.0005591893863851211, dt was forced below floating point epsilon 1.0842021724855044e-19, and step error estimate = 9.277999750943577. Aborting. There is either an error in your model specification or the true solution is unstable (or the true solution can not be represented in the precision of Float64).
+└ @ SciMLBase ~/.julia/packages/SciMLBase/RJzsP/src/integrator_interface.jl:623
+┌ Warning: At t=0.0005434741278261285, dt was forced below floating point epsilon 1.0842021724855044e-19, and step error estimate = 1000.0. Aborting. There is either an error in your model specification or the true solution is unstable (or the true solution can not be represented in the precision of Float64).
+└ @ SciMLBase ~/.julia/packages/SciMLBase/RJzsP/src/integrator_interface.jl:623
+┌ Warning: At t=0.057218534567158655, dt was forced below floating point epsilon 6.938893903907228e-18, and step error estimate = 80.46678003591232. Aborting. There is either an error in your model specification or the true solution is unstable (or the true solution can not be represented in the precision of Float64).
+└ @ SciMLBase ~/.julia/packages/SciMLBase/RJzsP/src/integrator_interface.jl:623
+┌ Warning: At t=0.0005309234929688685, dt was forced below floating point epsilon 1.0842021724855044e-19, and step error estimate = 1000.0. Aborting. There is either an error in your model specification or the true solution is unstable (or the true solution can not be represented in the precision of Float64).
+└ @ SciMLBase ~/.julia/packages/SciMLBase/RJzsP/src/integrator_interface.jl:623
+┌ Warning: At t=0.000914648071563011, dt was forced below floating point epsilon 1.0842021724855044e-19, and step error estimate = 23.820307125999136. Aborting. There is either an error in your model specification or the true solution is unstable (or the true solution can not be represented in the precision of Float64).
+└ @ SciMLBase ~/.julia/packages/SciMLBase/RJzsP/src/integrator_interface.jl:623
+) Tempurature below the tempurature range [200, 2500] for reaction number 5690
+(i is:5691) Tempurature below the tempurature range [298, 298] for reaction number 5691
+(i is:5692) Tempurature below the tempurature range [298, 298] for reaction number 5692
+(i is:5695) Tempurature below the tempurature range [300, 2500] for reaction number 5695
+(i is:5700) Tempurature below the tempurature range [1250, 1600] for reaction number 5700
+(i is:5701) Tempurature below the tempurature range [383, 41000] for reaction number 5701
+(i is:5702) Tempurature below the tempurature range [300, 3160] for reaction number 5702
+(i is:5703) Tempurature below the tempurature range [2720, 5190] for reaction number 5703
+(i is:6051) Tempurature below the tempurature range [300, 14700] for reaction number 6051
+(i is:6053) Tempurature below the tempurature range [300, 14700] for reaction number 6053
+(i is:6071) Tempurature below the tempurature range [300, 14700] for reaction number 6071
+(i is:6072) Tempurature below the tempurature range [2000, 10000] for reaction number 6072
+(i is:6074) Tempurature below the tempurature range [300, 14100] for reaction number 6074
+(i is:6075) Tempurature below the tempurature range [300, 14700] for reaction number 6075
+(i is:6076) Tempurature below the tempurature range [300, 14700] for reaction number 6076
+(i is:6093) Tempurature below the tempurature range [200, 32000] for reaction number 6093
+(i is:6094) Tempurature below the tempurature range [16, 100] for reaction number 6094
+(i is:6121) Tempurature below the tempurature range [20, 300] for reaction number 6121
+(i is:6128) Tempurature below the tempurature range [300, 14700] for reaction number 6128
+(i is:6132) Tempurature below the tempurature range [300, 14700] for reaction number 6132
+
+Checkpoint 1: Made it to before network admin things
+Checkpoint 2: Made it to before Reaction Equations
+Checkpoint 3: Finished reading reaction equations
+Checkpoint 4: Finished creating the reaction system
+Checkpoint 5: Finished converting to an ODE System
+Checkpoint 6: Finished Complete function
+Checkpoint 7: Finished creating the ODE Problem
+Checkpoint 8: Finished solving with Rodas4
+
+Umist:
+Time to convert:  1.576066 seconds (9.61 M allocations: 892.523 MiB, 18.35% gc time)
+Time to complete:  0.339911 seconds (2.87 M allocations: 130.057 MiB, 9.17% gc time)
+Time to create the completed problem: 49.618460 seconds (593.61 M allocations: 37.843 GiB, 8.21% gc time, 0.01% compilation time)
+Time to solve the completed system with Rodas4():   1.168776 seconds (3.09 k allocations: 5.986 MiB)
+Time to solve with lsoda useing saveat  4.618767 seconds (861.78 k allocations: 36.948 MiB, 1.47% gc time, 8.00% compilation time)
+
+Ensemble problem timing:Time to make (all the remakes of) the Ensemble Problem:   0.000003 seconds (1 allocation: 32 bytes)
+Time to solve the Ensemble Problem with Rodas4:   8.731532 seconds (32.19 M allocations: 1.407 GiB, 11.74% gc time)
+Time to solve the Ensemble Problem with lsoda useing saveat:  18.849094 seconds (33.97 M allocations: 1.459 GiB, 9.99% gc time, 1.50% compilation time)
