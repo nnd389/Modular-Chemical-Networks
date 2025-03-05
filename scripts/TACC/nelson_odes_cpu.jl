@@ -170,7 +170,7 @@ print("\nCheck 4: Finished reading the function")
 
 
 ### Create and Solve the ODE and Timing ###
-print("\n\nNelson ODEs:")
+print("\n\nNelson ODEs CPU Parrallelization Test:")
 prob = ODEProblem(Nelson, u0, tspan, params)
 sol = solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 
@@ -179,14 +179,14 @@ print("\nTime to solve Nelson ONCE with lsoda: ")
 @time solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 @time solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 @time solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-num_runs = 100
-
 
 
 
 ### We're gonna for loop and CPU this baddie###
 # CAUTION! The second for loop always runs faster than the first regardless for some reason, I think it has to do with setting up the @time macro?
+num_runs = 100
 print("\nFor loop timing for ", num_runs, " runs: ")
+
 @time begin
     for i in 1:num_runs
         u0_rand = rand(Float32,14) .* u0
@@ -230,9 +230,9 @@ prob_func_nelson = (prob_ens, i, repeat) -> remake(prob_ens, u0 = rand(Float32,1
 print("\nCheck 4: Finished making all the remakes")
 monteprob_nelson = EnsembleProblem(prob, prob_func = prob_func_nelson, safetycopy = false);
 print("\nCheck 5: Finished creating the Ensemble problem")
+
+
 sol_ensemble = solve(monteprob_nelson, Rodas4(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-
-
 print("\n\nEnsemble Timing to solve ", num_runs, " random Nelson systems on GPUs with Rodas4():")
 @time solve(monteprob_nelson, Rodas4(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 @time solve(monteprob_nelson, Rodas4(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
@@ -257,7 +257,7 @@ print("\nEnsemble Timing to solve ", num_runs, " random Nelson systems on GPUs w
 @time solve(monteprob_nelson, Tsit5(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 @time solve(monteprob_nelson, Tsit5(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 
-print("We're officially on CPUs!! Onwards and march!\n")
+print("We're officially on for Nelson ODEs CPUs!! Onwards and march!\n")
 
 
 

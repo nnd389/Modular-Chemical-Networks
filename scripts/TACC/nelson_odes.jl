@@ -1,4 +1,5 @@
-print("Check 1: We are at the begining of the Julia script!")
+print("\n\n     Nelson ODEs GPU Parrallelization Test     ")
+print("\nCheck 1: We are at the begining of the Julia script!")
 using Catalyst
 using DifferentialEquations
 using Plots
@@ -10,7 +11,7 @@ using ODEInterface, ODEInterfaceDiffEq
 using ModelingToolkit
 using DiffEqGPU 
 using CUDA
-print("Check 2: Finished initializing packages")
+print("\nCheck 2: Finished initializing packages")
 
 #=
 The ODE function defined below models the reduced carbon-oxygen 
@@ -56,7 +57,7 @@ params = [10,  # T
           611, # n_H
           1]   # shield
 
-print("Check 3: Finished initializing timespan, initial conditions, and parameters")
+print("\nCheck 3: Finished initializing timespan, initial conditions, and parameters")
 # %% Nelson Network ODE definition
 #=========================================#
 
@@ -165,11 +166,11 @@ du[14] = n_H * (3.8e-10 * u[13] * u[3]) / (T^0.65) -
         - 2.0e-10 * Go * exp(-1.9 * Av) * u[14] # this term was added as part of the skipped photoreaction
 
 end
-print("Check 4: Finished reading the function")
+print("\nCheck 4: Finished reading the function")
 
 
 ### Create and Solve the ODE and Timing ###
-print("\n\nNelson ODEs:")
+print("\n\nNelson ODEs GPU Parrallelization Test:")
 prob = ODEProblem(Nelson, u0, tspan, params)
 sol = solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 
@@ -178,14 +179,13 @@ print("\nTime to solve Nelson ONCE with lsoda: ")
 @time solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 @time solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 @time solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-num_runs = 100
-
-
 
 
 ### We're gonna for loop and GPU this baddie###
 # CAUTION! The second for loop always runs faster than the first regardless for some reason, I think it has to do with setting up the @time macro?
+num_runs = 100
 print("\nFor loop timing for ", num_runs, " runs: ")
+
 @time begin
     for i in 1:num_runs
         u0_rand = rand(Float32,14) .* u0
@@ -230,16 +230,6 @@ print("\nCheck 4: Finished making all the remakes")
 monteprob_nelson = EnsembleProblem(prob, prob_func = prob_func_nelson, safetycopy = false);
 print("\nCheck 5: Finished creating the Ensemble problem")
 
-#=
-sol_ensemble = solve(monteprob_nelson, Rodas4(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=10000000000.0f0)
-print("\n6: Ensemble Timing to solve ", num_runs, " random Nelson systems on GPUs:")
-@time solve(monteprob_nelson, Rodas4(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-@time solve(monteprob_nelson, Rodas4(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-@time solve(monteprob_nelson, Rodas4(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-@time solve(monteprob_nelson, Rodas4(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-@time solve(monteprob_nelson, Rodas4(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-=#
-
 
 sol_ensemble = solve(monteprob_nelson, Rodas4(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=10000000000.0f0)
 print("\n\nEnsemble Timing to solve ", num_runs, " random Nelson systems on GPUs with Rodas4():")
@@ -266,7 +256,7 @@ print("\nEnsemble Timing to solve ", num_runs, " random Nelson systems on GPUs w
 @time solve(monteprob_nelson, Tsit5(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 @time solve(monteprob_nelson, Tsit5(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 
-print("We're officially on GPUs!!")
+print("We're officially on Nelson ODEs GPUs!! Onwards and march!\n")
 
 
 

@@ -112,19 +112,20 @@ sys = convert(ODESystem, complete(system))
 
 #print("Time to simplify:")
 #@time complete(sys)
-#simplified_sys = complete(sys)
-print("Time to complete:")
-@time complete(sys)
-@time complete(sys)
-@time complete(sys)
-completed_sys = complete(sys)
+simplified_sys = complete(sys)
+
+#print("Time to complete:")
+#@time complete(sys)
+#@time complete(sys)
+#@time complete(sys)
+#completed_sys = complete(sys)
 
 
 print("Time to create the completed problem:")
-@time ODEProblem(completed_sys, u0, tspan, params)
-@time ODEProblem(completed_sys, u0, tspan, params)
-@time ODEProblem(completed_sys, u0, tspan, params)
-prob_complete = ODEProblem(completed_sys, u0, tspan, params)
+#@time ODEProblem(completed_sys, u0, tspan, params)
+#@time ODEProblem(completed_sys, u0, tspan, params)
+#@time ODEProblem(completed_sys, u0, tspan, params)
+prob_complete = ODEProblem(simplified_sys, u0, tspan, params)
 
 print("Time to solve the completed system with Rodas4(): ")
 @time solve(prob_complete, lsoda(), saveat = 1e10);
@@ -202,6 +203,8 @@ end
 
 
 
+
+
 #=
 ### Plotting ### (ordering is off)
 
@@ -243,6 +246,10 @@ plot(sol, idxs = (0,14), lw = 3, lc = "light blue", title = "Nelson")
 #savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/Mg_Fe_Na_Nelson.png")
 
 =#
+
+
+
+
 
 
 

@@ -241,8 +241,6 @@ print("\nRodas5p\n")
 
 
 
-
-
 #=
 function prob_func(prob, i, repeat)
     remake(prob, u0 = rand() * prob.u0)
@@ -271,11 +269,6 @@ print("Time to solve the Ensemble Problem using EnsembleDistributed")
 #plot(sim, idxs = (0,6), linealpha = 1, lw = 3, title = "Nelson ODEs: Ensemble problem for C and C+")
 #plot!(sim, idxs = (0,12), linealpha = 0.4, lw = 3)
 =#
-
-
-
-
-
 
 
 
