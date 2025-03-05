@@ -18,41 +18,41 @@ print("Time to solve Lorenz ONCE: ")
 @time solve(prob, Tsit5(), saveat = 1.0)
 @time solve(prob, Tsit5(), saveat = 1.0)
 
-traj_num = 1000
+traj_num = 10000
 prob_func = (prob, i, repeat) -> remake(prob, p=rand(Float32,3) .* p);
 monteprob = EnsembleProblem(prob, prob_func = prob_func, safetycopy = false);
 sol = solve(monteprob, Tsit5(), EnsembleThreads(), trajectories = traj_num, saveat = 1.0f0);
-print("Ensemble Timing to solve 1000 random Lorenz systems:")
+print("Ensemble Timing to solve ", traj_num, " random Lorenz systems:")
 @time solve(monteprob, Tsit5(), EnsembleThreads(), trajectories = traj_num, saveat = 1.0f0);
 @time solve(monteprob, Tsit5(), EnsembleThreads(), trajectories = traj_num, saveat = 1.0f0);
 @time solve(monteprob, Tsit5(), EnsembleThreads(), trajectories = traj_num, saveat = 1.0f0);
 @time solve(monteprob, Tsit5(), EnsembleThreads(), trajectories = traj_num, saveat = 1.0f0);
 
 
-print("For Loop Timing to solve 1000 random Lorenz systems")
+print("For Loop Timing to solve ", traj_num, " random Lorenz systems")
 @time begin
-    for i in 1:1000
+    for i in 1:traj_num
         p_rand_lorenz = rand(Float32,3) .* p
         prob_rand_lorenz = ODEProblem(lorenz!, u0, tspan, p)
         sol_rand_lorenz = solve(prob_rand_lorenz, Tsit5())
     end
 end
 @time begin
-    for i in 1:1000
+    for i in 1:traj_num
         p_rand_lorenz = rand(Float32,3) .* p
         prob_rand_lorenz = ODEProblem(lorenz!, u0, tspan, p)
         sol_rand_lorenz = solve(prob_rand_lorenz, Tsit5())
     end
 end
 @time begin
-    for i in 1:1000
+    for i in 1:traj_num
         p_rand_lorenz = rand(Float32,3) .* p
         prob_rand_lorenz = ODEProblem(lorenz!, u0, tspan, p)
         sol_rand_lorenz = solve(prob_rand_lorenz, Tsit5())
     end
 end
 @time begin
-    for i in 1:1000
+    for i in 1:traj_num
         p_rand_lorenz = rand(Float32,3) .* p
         prob_rand_lorenz = ODEProblem(lorenz!, u0, tspan, p)
         sol_rand_lorenz = solve(prob_rand_lorenz, Tsit5())

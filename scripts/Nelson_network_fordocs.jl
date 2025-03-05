@@ -166,6 +166,10 @@ sol4 = solve(prob, lsoda(), saveat = 1e10)
 
 
 using Plots
+plot(sol4, vars = (0,1))
+
+
+#=
 colors = palette(:acton, 5)
 p1 = plot(sol1, vars = (0,11), lc=colors[1], legend = false, titlefontsize = 12, lw = 3, xlabel = "", title = "HCO+ solved using Rodas5 (correct solution)")
 p2 = plot(sol2, vars = (0,11), lc=colors[2], legend = false, titlefontsize = 12, lw = 3, xlabel = "", title = "HCO+ solved using FBDF")
@@ -177,8 +181,8 @@ combined_plot = plot(p1, p2, p3, p4, layout=(4, 1), dpi = 600, pallete=:acton)
 @time solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 @time solve(prob, Vern9(), abstol=1e-14, reltol=1e-14)
 @time solve(prob, Euler(), dt = 1e6)
-
-
+=#
+#=
 
 # Run Benchmark
 setups = [
@@ -219,7 +223,7 @@ plot(wp;
 
 
 #palette=:acton10
-
+=#
 
 
 

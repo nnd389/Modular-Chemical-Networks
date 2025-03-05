@@ -175,10 +175,10 @@ print("\nTime to solve Nelson ONCE with lsoda: ")
 @time solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 @time solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 @time solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-@time solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 sol = solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+plot(sol, idxs = (0,6), lw = 3, lc = "blue")
+plot!(sol, idxs = (0,12), lw = 3, lc = "orange", title = "Nelson: Abundance of C and C+")
 num_runs = 100
-
 
 
 
@@ -186,21 +186,7 @@ num_runs = 100
 
 ### We're gonna for loop and CPU this baddie###
 # CAUTION! The second for loop always runs faster than the first regardless for some reason, I think it has to do with setting up the @time macro?
-print("\nFor loop timing for ", num_runs, " runs: ")
-@time begin
-    for i in 1:num_runs
-        u0_rand = rand(Float32,14) .* u0
-        prob_for = ODEProblem(NL99_network_odes, u0_rand, tspan, params)
-        sol_for = solve(prob_for, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-    end
-end
-@time begin
-    for i in 1:num_runs
-        u0_rand = rand(Float32,14) .* u0
-        prob_for = ODEProblem(NL99_network_odes, u0_rand, tspan, params)
-        sol_for = solve(prob_for, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-    end
-end
+print("\nFor loop timing for ", num_runs, " Nelson runs: ")
 @time begin
     for i in 1:num_runs
         u0_rand = rand(Float32,14) .* u0
@@ -234,12 +220,24 @@ prob_ens = ODEProblem(NL99_network_odes, u0, tspan_ens, params)
 prob_func_nelson = (prob_ens, i, repeat) -> remake(prob_ens, u0 = rand(Float32,14) .* u0)
 monteprob_nelson = EnsembleProblem(prob, prob_func = prob_func_nelson, safetycopy = false);
 sol_ensemble = solve(monteprob_nelson, lsoda(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=10000000000.0f0)
-print("\nEnsemble Timing to solve ", num_runs, " random Lorenz systems on CPUs:")
+print("\nEnsemble Timing to solve ", num_runs, " random Nelson systems on CPUs:")
+print("\nTsit5 \n")
+@time solve(monteprob_nelson, Tsit5(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Tsit5(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+print("\nlsoda \n")
 @time solve(monteprob_nelson, lsoda(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 @time solve(monteprob_nelson, lsoda(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-@time solve(monteprob_nelson, lsoda(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-@time solve(monteprob_nelson, lsoda(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-@time solve(monteprob_nelson, lsoda(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+print("\nVern9 \n")
+@time solve(monteprob_nelson, Vern9(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Vern9(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+print("\nRodas4 \n")
+@time solve(monteprob_nelson, Rodas4(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Rodas4(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+print("\nRodas5p\n")
+@time solve(monteprob_nelson, Rodas5P(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Rodas5P(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+
+
 
 
 

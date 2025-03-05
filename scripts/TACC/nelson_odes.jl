@@ -10,6 +10,8 @@ using ModelingToolkit
 using DiffEqGPU 
 using CUDA
 
+
+
 #=
 The ODE function defined below models the reduced carbon-oxygen 
 chemistry network of Nelson & Langer (1999, ApJ, 524, 923).
@@ -29,7 +31,7 @@ so the initial conditions and paramters were meant to mimic those from DESPOTIC.
 
 =#
     
-    # %% Set The timespan, paramters, and initial conditions
+### Timespan, Initial Conditions, and Parameters
 seconds_per_year = 3600 * 24 * 365
 tspan = (0.0, 30000 * seconds_per_year) # ~30 thousand yrs
 
@@ -58,7 +60,7 @@ params = [10,  # T
 # %% Nelson Network ODE definition
 #=========================================#
 
-function NL99_network_odes(du,u,p,t)
+function Nelson(du,u,p,t)
     T, Av, Go, n_H, shield = p
 # 1: H2
 du[1] = -1.2e-17 * u[1] + 
@@ -166,17 +168,14 @@ end
 
 ### Create and Solve the ODE and Timing ###
 print("\n\nNelson ODEs:")
-
-#print("\nTime to create the ODE problem:")
-#@time ODEProblem(NL99_network_odes, u0, tspan, params)
-prob = ODEProblem(NL99_network_odes, u0, tspan, params)
+prob = ODEProblem(Nelson, u0, tspan, params)
+sol = solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 
 print("\nTime to solve Nelson ONCE with lsoda: ")
 @time solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 @time solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 @time solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 @time solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-sol = solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 num_runs = 100
 
 
@@ -188,51 +187,48 @@ print("\nFor loop timing for ", num_runs, " runs: ")
 @time begin
     for i in 1:num_runs
         u0_rand = rand(Float32,14) .* u0
-        prob_for = ODEProblem(NL99_network_odes, u0_rand, tspan, params)
+        prob_for = ODEProblem(Nelson, u0_rand, tspan, params)
         sol_for = solve(prob_for, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
     end
 end
 @time begin
     for i in 1:num_runs
         u0_rand = rand(Float32,14) .* u0
-        prob_for = ODEProblem(NL99_network_odes, u0_rand, tspan, params)
+        prob_for = ODEProblem(Nelson, u0_rand, tspan, params)
         sol_for = solve(prob_for, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
     end
 end
 @time begin
     for i in 1:num_runs
         u0_rand = rand(Float32,14) .* u0
-        prob_for = ODEProblem(NL99_network_odes, u0_rand, tspan, params)
+        prob_for = ODEProblem(Nelson, u0_rand, tspan, params)
         sol_for = solve(prob_for, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
     end
 end
 @time begin
     for i in 1:num_runs
         u0_rand = rand(Float32,14) .* u0
-        prob_for = ODEProblem(NL99_network_odes, u0_rand, tspan, params)
+        prob_for = ODEProblem(Nelson, u0_rand, tspan, params)
         sol_for = solve(prob_for, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
     end
 end
-@time begin
-    for i in 1:num_runs
-        u0_rand = rand(Float32,14) .* u0
-        prob_for = ODEProblem(NL99_network_odes, u0_rand, tspan, params)
-        sol_for = solve(prob_for, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-    end
-end
+
 
 
 
 ### Ensemble Problem ###
-print("\nCheck 1")
+print("\nEnsemble Problem")
+print("\nCheck 1: Finished the for loops")
 tspan_ens = (0.0f0, 946080000000.0f0) # ~30 thousand yrs
-print("\nCheck 2")
-prob_ens = ODEProblem(NL99_network_odes, u0, tspan_ens, params)
-print("\nCheck 3")
+print("\nCheck 2: Finished initializing the timespan")
+prob_ens = ODEProblem(Nelson, u0, tspan_ens, params)
+print("\nCheck 3: Finished creating the Ensemble ODE problem")
 prob_func_nelson = (prob_ens, i, repeat) -> remake(prob_ens, u0 = rand(Float32,14) .* u0)
-print("\nCheck 4")
+print("\nCheck 4: Finished making all the remakes")
 monteprob_nelson = EnsembleProblem(prob, prob_func = prob_func_nelson, safetycopy = false);
-print("\nCheck 5")
+print("\nCheck 5: Finished creating the Ensemble problem")
+
+#=
 sol_ensemble = solve(monteprob_nelson, Rodas4(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=10000000000.0f0)
 print("\n6: Ensemble Timing to solve ", num_runs, " random Nelson systems on GPUs:")
 @time solve(monteprob_nelson, Rodas4(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
@@ -240,6 +236,33 @@ print("\n6: Ensemble Timing to solve ", num_runs, " random Nelson systems on GPU
 @time solve(monteprob_nelson, Rodas4(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 @time solve(monteprob_nelson, Rodas4(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 @time solve(monteprob_nelson, Rodas4(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+=#
+
+
+sol_ensemble = solve(monteprob_nelson, Rodas4(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=10000000000.0f0)
+print("\n\nEnsemble Timing to solve ", num_runs, " random Nelson systems on GPUs with Rodas4():")
+@time solve(monteprob_nelson, Rodas4(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Rodas4(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Rodas4(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Rodas4(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+
+print("\nEnsemble Timing to solve ", num_runs, " random Nelson systems on GPUs with Rodas5P():")
+@time solve(monteprob_nelson, Rodas5P(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Rodas5P(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Rodas5P(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Rodas5P(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+
+print("\nEnsemble Timing to solve ", num_runs, " random Nelson systems on GPUs with Tsit5():")
+@time solve(monteprob_nelson, Tsit5(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Tsit5(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Tsit5(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Tsit5(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+
+print("\nEnsemble Timing to solve ", num_runs, " random Nelson systems on GPUs with Vern9():")
+@time solve(monteprob_nelson, Tsit5(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Tsit5(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Tsit5(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Tsit5(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 
 print("We're officially on GPUs!!")
 
@@ -284,3 +307,164 @@ plot(sol, idxs = (0,11), lw = 3, lc = "orange", title = "Nelson: HCO+")
 plot(sol, idxs = (0,14), lw = 3, lc = "light blue", title = "Nelson: M")
 #savefig("/Users/kneenaugh/Desktop/Git/AstroChemNetwork/plots/Mg_Fe_Na_Nelson.png")
 =#
+
+
+
+
+
+
+
+
+
+
+
+
+#=
+
+print("\n\nEnsembleGPU Kernel Timing")
+import Pkg; Pkg.add("StaticArrays")
+using StaticArrays
+
+function Nelson2(du,u,p,t)
+        T = p[1]
+        Av = p[2]
+        Go = p[3]
+        n_H = p[4]
+        shield = p[5]
+    # 1: H2
+    du[1] = -1.2e-17 * u[1] + 
+            p[4] * (1.9e-6 * u[2] * u[3]) / (p[1]^0.54) - 
+            p[4] * 4e-16 * u[1] * u[12] - 
+            p[4] * 7e-15 * u[1] * u[5] + 
+            p[4] * 1.7e-9 * u[10] * u[2] + 
+            p[4] * 2e-9 * u[2] * u[6] + 
+            p[4] * 2e-9 * u[2] * u[14] + 
+            p[4] * 8e-10 * u[2] * u[8] 
+    
+    # 2: H3+
+    du[2] = 1.2e-17 * u[1] + 
+            p[4] * (-1.9e-6 * u[3] * u[2]) / (p[1]^0.54) - 
+            p[4] * 1.7e-9 * u[10] * u[2] - 
+            p[4] * 2e-9 * u[2] * u[6] - 
+            p[4] * 2e-9 * u[2] * u[14] - 
+            p[4] * 8e-10 * u[2] * u[8]
+    
+    # 3: e
+    du[3] = p[4] * (-1.4e-10 * u[3] * u[12]) / (p[1]^0.61) - 
+            p[4] * (3.8e-10 * u[13] * u[3]) / (p[1]^0.65) - 
+            p[4] * (3.3e-5 * u[11] * u[3]) / p[1] + 
+            1.2e-17 * u[1] - 
+            p[4] * (1.9e-6 * u[3] * u[2]) / (p[1]^0.54) + 
+            6.8e-18 * u[4] - 
+            p[4] * (9e-11 * u[3] * u[5]) / (p[1]^0.64) + 
+            3e-10 * p[3] * exp(-3 * p[2]) * u[6] +
+            p[4] * 2e-9 * u[2] * u[13] # added this extra term from a CR ionization reaction
+            + 2.0e-10 * p[3] * exp(-1.9 * p[2]) * u[14] # this term was added as part of the skipped photoreaction
+    
+    
+    # 4: He
+    du[4] = p[4] * (9e-11 * u[3] * u[5]) / (p[1]^0.64) - 
+            6.8e-18 * u[4] + 
+            p[4] * 7e-15 * u[1] * u[5] + 
+            p[4] * 1.6e-9 * u[10] * u[5]
+    
+    # 5: He+
+    du[5] = 6.8e-18 * u[4] - 
+            p[4] * (9e-11 * u[3] * u[5]) / (p[1]^0.64) - 
+            p[4] * 7e-15 * u[1] * u[5] - 
+            p[4] * 1.6e-9 * u[10] * u[5]
+    
+    # 6: C
+    du[6] = p[4] * (1.4e-10 * u[3] * u[12]) / (p[1]^0.61) - 
+            p[4] * 2e-9 * u[2] * u[6] - 
+            p[4] * 5.8e-12 * (p[1]^0.5) * u[9] * u[6] + 
+            1e-9 * p[3] * exp(-1.5 * p[2]) * u[7] - 
+            3e-10 * p[3] * exp(-3 * p[2]) * u[6] + 
+            1e-10 * p[3] * exp(-3 * p[2]) * u[10] * p[5]
+    
+    # 7: CHx
+    du[7] = p[4] * (-2e-10) * u[7] * u[8] + 
+            p[4] * 4e-16 * u[1] * u[12] + 
+            p[4] * 2e-9 * u[2] * u[6] - 
+            1e-9 * p[3] * u[7] * exp(-1.5 * p[2])
+    
+    # 8: O
+    du[8] = p[4] * (-2e-10) * u[7] * u[8] + 
+            p[4] * 1.6e-9 * u[10] * u[5] - 
+            p[4] * 8e-10 * u[2] * u[8] + 
+            5e-10 * p[3] * exp(-1.7 * p[2]) * u[9] + 
+            1e-10 * p[3] * exp(-3 * p[2]) * u[10] * p[5]
+    
+    # 9: OHx
+    du[9] = p[4] * (-1e-9) * u[9] * u[12] + 
+            p[4] * 8e-10 * u[2] * u[8] - 
+            p[4] * 5.8e-12 * (p[1]^0.5) * u[9] * u[6] - 
+            5e-10 * p[3] * exp(-1.7 * p[2]) * u[9]
+    
+    # 10: CO
+    du[10] = p[4] * (3.3e-5 * u[11] * u[3]) / p[1] + 
+            p[4] * 2e-10 * u[7] * u[8] - 
+            p[4] * 1.7e-9 * u[10] * u[2] - 
+            p[4] * 1.6e-9 * u[10] * u[5] + 
+            p[4] * 5.8e-12 * (p[1]^0.5) * u[9] * u[6] - 
+            1e-10 * p[3] * exp(-3 * p[2]) * u[10] + 
+            1.5e-10 * p[3] * exp(-2.5 * p[2]) * u[11] * p[5]
+    
+    # 11: HCO+
+    du[11] = p[4] * (-3.3e-5 * u[11] * u[3]) / p[1] + 
+            p[4] * 1e-9 * u[9] * u[12] + 
+            p[4] * 1.7e-9 * u[10] * u[2] - 
+            1.5e-10 * p[3] * exp(-2.5 * p[2]) * u[11]
+    
+    # 12: C+
+    du[12] = p[4] * (-1.4e-10 * u[3] * u[12]) / (p[1]^0.61) - 
+            p[4] * 4e-16 * u[1] * u[12] - 
+            p[4] * 1e-9 * u[9] * u[12] + 
+            p[4] * 1.6e-9 * u[10] * u[5] + 
+            3e-10 * p[3] * exp(-3 * p[2]) * u[6]
+    
+    # 13: M+
+    du[13] = p[4] * (-3.8e-10 * u[13] * u[3]) / (p[1]^0.65) + 
+            p[4] * 2e-9 * u[2] * u[14] 
+            + 2.0e-10 * p[3] * exp(-1.9 * p[2]) * u[14] # this term was added as part of the skipped photoreaction
+    
+    # 14: M
+    du[14] = p[4] * (3.8e-10 * u[13] * u[3]) / (p[1]^0.65) - 
+            p[4] * 2e-9 * u[2] * u[14] 
+            - 2.0e-10 * p[3] * exp(-1.9 * p[2]) * u[14] # this term was added as part of the skipped photoreaction
+    
+    return SVector{14}(du1, du2, du3, du4, du5, du6, du7, du8, du9, du10, du11, du12, du13, du14)
+
+end
+
+u0 = @SVector [0.5;      # 1:  H2   yep?
+                9.059e-9; # 2:  H3+  yep
+                2.0e-4;   # 3:  e    yep
+                0.1;      # 4:  He   SEE lines 535 NL99
+                7.866e-7; # 5:  He+  yep? should be 2.622e-5
+                0.0;      # 6:  C    yep
+                0.0;      # 7:  CHx  yep
+                0.0004;   # 8:  O    yep
+                0.0;      # 9:  OHx  yep
+                0.0;      # 10: CO   yep
+                0.0;      # 11: HCO+ yep
+                0.0002;   # 12: C+   yep
+                2.0e-7;   # 13: M+   yep
+                2.0e-7]   # 14: M    yep
+
+seconds_per_year = 3600 * 24 * 365
+tspan = (0.0, 30000 * seconds_per_year) # ~30 thousand yrs
+
+
+=#
+
+
+
+
+
+
+
+
+
+
+
