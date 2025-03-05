@@ -1,0 +1,46 @@
+
+
+     Nelson ODEs CPU Parrallelization Test     
+Check 1: We are at the begining of the Julia script!
+Check 2: Finished initializing packages
+Check 3: Finished initializing timespan, initial conditions, and parameters
+Check 4: Finished reading the function
+
+Nelson ODEs:
+Time to solve Nelson ONCE with lsoda:   0.000261 seconds (1.27 k allocations: 63.625 KiB)
+  0.000240 seconds (1.27 k allocations: 63.625 KiB)
+  0.000228 seconds (1.27 k allocations: 63.625 KiB)
+  0.000231 seconds (1.27 k allocations: 63.625 KiB)
+
+For loop timing for 100 runs:   0.090804 seconds (253.47 k allocations: 13.086 MiB, 80.41% compilation time)
+  0.017077 seconds (110.52 k allocations: 5.758 MiB)
+  0.016861 seconds (110.05 k allocations: 5.743 MiB)
+  0.062161 seconds (111.68 k allocations: 5.795 MiB, 61.70% gc time, 9.93% compilation time)
+
+Ensemble Problem
+Check 1: Finished the for loops
+Check 2: Finished initializing the timespan
+Check 3: Finished creating the Ensemble ODE problem
+Check 4: Finished making all the remakes
+Check 5: Finished creating the Ensemble problem
+
+Ensemble Timing to solve 100 random Nelson systems on GPUs with Rodas4():  0.032003 seconds (62.94 k allocations: 7.575 MiB)
+  0.033364 seconds (62.88 k allocations: 7.569 MiB)
+  0.036113 seconds (62.80 k allocations: 7.562 MiB)
+  0.034621 seconds (62.75 k allocations: 7.556 MiB)
+
+Ensemble Timing to solve 100 random Nelson systems on GPUs with Rodas5P():  2.235505 seconds (2.14 M allocations: 119.542 MiB, 3.76% gc time, 353.91% compilation time)
+  0.048035 seconds (68.49 k allocations: 12.434 MiB)
+  0.227291 seconds (68.36 k allocations: 12.414 MiB, 80.78% gc time)
+  0.046141 seconds (68.67 k allocations: 12.462 MiB)
+
+Ensemble Timing to solve 100 random Nelson systems on GPUs with Tsit5():  5.127321 seconds (5.80 M allocations: 327.167 MiB, 4.30% gc time, 103.50% compilation time)
+  3.008334 seconds (27.66 k allocations: 3.172 MiB)
+  2.735454 seconds (27.66 k allocations: 3.172 MiB)
+  3.163172 seconds (27.66 k allocations: 3.172 MiB)
+
+Ensemble Timing to solve 100 random Nelson systems on GPUs with Vern9():  3.126656 seconds (27.66 k allocations: 3.172 MiB)
+  2.965805 seconds (27.66 k allocations: 3.172 MiB)
+  2.922878 seconds (27.66 k allocations: 3.172 MiB)
+  3.385033 seconds (27.66 k allocations: 3.172 MiB, 3.59% gc time)
+We're officially on CPUs!! Onwards and march!
