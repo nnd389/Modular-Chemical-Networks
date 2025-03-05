@@ -241,7 +241,7 @@ print("\n6: Ensemble Timing to solve ", num_runs, " random Nelson systems on GPU
 @time solve(monteprob_nelson, Rodas4(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 @time solve(monteprob_nelson, Rodas4(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 
-
+print("We're officially on GPUs!!")
 
 
 
