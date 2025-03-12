@@ -133,40 +133,91 @@ end
 
 # Set the Timespan, Parameters, and Initial Conditions
 seconds_per_year = 3600 * 24 * 365
-tspan = (0.0, 30000 * seconds_per_year) # ~30 thousand yrs
+tspan = (0.0, 100000 * seconds_per_year) # ~30 thousand yrs
 
-params = (10,  # T
+params = (4300,  # T 
           2,   # Av
-          1.7, # Go
+          1.01, # Go 
           611, # n_H
           1)   # shield
 
-u0 = [0.5,      # 1:  H2
-      9.059e-9, # 2:  H3+
-      2.0e-4,   # 3:  e
-      0.1,      # 4:  He
-      7.866e-7, # 5:  He+
-      0.0,      # 6:  C
-      0.0,      # 7:  CHx
-      0.0004,   # 8:  O
-      0.0,      # 9:  OHx
-      0.0,      # 10: CO
-      0.0,      # 11: HCO+
-      0.0002,   # 12: C+
-      2.0e-7,   # 13: M+
-      2.0e-7]   # 14: M
+u0_table = [0.5,# 1:  H2 
+1e-8,     # 2:  H3+
+0.0,      # 3:  e
+0.1,      # 4:  He 
+0.0,      # 5:  He+
+5e-9,     # 6:  C      
+0.0,      # 7:  CHx = CH and CH2
+1e-8,     # 8:  O     
+8.001e-5, # 9:  OHx = OH, H2O, O2 and their ions  Ilse has 8e-5 for H2O, and 1e-8 for O2, sum = .00008001
+9.9e-5,   # 10: CO   
+9e-9,     # 11: HCO+  
+1e-9,     # 12: C+     
+0.0,      # 13: M+ = Mg+, Fe+, Ca+, and Na+       Ilse has 1e-11 (Mg+), 1e-11 (Fe+), sum = 2e-11
+0.0]      # 14: M = Mg, Fe, Ca, and Na
+
+u0_neutral = [0.5, # 1:  H2
+0.0,       # 2:  H3+
+2e-8,      # 3:  e
+0.1,       # 4:  He
+0.0,       # 5:  He+
+9.9095e-5, # 6:  C
+0.0,       # 7:  CHx = CH and CH2
+1.79044e-4,# 8:  O 
+8.001e-5,  # 9:  OHx = OH, H2O, O2 and their ions
+0.0,       # 10: CO
+0.0,       # 11: HCO+
+0.0,       # 12: C+
+0.0,       # 13: M+ = Mg+, Fe+, Ca+, and Na+      Ilse has 1e-11 (Mg+), 1e-11 (Fe+), sum = 2e-11
+0]         # 14: M = Mg, Fe, Ca, and Na 
 
 
-prob = ODEProblem(Nelson!, u0, tspan, params)
-refsol = solve(prob, Vern9(), abstol=1e-14, reltol=1e-14)
-sol1 = solve(prob, Rodas5P())
-sol2 = solve(prob, FBDF())
-sol3 = solve(prob, lsoda())
-sol4 = solve(prob, lsoda(), saveat = 1e10)
+# saveat = 1e10
+prob_table = ODEProblem(Nelson!, u0_table, tspan, params)
+sol_table = solve(prob_table, Rodas4(), saveat = 1e10)
+#sol_table = solve(prob_table, lsoda())
+prob_neutral = ODEProblem(Nelson!, u0_neutral, tspan, params)
+sol_neutral = solve(prob_neutral, Rodas4(), saveat = 1e10)
+#sol_neutral = solve(prob_neutral, lsoda())
 
 
 using Plots
-plot(sol4, vars = (0,1))
+# C
+plot(sol_table, vars = (0,6), lw = 3, lc = "blue", label = "C with Table u0", title = "Nelson Carbon Comparision")
+plot!(sol_neutral, vars = (0,6), lw = 3, lc = "green", label = "C with Neutral u0", xlabel = "1e6 years")
+
+# C+
+plot(sol_table, vars = (0,12), lw = 3, lc = "blue", label = "C+ with Table u0", title = "Nelson C+ Comparision")
+plot!(sol_neutral, vars = (0,12), lw = 3, lc = "green", label = "C+ with Neutral u0", xlabel = "1e7 years")
+
+# O
+plot(sol_table, vars = (0,8), lw = 3, lc = "blue", label = "O with Table u0", title = "Nelson O Comparision")
+plot!(sol_neutral, vars = (0,8), lw = 3, lc = "green", label = "O with Neutral u0", xlabel = "1e6 years")
+
+# CO
+plot(sol_table, vars = (0,10), lw = 3, lc = "blue", label = "CO with Table u0", title = "Nelson CO Comparision")
+plot!(sol_neutral, vars = (0,10), lw = 3, lc = "green", label = "CO with Neutral u0", xlabel = "1e7 years")
+
+# He
+plot(sol_table, vars = (0,4), lw = 3, lc = "blue", label = "He with Table u0", title = "Nelson He Comparision")
+plot!(sol_neutral, vars = (0,4), lw = 3, lc = "green", label = "He with Neutral u0", xlabel = "1e9 years")
+
+# e
+plot(sol_table, vars = (0,3), lw = 3, lc = "blue", label = "e with Table u0", title = "Nelson e Comparision")
+plot!(sol_neutral, vars = (0,3), lw = 3, lc = "green", label = "e with Neutral u0", xlabel = "2e6 years")
+
+# H3+
+plot(sol_table, vars = (0,2), lw = 3, lc = "blue", label = "H3+ with Table u0", title = "Nelson H3+ Comparision")
+plot!(sol_neutral, vars = (0,2), lw = 3, lc = "green", label = "H3+ with Neutral u0", xlabel = "1e6 years")
+
+# HCO+
+plot(sol_table, vars = (0,11), lw = 3, lc = "blue", label = "HCO+ with Table u0", title = "Nelson HCO+ Comparision")
+plot!(sol_neutral, vars = (0,11), lw = 3, lc = "green", label = "HCO+ with Neutral u0", xlabel = "1e5 years")
+
+
+
+
+
 
 
 #=

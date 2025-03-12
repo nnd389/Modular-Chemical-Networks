@@ -1,6 +1,7 @@
 #!/bin/bash
 #SBATCH -J Nina_Nelson_ODEs_job
 #SBATCH -o nelson_odes.txt
+#SBATCH -e nelson_ode_err.txt
 #SBATCH -t 03:59:59 	# Time limit (hh:mm:ss)
 #SBATCH -n 1       	# Number of tasks
 #SBATCH -c 4 		# Number of CPUs per task

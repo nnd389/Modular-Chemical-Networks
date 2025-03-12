@@ -20,12 +20,13 @@ using LSODA
 
 
 ### Timespan ###
-seconds_per_year = 3600 * 24 * 365
-tspan = (0.0, 30000 * seconds_per_year) # ~30 thousand yrs
+#seconds_per_year = 3600 * 24 * 365
+#tspan = (0.0, 30000 * seconds_per_year) # ~30 thousand yrs
 # 30,000 yrs approximately equals 8e11 
 
 
 ### Initial Conditions ###
+#=
 # Nelson has CHx (CH and CH2) and OHx (OH, H2O, O2) start at zero
 u0 = [  0,        # 1: H FIX
         2e-4,     # 2: e Nelson has 2e-4
@@ -61,43 +62,8 @@ u0 = [  0,        # 1: H FIX
         0,        # 32: O- FIX
         2e-7      # 33: M Nelson has 2e-7
         ]
-
-#=
-u0 = [  2e-4,        # 1: H FIX
-        2e-4,     # 2: e Nelson has 2e-4
-        2e-4,        # 3: H- FIX
-        0.5,      # 4: H2 Nelson has 0.5
-        2e-4,        # 5: H+ FIX
-        2e-4,        # 6: H2+ FIX
-        0.1,      # 7: He Nelson has 0.1
-        7.866e-7, # 8: He+ Nelson has 7.866e-7
-        2e-4,     # 9: C+ Nelson has 2e-4, Glover has...
-        2e-4,        # 10: C Nelson has 0, Glover has 1.41e-4, see section 4
-        2e-4,        # 11: O+ FIX
-        4e-4,     # 12: O Nelson has 4e-4, Glover has 3.16e-4, see section 4
-        2e-4,        # 13: OH Nelson has 0 for OHx
-        2e-4,        # 14: HOC+ FIX
-        2e-4,        # 15: HCO+ Nelson has 0
-        2e-4,        # 16: CO Nelson has 0
-        2e-4,        # 17: CH FIX
-        2e-4,        # 18: CH2 Nelson has 0 for CHx
-        2e-4,        # 19: C2 FIX
-        2e-4,        # 20: H2O Nelson has 0
-        2e-4,        # 21: O2 Nelson has 0, OHx FIX-------CHECK IF THIS IS O2+ FIND O2
-        9.059e-9, # 22: H3+ Nelson has 9.059e-9
-        2e-4,        # 23: CH+ FIX
-        2e-4,        # 24: CH2+ FIX
-        2e-4,        # 25: CO+ FIX
-        2e-4,        # 26: CH3+ Nelson has 0 for CHx
-        2e-4,        # 27: OH+ FIX
-        2e-4,        # 28: H2O+ FIX
-        2e-4,        # 29: H3O+ FIX
-        2e-4,        # 30: O2+ FIX
-        2e-4,        # 31: C- FIX
-        2e-4,        # 32: O- FIX
-        2e-7      # 33: M Nelson has 2e-7
-        ]
 =#
+
 
 ### Parameters ###
 T = 10 # from glover paper, T=60 section 4, nelson has 10k
@@ -674,6 +640,141 @@ reaction_equations = [
 ]
 
 
+### Initial Conditions ###
+u0_table = [  0.0,  # 1: H 
+        0.0,        # 2: e
+        0.0,        # 3: H- 
+        0.5,        # 4: H2
+        0.0,        # 5: H+ 
+        0.0,        # 6: H2+ 
+        0.1,        # 7: He
+        0.0,        # 8: He+
+        1e-9,       # 9: C+
+        5e-9,       # 10: C
+        0.0,        # 11: O+
+        1e-8,       # 12: O 
+        0.0,        # 13: OH 
+        0.0,        # 14: HOC+ 
+        9e-9,       # 15: HCO+
+        9.9e-5,     # 16: CO
+        0.0,        # 17: CH 
+        0.0,        # 18: CH2 
+        0.0,        # 19: C2 
+        8e-5,       # 20: H2O
+        1e-8,       # 21: O2
+        1e-8,       # 22: H3+
+        0.0,        # 23: CH+
+        0.0,        # 24: CH2+
+        0.0,        # 25: CO+
+        0.0,        # 26: CH3+
+        0.0,        # 27: OH+
+        0.0,        # 28: H2O+
+        0.0,        # 29: H3O+
+        0.0,        # 30: O2+
+        0.0,        # 31: C-
+        0.0,        # 32: O-
+        0.0         # 33: M Mg, Fe, Ca, and Na 
+        ]
+
+u0_neutral = [  0.0,# 1: H 
+        2e-8,       # 2: e
+        0.0,        # 3: H- 
+        0.5,        # 4: H2
+        0.0,        # 5: H+ 
+        0.0,        # 6: H2+ 
+        0.1,        # 7: He
+        0.0,        # 8: He+
+        0.0,        # 9: C+
+        9.9095e-5,  # 10: C
+        0.0,        # 11: O+
+        1.79044e-4, # 12: O
+        0.0,        # 13: OH 
+        0.0,        # 14: HOC+ 
+        0.0,        # 15: HCO+
+        0.0,        # 16: CO
+        0.0,        # 17: CH 
+        0.0,        # 18: CH2 
+        0.0,        # 19: C2 
+        0.0,        # 20: H2O 
+        0.0,        # 21: O2 
+        0.0,        # 22: H3+ 
+        0.0,        # 23: CH+
+        0.0,        # 24: CH2+
+        0.0,        # 25: CO+
+        0.0,        # 26: CH3+
+        0.0,        # 27: OH+
+        0.0,        # 28: H2O+
+        0.0,        # 29: H3O+
+        0.0,        # 30: O2+
+        0.0,        # 31: C-
+        0.0,        # 32: O-
+        0.0         # 33: M Mg, Fe, Ca, and Na 
+        ]
+
+### Timespan ###
+seconds_per_year = 3600 * 24 * 365
+tspan = (0.0, 1000000 * seconds_per_year) # ~30 thousand yrs
+
+
+@named system = ReactionSystem(reaction_equations, t)
+sys = convert(ODESystem, complete(system))
+completed_sys = complete(sys)
+
+prob_table = ODEProblem(completed_sys, u0_table, tspan, params)
+prob_neutral = ODEProblem(completed_sys, u0_neutral, tspan, params)
+
+sol_table = solve(prob_table, Rodas4(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=10e9)
+sol_neutral = solve(prob_neutral, Rodas4(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=10e9)
+
+
+
+using Plots
+# C
+plot(sol_table, vars = (0,10), lw = 3, lc = "blue", label = "C with Table u0", title = "Glover Carbon Comparision")
+plot!(sol_neutral, vars = (0,10), lw = 3, lc = "green", label = "C with Neutral u0", xlabel = "1e6 years")
+
+# C+
+plot(sol_table, vars = (0,9), lw = 3, lc = "blue", label = "C+ with Table u0", title = "Glover C+ Comparision")
+plot!(sol_neutral, vars = (0,9), lw = 3, lc = "green", label = "C+ with Neutral u0", xlabel = "1e6 years")
+
+# O
+plot(sol_table, vars = (0,12), lw = 3, lc = "blue", label = "O with Table u0", title = "Glover O Comparision")
+plot!(sol_neutral, vars = (0,12), lw = 3, lc = "green", label = "O with Neutral u0", xlabel = "1e6 years")
+
+# CO
+plot(sol_table, vars = (0,16), lw = 3, lc = "blue", label = "CO with Table u0", title = "Glover CO Comparision")
+plot!(sol_neutral, vars = (0,16), lw = 3, lc = "green", label = "CO with Neutral u0", xlabel = "1e6 years")
+
+# He
+plot(sol_table, vars = (0,7), lw = 3, lc = "blue", label = "He with Table u0", title = "Glover He Comparision")
+plot!(sol_neutral, vars = (0,7), lw = 3, lc = "green", label = "He with Neutral u0", xlabel = "1e6 years")
+
+# e
+plot(sol_table, vars = (0,2), lw = 3, lc = "blue", label = "e with Table u0", title = "Glover e Comparision")
+plot!(sol_neutral, vars = (0,2), lw = 3, lc = "green", label = "e with Neutral u0", xlabel = "1e6 years")
+
+# H3+
+plot(sol_table, vars = (0,22), lw = 3, lc = "blue", label = "H3+ with Table u0", title = "Glover H3+ Comparision")
+plot!(sol_neutral, vars = (0,22), lw = 3, lc = "green", label = "H3+ with Neutral u0", xlabel = "1e6 years")
+
+# HCO+
+plot(sol_table, vars = (0,15), lw = 3, lc = "blue", label = "HCO+ with Table u0", title = "Glover HCO+ Comparision")
+plot!(sol_neutral, vars = (0,15), lw = 3, lc = "green", label = "HCO+ with Neutral u0", xlabel = "1e6 years")
+#=
+=#
+
+
+
+
+
+
+
+
+
+
+
+
+#=
 ### Turn the Network into a system of ODEs ----and---- Timing ###
 print("\n\nGlover Catalyst:")
 @named system = ReactionSystem(reaction_equations, t)
@@ -694,11 +795,10 @@ prob_complete = ODEProblem(completed_sys, u0, tspan, params)
 print("Time to solve the completed system with Rodas4(): ")
 @time solve(prob_complete, Rodas4());
 sol_complete = solve(prob_complete, Rodas4(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=10e9)
-
-#plot(sol_complete, idxs = (0,10), lw = 3, lc = "blue")
-#plot!(sol_complete, idxs = (0,9), lw = 3, lc = "orange", title = "Glover with Glover rates: C and C+")
+=#
 
 
+#=
 ### Ensemble Problem ###
 print("\nEnsemble timing: ")
 prob = ODEProblem(completed_sys, u0, tspan, params)
@@ -742,7 +842,7 @@ for i in 1:100
     #plot!(sol_for, idxs = (0,9), lw = 3, lc = "orange", title = "Glover with Glover rates: C and C+")
 end
 end
-
+=#
 
 
 #=
