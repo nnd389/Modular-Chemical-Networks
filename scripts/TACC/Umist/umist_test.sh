@@ -15,4 +15,4 @@
 
 
 # Launch serial code...
-apptainer exec julia_latest.sif julia umist_test1.jl      # Do not use ibrun or any other MPI launcher
+apptainer exec julia_latest.sif julia umist_test.jl      # Do not use ibrun or any other MPI launcher
