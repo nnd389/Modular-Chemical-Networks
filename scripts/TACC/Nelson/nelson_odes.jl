@@ -11,6 +11,7 @@ using ODEInterface, ODEInterfaceDiffEq
 using ModelingToolkit
 using DiffEqGPU 
 using CUDA
+using StaticArrays
 print("\nCheck 2: Finished initializing packages")
 
 #=
@@ -183,7 +184,7 @@ print("\nTime to solve Nelson ONCE with lsoda: ")
 
 ### We're gonna for loop and GPU this baddie###
 # CAUTION! The second for loop always runs faster than the first regardless for some reason, I think it has to do with setting up the @time macro?
-num_runs = 100
+num_runs = 10
 print("\nFor loop timing for ", num_runs, " runs: ")
 
 @time begin
@@ -217,9 +218,9 @@ end
 
 
 
-
-### Ensemble Problem ###
-print("\nEnsemble Problem")
+#=
+### Ensemble Problem using EnsembleGPUArray(CUDA.CUDABackend())###
+print("\nEnsemble Problem using EnsembleGPUArray(CUDA.CUDABackend())")
 print("\nCheck 1: Finished the for loops")
 tspan_ens = (0.0f0, 946080000000.0f0) # ~30 thousand yrs
 print("\nCheck 2: Finished initializing the timespan")
@@ -257,6 +258,438 @@ print("\nEnsemble Timing to solve ", num_runs, " random Nelson systems on GPUs w
 @time solve(monteprob_nelson, Tsit5(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 
 print("We're officially on Nelson ODEs GPUs!! Onwards and march!\n")
+=#
+
+
+
+
+
+
+
+
+
+
+
+
+
+### Let's start testing out the documentation from ###
+### Setting Up Multi-GPU Parallel Parameter Sweeps ###
+
+print("\n\n GPU Batch Problem")
+
+# Setup processes with different CUDA devices
+using DiffEqGPU, CUDA, OrdinaryDiffEq, Test
+CUDA.device!(0)
+#numgpus = 1  # Maybe we should have two gpus?
+using Distributed
+addprocs(2)  # 100/2 = 50 so I am setting batsh size to 50 
+print("\nGPU Batch 1: Finished the packages")
+
+#=
+let gpuworkers = asyncmap(collect(zip(workers(), CUDA.devices()))) do (p, d)
+        remotecall_wait(CUDA.device!, p, d)
+        p
+    end
+end
+=#
+
+
+
+
+@everywhere using DiffEqGPU, CUDA, OrdinaryDiffEq, Test, Random
+
+@everywhere begin
+        function Nelson_gpu(du,u,p,t)
+                T, Av, Go, n_H, shield = p
+            # 1: H2
+            du[1] = -1.2f-17 * u[1] + 
+                    n_H * (1.9f-6 * u[2] * u[3]) / (T^0.54) - 
+                    n_H * 4f-16 * u[1] * u[12] - 
+                    n_H * 7f-15 * u[1] * u[5] + 
+                    n_H * 1.7f-9 * u[10] * u[2] + 
+                    n_H * 2f-9 * u[2] * u[6] + 
+                    n_H * 2f-9 * u[2] * u[14] + 
+                    n_H * 8f-10 * u[2] * u[8] 
+            
+            # 2: H3+
+            du[2] = 1.2f-17 * u[1] + 
+                    n_H * (-1.9f-6 * u[3] * u[2]) / (T^0.54) - 
+                    n_H * 1.7f-9 * u[10] * u[2] - 
+                    n_H * 2f-9 * u[2] * u[6] - 
+                    n_H * 2f-9 * u[2] * u[14] - 
+                    n_H * 8f-10 * u[2] * u[8]
+            
+            # 3: e
+            du[3] = n_H * (-1.4f-10 * u[3] * u[12]) / (T^0.61) - 
+                    n_H * (3.8f-10 * u[13] * u[3]) / (T^0.65) - 
+                    n_H * (3.3f-5 * u[11] * u[3]) / T + 
+                    1.2f-17 * u[1] - 
+                    n_H * (1.9f-6 * u[3] * u[2]) / (T^0.54) + 
+                    6.8f-18 * u[4] - 
+                    n_H * (9f-11 * u[3] * u[5]) / (T^0.64) + 
+                    3f-10 * Go * exp(-3 * Av) * u[6] +
+                    n_H * 2f-9 * u[2] * u[13] # added this extra term from a CR ionization reaction
+                    + 2.0f-10 * Go * exp(-1.9 * Av) * u[14] # this term was added as part of the skipped photoreaction
+            
+            
+            # 4: He
+            du[4] = n_H * (9f-11 * u[3] * u[5]) / (T^0.64) - 
+                    6.8f-18 * u[4] + 
+                    n_H * 7f-15 * u[1] * u[5] + 
+                    n_H * 1.6f-9 * u[10] * u[5]
+            
+            # 5: He+
+            du[5] = 6.8f-18 * u[4] - 
+                    n_H * (9f-11 * u[3] * u[5]) / (T^0.64) - 
+                    n_H * 7f-15 * u[1] * u[5] - 
+                    n_H * 1.6f-9 * u[10] * u[5]
+            
+            # 6: C
+            du[6] = n_H * (1.4f-10 * u[3] * u[12]) / (T^0.61) - 
+                    n_H * 2f-9 * u[2] * u[6] - 
+                    n_H * 5.8f-12 * (T^0.5) * u[9] * u[6] + 
+                    1f-9 * Go * exp(-1.5 * Av) * u[7] - 
+                    3f-10 * Go * exp(-3 * Av) * u[6] + 
+                    1f-10 * Go * exp(-3 * Av) * u[10] * shield
+            
+            # 7: CHx
+            du[7] = n_H * (-2f-10) * u[7] * u[8] + 
+                    n_H * 4f-16 * u[1] * u[12] + 
+                    n_H * 2f-9 * u[2] * u[6] - 
+                    1f-9 * Go * u[7] * exp(-1.5 * Av)
+            
+            # 8: O
+            du[8] = n_H * (-2f-10) * u[7] * u[8] + 
+                    n_H * 1.6f-9 * u[10] * u[5] - 
+                    n_H * 8f-10 * u[2] * u[8] + 
+                    5f-10 * Go * exp(-1.7 * Av) * u[9] + 
+                    1f-10 * Go * exp(-3 * Av) * u[10] * shield
+            
+            # 9: OHx
+            du[9] = n_H * (-1f-9) * u[9] * u[12] + 
+                    n_H * 8f-10 * u[2] * u[8] - 
+                    n_H * 5.8f-12 * (T^0.5) * u[9] * u[6] - 
+                    5f-10 * Go * exp(-1.7 * Av) * u[9]
+            
+            # 10: CO
+            du[10] = n_H * (3.3f-5 * u[11] * u[3]) / T + 
+                    n_H * 2f-10 * u[7] * u[8] - 
+                    n_H * 1.7f-9 * u[10] * u[2] - 
+                    n_H * 1.6f-9 * u[10] * u[5] + 
+                    n_H * 5.8f-12 * (T^0.5) * u[9] * u[6] - 
+                    1f-10 * Go * exp(-3 * Av) * u[10] + 
+                    1.5f-10 * Go * exp(-2.5 * Av) * u[11] * shield
+            
+            # 11: HCO+
+            du[11] = n_H * (-3.3f-5 * u[11] * u[3]) / T + 
+                    n_H * 1f-9 * u[9] * u[12] + 
+                    n_H * 1.7f-9 * u[10] * u[2] - 
+                    1.5f-10 * Go * exp(-2.5 * Av) * u[11]
+            
+            # 12: C+
+            du[12] = n_H * (-1.4f-10 * u[3] * u[12]) / (T^0.61) - 
+                    n_H * 4f-16 * u[1] * u[12] - 
+                    n_H * 1f-9 * u[9] * u[12] + 
+                    n_H * 1.6f-9 * u[10] * u[5] + 
+                    3f-10 * Go * exp(-3 * Av) * u[6]
+            
+            # 13: M+
+            du[13] = n_H * (-3.8f-10 * u[13] * u[3]) / (T^0.65) + 
+                    n_H * 2f-9 * u[2] * u[14] 
+                    + 2.0f-10 * Go * exp(-1.9 * Av) * u[14] # this term was added as part of the skipped photoreaction
+            
+            # 14: M
+            du[14] = n_H * (3.8f-10 * u[13] * u[3]) / (T^0.65) - 
+                    n_H * 2f-9 * u[2] * u[14] 
+                    - 2.0f-10 * Go * exp(-1.9 * Av) * u[14] # this term was added as part of the skipped photoreaction
+            
+            end
+
+
+
+        CUDA.allowscalar(false)
+
+        u0_gpu = Float32[0.5;    # 1:  H2   yep?
+        9.059f-9; # 2:  H3+  yep
+        2.0f-4;   # 3:  e    yep
+        0.1;      # 4:  He  SEE lines 535 NL99
+        7.866f-7; # 5:  He+  yep? should be 2.622f-5
+        0.0;      # 6:  C    yep
+        0.0;      # 7:  CHx  yep
+        0.0004;   # 8:  O    yep
+        0.0;      # 9:  OHx  yep
+        0.0;      # 10: CO   yep
+        0.0;      # 11: HCO+ yep
+        0.0002;   # 12: C+   yep
+        2.0f-7;   # 13: M+   yep
+        2.0f-7]   # 14: M    yep
+
+        tspan_gpu = (0.0f0, 946080000000.0f0) # ~30 thousand yrs
+        params_gpu = Float32[10.0f0, 2.0f0, 1.7f0, 611.0f0, 1.0f0]
+
+        Random.seed!(1)
+        function prob_func_distributed(prob_gpu, i, repeat)
+            remake(prob_gpu, u0 = rand(14) .* u0_gpu)
+        end
+
+end
+print("\nGPU Batch 3: Finished @everywhere macro")
+
+
+#=
+@sync begin
+        @spawnat 2 begin
+                CUDA.allowscalar(false)
+                CUDA.device!(0)
+        end
+        @spawnat 3 begin
+                CUDA.allowscalar(false)
+                CUDA.device!(1)
+        end
+end
+CUDA.allowscalar(false)
+=#
+print("\nGPU Batch: 4: Finished spawnat")
+
+
+prob_gpu = ODEProblem(Nelson_gpu, u0_gpu, tspan_gpu, params_gpu)
+print("\nGPU Batch 5: Finished ODEProblem")
+monteprob_gpu = EnsembleProblem(prob_gpu, prob_func = prob_func_distributed, safetycopy = false) # try taking out safeteycopy=false
+print("\nGPU Batch 6: Finished Ensemble Problem")
+# NOTE: documentation examples usually randomize the parameters instead of initial conditions
+print("\n We are about to solve the gpu batch problem with ", num_runs, " runs and batch size of ", num_runs/2)
+
+print("\n\nGPU batch: GPU Timing to solve ", num_runs, " random Nelson systems on GPUs with Tsit5():")
+print("\n first solve")
+@time solve(monteprob_gpu, Tsit5(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, batch_size = num_runs, reltol=1.49012f-8, abstol=1.49012f-8, saveat=1e10)
+@time solve(monteprob_gpu, Tsit5(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, batch_size = num_runs, reltol=1.49012f-8, abstol=1.49012f-8, saveat=1e10)
+@time solve(monteprob_gpu, Tsit5(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, batch_size = num_runs, reltol=1.49012f-8, abstol=1.49012f-8, saveat=1e10)
+
+
+
+
+
+#=
+print("\n\nGPU batch: GPU Timing to solve ", num_runs, " random Nelson systems on GPUs with Vern9():")
+@time solve(monteprob_gpu, Vern9(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, batch_size = num_runs, reltol=1.49012f-8, abstol=1.49012f-8, saveat=1e10)
+@time solve(monteprob_gpu, Vern9(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, batch_size = num_runs, reltol=1.49012f-8, abstol=1.49012f-8, saveat=1e10)
+@time solve(monteprob_gpu, Vern9(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, batch_size = num_runs, reltol=1.49012f-8, abstol=1.49012f-8, saveat=1e10)
+@time solve(monteprob_gpu, Vern9(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, batch_size = num_runs, reltol=1.49012f-8, abstol=1.49012f-8, saveat=1e10)
+
+print("\n\nGPU batch: GPU Timing to solve ", num_runs, " random Nelson systems on GPUs with Rodas5P():")
+@time solve(monteprob_gpu, Rodas5P(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, batch_size = num_runs, reltol=1.49012f-8, abstol=1.49012f-8, saveat=1e10)
+@time solve(monteprob_gpu, Rodas5P(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, batch_size = num_runs, reltol=1.49012f-8, abstol=1.49012f-8, saveat=1e10)
+@time solve(monteprob_gpu, Rodas5P(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, batch_size = num_runs, reltol=1.49012f-8, abstol=1.49012f-8, saveat=1e10)
+@time solve(monteprob_gpu, Rodas5P(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, batch_size = num_runs, reltol=1.49012f-8, abstol=1.49012f-8, saveat=1e10)
+
+print("\n\nGPU batch: GPU Timing to solve ", num_runs, " random Nelson systems on GPUs with Rodas4():")
+@time solve(monteprob_gpu, Rodas4(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, batch_size = num_runs, reltol=1.49012f-8, abstol=1.49012f-8, saveat=1e10)
+@time solve(monteprob_gpu, Rodas4(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, batch_size = num_runs, reltol=1.49012f-8, abstol=1.49012f-8, saveat=1e10)
+@time solve(monteprob_gpu, Rodas4(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, batch_size = num_runs, reltol=1.49012f-8, abstol=1.49012f-8, saveat=1e10)
+@time solve(monteprob_gpu, Rodas4(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, batch_size = num_runs, reltol=1.49012f-8, abstol=1.49012f-8, saveat=1e10)
+=#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#=
+### Testing out EnsembleGPUKernel ###
+print("Testing out EnsembleGPUKernel")
+function Nelson_kernel(du,u,p,t)
+        T, Av, Go, n_H, shield = p
+    # 1: H2
+    du[1] = -1.2e-17 * u[1] + 
+            n_H * (1.9e-6 * u[2] * u[3]) / (T^0.54) - 
+            n_H * 4e-16 * u[1] * u[12] - 
+            n_H * 7e-15 * u[1] * u[5] + 
+            n_H * 1.7e-9 * u[10] * u[2] + 
+            n_H * 2e-9 * u[2] * u[6] + 
+            n_H * 2e-9 * u[2] * u[14] + 
+            n_H * 8e-10 * u[2] * u[8] 
+    
+    # 2: H3+
+    du[2] = 1.2e-17 * u[1] + 
+            n_H * (-1.9e-6 * u[3] * u[2]) / (T^0.54) - 
+            n_H * 1.7e-9 * u[10] * u[2] - 
+            n_H * 2e-9 * u[2] * u[6] - 
+            n_H * 2e-9 * u[2] * u[14] - 
+            n_H * 8e-10 * u[2] * u[8]
+    
+    # 3: e
+    du[3] = n_H * (-1.4e-10 * u[3] * u[12]) / (T^0.61) - 
+            n_H * (3.8e-10 * u[13] * u[3]) / (T^0.65) - 
+            n_H * (3.3e-5 * u[11] * u[3]) / T + 
+            1.2e-17 * u[1] - 
+            n_H * (1.9e-6 * u[3] * u[2]) / (T^0.54) + 
+            6.8e-18 * u[4] - 
+            n_H * (9e-11 * u[3] * u[5]) / (T^0.64) + 
+            3e-10 * Go * exp(-3 * Av) * u[6] +
+            n_H * 2e-9 * u[2] * u[13] # added this extra term from a CR ionization reaction
+            + 2.0e-10 * Go * exp(-1.9 * Av) * u[14] # this term was added as part of the skipped photoreaction
+    
+    
+    # 4: He
+    du[4] = n_H * (9e-11 * u[3] * u[5]) / (T^0.64) - 
+            6.8e-18 * u[4] + 
+            n_H * 7e-15 * u[1] * u[5] + 
+            n_H * 1.6e-9 * u[10] * u[5]
+    
+    # 5: He+
+    du[5] = 6.8e-18 * u[4] - 
+            n_H * (9e-11 * u[3] * u[5]) / (T^0.64) - 
+            n_H * 7e-15 * u[1] * u[5] - 
+            n_H * 1.6e-9 * u[10] * u[5]
+    
+    # 6: C
+    du[6] = n_H * (1.4e-10 * u[3] * u[12]) / (T^0.61) - 
+            n_H * 2e-9 * u[2] * u[6] - 
+            n_H * 5.8e-12 * (T^0.5) * u[9] * u[6] + 
+            1e-9 * Go * exp(-1.5 * Av) * u[7] - 
+            3e-10 * Go * exp(-3 * Av) * u[6] + 
+            1e-10 * Go * exp(-3 * Av) * u[10] * shield
+    
+    # 7: CHx
+    du[7] = n_H * (-2e-10) * u[7] * u[8] + 
+            n_H * 4e-16 * u[1] * u[12] + 
+            n_H * 2e-9 * u[2] * u[6] - 
+            1e-9 * Go * u[7] * exp(-1.5 * Av)
+    
+    # 8: O
+    du[8] = n_H * (-2e-10) * u[7] * u[8] + 
+            n_H * 1.6e-9 * u[10] * u[5] - 
+            n_H * 8e-10 * u[2] * u[8] + 
+            5e-10 * Go * exp(-1.7 * Av) * u[9] + 
+            1e-10 * Go * exp(-3 * Av) * u[10] * shield
+    
+    # 9: OHx
+    du[9] = n_H * (-1e-9) * u[9] * u[12] + 
+            n_H * 8e-10 * u[2] * u[8] - 
+            n_H * 5.8e-12 * (T^0.5) * u[9] * u[6] - 
+            5e-10 * Go * exp(-1.7 * Av) * u[9]
+    
+    # 10: CO
+    du[10] = n_H * (3.3e-5 * u[11] * u[3]) / T + 
+            n_H * 2e-10 * u[7] * u[8] - 
+            n_H * 1.7e-9 * u[10] * u[2] - 
+            n_H * 1.6e-9 * u[10] * u[5] + 
+            n_H * 5.8e-12 * (T^0.5) * u[9] * u[6] - 
+            1e-10 * Go * exp(-3 * Av) * u[10] + 
+            1.5e-10 * Go * exp(-2.5 * Av) * u[11] * shield
+    
+    # 11: HCO+
+    du[11] = n_H * (-3.3e-5 * u[11] * u[3]) / T + 
+            n_H * 1e-9 * u[9] * u[12] + 
+            n_H * 1.7e-9 * u[10] * u[2] - 
+            1.5e-10 * Go * exp(-2.5 * Av) * u[11]
+    
+    # 12: C+
+    du[12] = n_H * (-1.4e-10 * u[3] * u[12]) / (T^0.61) - 
+            n_H * 4e-16 * u[1] * u[12] - 
+            n_H * 1e-9 * u[9] * u[12] + 
+            n_H * 1.6e-9 * u[10] * u[5] + 
+            3e-10 * Go * exp(-3 * Av) * u[6]
+    
+    # 13: M+
+    du[13] = n_H * (-3.8e-10 * u[13] * u[3]) / (T^0.65) + 
+            n_H * 2e-9 * u[2] * u[14] 
+            + 2.0e-10 * Go * exp(-1.9 * Av) * u[14] # this term was added as part of the skipped photoreaction
+    
+    # 14: M
+    du[14] = n_H * (3.8e-10 * u[13] * u[3]) / (T^0.65) - 
+            n_H * 2e-9 * u[2] * u[14] 
+            - 2.0e-10 * Go * exp(-1.9 * Av) * u[14] # this term was added as part of the skipped photoreaction
+
+
+    return SVector{14}(du1, du2, du3, du4, du5, du6, du7, du8, du9, du10, du11, du12, du13, du14)
+end
+print("\nKernel: Finished reading the function")
+
+tspan_kernel = (0.0f0, 946080000000.0f0) # ~30 thousand yrs
+params_kernel = @SVector [10.0f0, 2.0f0, 1.7f0, 611.0f0, 1.0f0]
+u0_kernel = @SVector[0.5f0;      # 1:  H2   yep?
+    0.000000009059f0;# 2:  H3+  yep
+    0.0002f0;        # 3:  e    yep
+    0.1f0;           # 4:  He  SEE lines 535 NL99
+    .0000007866f0;   # 5:  He+  yep? should be 2.622e-5
+    0.0f0;           # 6:  C    yep
+    0.0f0;           # 7:  CHx  yep
+    0.0004f0;        # 8:  O    yep
+    0.0f0;           # 9:  OHx  yep
+    0.0f0;           # 10: CO   yep
+    0.0f0;           # 11: HCO+ yep
+    0.0002f0;        # 12: C+   yep
+    0.0000002f0;     # 13: M+   yep
+    0.0000002f0]     # 14: M    yep
+
+print("\nKernel Check 1: Finished initializing timespan, initial conditions, and parameters")
+
+
+prob_kernel = ODEProblem{false}(Nelson_kernel, u0_kernel, tspan_kernel, params_kernel)
+print("\nKernel Check 2: Finished making the Ensemble ODE problem")
+prob_func_kernel = (prob_kernel, i, repeat) -> remake(prob_kernel, u0_kernel = rand(Float32,14) .* u0_kernel)
+print("\nKernel Check 3: Finished making all the remakes")
+monteprob_kernel = EnsembleProblem(prob_kernel, prob_func = prob_func_kernel, safetycopy = false)
+print("\nCheck 4: Finished creating the Ensemble problem")
+sol_kernel = solve(monteprob_kernel, GPUTsit5(), EnsembleGPUKernel(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+
+
+print("\n\nKernel: Ensemble Timing to solve ", num_runs, " random Nelson systems on GPUs with GPUTsit5():")
+@time solve(monteprob_kernel, GPUTsit5(), EnsembleGPUKernel(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_kernel, GPUTsit5(), EnsembleGPUKernel(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_kernel, GPUTsit5(), EnsembleGPUKernel(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_kernel, GPUTsit5(), EnsembleGPUKernel(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+
+print("\n\nKernel: Ensemble Timing to solve ", num_runs, " random Nelson systems on GPUs with GPUVern9():")
+@time solve(monteprob_kernel, GPUVern9(), EnsembleGPUKernel(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_kernel, GPUVern9(), EnsembleGPUKernel(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_kernel, GPUVern9(), EnsembleGPUKernel(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_kernel, GPUVern9(), EnsembleGPUKernel(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+
+print("\n\nKernel: Ensemble Timing to solve ", num_runs, " random Nelson systems on GPUs with GPURodas4():")
+@time solve(monteprob_kernel, GPURodas4(), EnsembleGPUKernel(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_kernel, GPURodas4(), EnsembleGPUKernel(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_kernel, GPURodas4(), EnsembleGPUKernel(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_kernel, GPURodas4(), EnsembleGPUKernel(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+
+print("\n\nKernel: Ensemble Timing to solve ", num_runs, " random Nelson systems on GPUs with GPURodas4():")
+@time solve(monteprob_kernel, GPURodas5P(), EnsembleGPUKernel(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_kernel, GPURodas5P(), EnsembleGPUKernel(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_kernel, GPURodas5P(), EnsembleGPUKernel(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_kernel, GPURodas5P(), EnsembleGPUKernel(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+=#
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -311,144 +744,23 @@ plot(sol, idxs = (0,14), lw = 3, lc = "light blue", title = "Nelson: M")
 
 
 
-#=
-
-print("\n\nEnsembleGPU Kernel Timing")
-import Pkg; Pkg.add("StaticArrays")
-using StaticArrays
-
-function Nelson2(du,u,p,t)
-        T = p[1]
-        Av = p[2]
-        Go = p[3]
-        n_H = p[4]
-        shield = p[5]
-    # 1: H2
-    du[1] = -1.2e-17 * u[1] + 
-            p[4] * (1.9e-6 * u[2] * u[3]) / (p[1]^0.54) - 
-            p[4] * 4e-16 * u[1] * u[12] - 
-            p[4] * 7e-15 * u[1] * u[5] + 
-            p[4] * 1.7e-9 * u[10] * u[2] + 
-            p[4] * 2e-9 * u[2] * u[6] + 
-            p[4] * 2e-9 * u[2] * u[14] + 
-            p[4] * 8e-10 * u[2] * u[8] 
-    
-    # 2: H3+
-    du[2] = 1.2e-17 * u[1] + 
-            p[4] * (-1.9e-6 * u[3] * u[2]) / (p[1]^0.54) - 
-            p[4] * 1.7e-9 * u[10] * u[2] - 
-            p[4] * 2e-9 * u[2] * u[6] - 
-            p[4] * 2e-9 * u[2] * u[14] - 
-            p[4] * 8e-10 * u[2] * u[8]
-    
-    # 3: e
-    du[3] = p[4] * (-1.4e-10 * u[3] * u[12]) / (p[1]^0.61) - 
-            p[4] * (3.8e-10 * u[13] * u[3]) / (p[1]^0.65) - 
-            p[4] * (3.3e-5 * u[11] * u[3]) / p[1] + 
-            1.2e-17 * u[1] - 
-            p[4] * (1.9e-6 * u[3] * u[2]) / (p[1]^0.54) + 
-            6.8e-18 * u[4] - 
-            p[4] * (9e-11 * u[3] * u[5]) / (p[1]^0.64) + 
-            3e-10 * p[3] * exp(-3 * p[2]) * u[6] +
-            p[4] * 2e-9 * u[2] * u[13] # added this extra term from a CR ionization reaction
-            + 2.0e-10 * p[3] * exp(-1.9 * p[2]) * u[14] # this term was added as part of the skipped photoreaction
-    
-    
-    # 4: He
-    du[4] = p[4] * (9e-11 * u[3] * u[5]) / (p[1]^0.64) - 
-            6.8e-18 * u[4] + 
-            p[4] * 7e-15 * u[1] * u[5] + 
-            p[4] * 1.6e-9 * u[10] * u[5]
-    
-    # 5: He+
-    du[5] = 6.8e-18 * u[4] - 
-            p[4] * (9e-11 * u[3] * u[5]) / (p[1]^0.64) - 
-            p[4] * 7e-15 * u[1] * u[5] - 
-            p[4] * 1.6e-9 * u[10] * u[5]
-    
-    # 6: C
-    du[6] = p[4] * (1.4e-10 * u[3] * u[12]) / (p[1]^0.61) - 
-            p[4] * 2e-9 * u[2] * u[6] - 
-            p[4] * 5.8e-12 * (p[1]^0.5) * u[9] * u[6] + 
-            1e-9 * p[3] * exp(-1.5 * p[2]) * u[7] - 
-            3e-10 * p[3] * exp(-3 * p[2]) * u[6] + 
-            1e-10 * p[3] * exp(-3 * p[2]) * u[10] * p[5]
-    
-    # 7: CHx
-    du[7] = p[4] * (-2e-10) * u[7] * u[8] + 
-            p[4] * 4e-16 * u[1] * u[12] + 
-            p[4] * 2e-9 * u[2] * u[6] - 
-            1e-9 * p[3] * u[7] * exp(-1.5 * p[2])
-    
-    # 8: O
-    du[8] = p[4] * (-2e-10) * u[7] * u[8] + 
-            p[4] * 1.6e-9 * u[10] * u[5] - 
-            p[4] * 8e-10 * u[2] * u[8] + 
-            5e-10 * p[3] * exp(-1.7 * p[2]) * u[9] + 
-            1e-10 * p[3] * exp(-3 * p[2]) * u[10] * p[5]
-    
-    # 9: OHx
-    du[9] = p[4] * (-1e-9) * u[9] * u[12] + 
-            p[4] * 8e-10 * u[2] * u[8] - 
-            p[4] * 5.8e-12 * (p[1]^0.5) * u[9] * u[6] - 
-            5e-10 * p[3] * exp(-1.7 * p[2]) * u[9]
-    
-    # 10: CO
-    du[10] = p[4] * (3.3e-5 * u[11] * u[3]) / p[1] + 
-            p[4] * 2e-10 * u[7] * u[8] - 
-            p[4] * 1.7e-9 * u[10] * u[2] - 
-            p[4] * 1.6e-9 * u[10] * u[5] + 
-            p[4] * 5.8e-12 * (p[1]^0.5) * u[9] * u[6] - 
-            1e-10 * p[3] * exp(-3 * p[2]) * u[10] + 
-            1.5e-10 * p[3] * exp(-2.5 * p[2]) * u[11] * p[5]
-    
-    # 11: HCO+
-    du[11] = p[4] * (-3.3e-5 * u[11] * u[3]) / p[1] + 
-            p[4] * 1e-9 * u[9] * u[12] + 
-            p[4] * 1.7e-9 * u[10] * u[2] - 
-            1.5e-10 * p[3] * exp(-2.5 * p[2]) * u[11]
-    
-    # 12: C+
-    du[12] = p[4] * (-1.4e-10 * u[3] * u[12]) / (p[1]^0.61) - 
-            p[4] * 4e-16 * u[1] * u[12] - 
-            p[4] * 1e-9 * u[9] * u[12] + 
-            p[4] * 1.6e-9 * u[10] * u[5] + 
-            3e-10 * p[3] * exp(-3 * p[2]) * u[6]
-    
-    # 13: M+
-    du[13] = p[4] * (-3.8e-10 * u[13] * u[3]) / (p[1]^0.65) + 
-            p[4] * 2e-9 * u[2] * u[14] 
-            + 2.0e-10 * p[3] * exp(-1.9 * p[2]) * u[14] # this term was added as part of the skipped photoreaction
-    
-    # 14: M
-    du[14] = p[4] * (3.8e-10 * u[13] * u[3]) / (p[1]^0.65) - 
-            p[4] * 2e-9 * u[2] * u[14] 
-            - 2.0e-10 * p[3] * exp(-1.9 * p[2]) * u[14] # this term was added as part of the skipped photoreaction
-    
-    return SVector{14}(du1, du2, du3, du4, du5, du6, du7, du8, du9, du10, du11, du12, du13, du14)
-
-end
-
-u0 = @SVector [0.5;      # 1:  H2   yep?
-                9.059e-9; # 2:  H3+  yep
-                2.0e-4;   # 3:  e    yep
-                0.1;      # 4:  He   SEE lines 535 NL99
-                7.866e-7; # 5:  He+  yep? should be 2.622e-5
-                0.0;      # 6:  C    yep
-                0.0;      # 7:  CHx  yep
-                0.0004;   # 8:  O    yep
-                0.0;      # 9:  OHx  yep
-                0.0;      # 10: CO   yep
-                0.0;      # 11: HCO+ yep
-                0.0002;   # 12: C+   yep
-                2.0e-7;   # 13: M+   yep
-                2.0e-7]   # 14: M    yep
-
-seconds_per_year = 3600 * 24 * 365
-tspan = (0.0, 30000 * seconds_per_year) # ~30 thousand yrs
 
 
-=#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
