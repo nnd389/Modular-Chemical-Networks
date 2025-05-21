@@ -25,3 +25,15 @@ At the time of implementing it, this network had 6173 reactions and 468 chemical
 
 ### GPU Capability
 One of the big motivations for using Julia was for its rich differential equation packages and it's abilities to be able to solve problems on the GPU. There is a rudamentary working version of the nelson network on GPUs at /scripts/TACC/Nelson/GPU/nelson_catalyst.jl
+
+
+
+- put specific instrucitons on how to run
+- say what version of julia, how to run on gpu, all the commands to run
+- what version of catalyst
+- julia module
+- perhaps include timings, as a frame of reference
+- - ask carlos how long ucl chem takes
+  - text to julia converter
+  - 
+- 
