@@ -8,7 +8,7 @@ In particular, there are three main networks implemented here. A note on chemica
 
 ## Small: Nelson and Langer (1999)
 This network has 23 reactions, 14 chemical species and comes from the paper "On the Stability and Evolution of Isolated BOK Globules" by Nelson and Langer written in 1999. 
-See /scripts/Nelson/Nelson_network_fordocs.jl for the network in ODE form and /Users/kneenaugh/Desktop/Git/AstroChemNetwork/scripts/Nelson/Nelson_catalyst.jl for the network in Catalyst (reaction) form. 
+See /scripts/Nelson/Nelson_network_fordocs.jl for the network in ODE form and /scripts/Nelson/Nelson_catalyst.jl for the network in Catalyst (reaction) form. 
 
 ## Medium: Glover et. al. (2010)
 This network has 219 reactions and 32 chemical species and comes from the paper "Modelling CO formation in the turbulent interstellar medium" by Glover, Federrath, Mac Low, and Klessen in 2010. 
