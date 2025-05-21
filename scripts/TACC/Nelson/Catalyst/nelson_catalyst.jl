@@ -1,4 +1,4 @@
-print("\n\n     Nelson Catalyst CPU Parrallelization Test     ")
+print("\n\n     Nelson Catalyst GPU Parrallelization Test     ")
 print("\nCheck 1: We are at the begining of the Julia script!")
 using Catalyst
 using DifferentialEquations
@@ -8,19 +8,21 @@ using OrdinaryDiffEq
 using Symbolics
 using DiffEqDevTools
 using ODEInterface, ODEInterfaceDiffEq
-using ModelingToolkit
+using DiffEqGPU 
+using CUDA
+#using ModelingToolkit
+
 print("\nCheck 2: Finished initializing packages")
 
 ### Set The timespan, parameters, and initial conditions ###
 seconds_per_year = 3600 * 24 * 365
 tspan = (0.0, 30000 * seconds_per_year) # ~30 thousand yrs
 
-params = Dict(
-    :T => 10, 
-    :Av => 2, 
-    :Go => 1.7, 
-    :n_H => 611, 
-    :shield => 1)
+params = [10,  # T
+    2,   # Av
+    1.7, # Go
+    611, # n_H
+    1]   # shield
 
 u0 = [0.5,    # 1:  H2   yep?
     9.059e-9, # 2:  H3+  yep
@@ -87,82 +89,68 @@ print("\nCheck 4: Finished reading the reactions equations")
 
 
 ### Turn the Network into a system of ODEs and Timing ###
-print("\n\nNelson Catalyst CPUs:")
 @named system = ReactionSystem(reaction_equations, t)
 #@named sys = ODESystem(reaction_equations, t) # this doesn't work but I have hope for it one day, see https://github.com/SciML/MethodOfLines.jl/issues/117
+sys = convert(ODESystem, Catalyst.complete(system))
+completed_sys = Catalyst.complete(sys)
 
 
-sys = convert(ODESystem, complete(system))
-print("\n\nTime to convert:")
-@time convert(ODESystem, complete(system))
-@time convert(ODESystem, complete(system))
-@time convert(ODESystem, complete(system))
-@time convert(ODESystem, complete(system))
 
-completed_sys = complete(sys)
-print("Time to complete:")
-@time complete(sys)
-@time complete(sys)
-@time complete(sys)
-@time complete(sys)
 
-prob_complete = ODEProblem(completed_sys, u0, tspan, params)
-print("Time to create the completed problem:")
-@time ODEProblem(completed_sys, u0, tspan, params)
-@time ODEProblem(completed_sys, u0, tspan, params)
-@time ODEProblem(completed_sys, u0, tspan, params)
-@time ODEProblem(completed_sys, u0, tspan, params)
+print("\n\nNelson Catalyst CPUs Parrallelization Test:")
+prob = ODEProblem(completed_sys, u0, tspan, params)
+sol = solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e9)
 
-sol_complete = solve(prob_complete, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e9)
-print("Time to solve the completed Nelson system ONCE with lsoda: ")
-@time solve(prob_complete, lsoda(), saveat = 1e10);
-@time solve(prob_complete, lsoda(), saveat = 1e10);
-@time solve(prob_complete, lsoda(), saveat = 1e10);
-@time solve(prob_complete, lsoda(), saveat = 1e10);
+print("\nTime to solve the completed Nelson system ONCE with CPU lsoda: ")
+@time solve(prob, lsoda(), saveat = 1e10);
+@time solve(prob, lsoda(), saveat = 1e10);
+@time solve(prob, lsoda(), saveat = 1e10);
+@time solve(prob, lsoda(), saveat = 1e10);
 
 
 ### We're gonna for loop and GPU this baddie###
 # CAUTION! The second for loop always runs faster than the first regardless for some reason, I think it has to do with setting up the @time macro?
-num_runs = 100
+num_runs = 10
 print("\nFor loop timing for ", num_runs, " runs: ")
 
 @time begin
     for i in 1:num_runs
         u0_rand = rand(Float32,14) .* u0
-        prob_complete_for = ODEProblem(completed_sys, u0_rand, tspan, params)
-        sol_complete_for = solve(prob_complete_for, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+        prob_for = ODEProblem(completed_sys, u0_rand, tspan, params)
+        sol_for = solve(prob_for, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
     end
 end
 @time begin
     for i in 1:num_runs
         u0_rand = rand(Float32,14) .* u0
-        prob_complete_for = ODEProblem(completed_sys, u0_rand, tspan, params)
-        sol_complete_for = solve(prob_complete_for, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+        prob_for = ODEProblem(completed_sys, u0_rand, tspan, params)
+        sol_for = solve(prob_for, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
     end
 end
 @time begin
     for i in 1:num_runs
         u0_rand = rand(Float32,14) .* u0
-        prob_complete_for = ODEProblem(completed_sys, u0_rand, tspan, params)
-        sol_complete_for = solve(prob_complete_for, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+        prob_for = ODEProblem(completed_sys, u0_rand, tspan, params)
+        sol_for = solve(prob_for, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
     end
 end
 @time begin
     for i in 1:num_runs
         u0_rand = rand(Float32,14) .* u0
-        prob_complete_for = ODEProblem(completed_sys, u0_rand, tspan, params)
-        sol_complete_for = solve(prob_complete_for, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+        prob_for = ODEProblem(completed_sys, u0_rand, tspan, params)
+        sol_for = solve(prob_for, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
     end
 end
+
 
 
 
 ### Ensemble Problem ###
-print("\nEnsemble Problem")
+print("\nEnsemble GPU Problem")
 print("\nCheck 1: Finished the for loops")
 tspan_ens = (0.0f0, 946080000000.0f0) # ~30 thousand yrs
 print("\nCheck 2: Finished initializing the timespan")
-prob_ens = ODEProblem(completed_sys, u0, tspan_ens, params)
+prob_ens = ODEProblem(completed_sys, u0, tspan_ens, params) # perhaps try CUDA.cu(params) and CUDA.cu(u0)?
 print("\nCheck 3: Finished creating the Ensemble ODE problem")
 prob_func_nelson = (prob_ens, i, repeat) -> remake(prob_ens, u0 = rand(Float32,14) .* u0)
 print("\nCheck 4: Finished making all the remakes")
@@ -170,31 +158,33 @@ monteprob_nelson = EnsembleProblem(prob, prob_func = prob_func_nelson, safetycop
 print("\nCheck 5: Finished creating the Ensemble problem")
 
 
-
-sol_ensemble = solve(monteprob_nelson, Rodas4(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+sol_ensemble = solve(monteprob_nelson, Rodas4(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=10000000000.0f0)
 print("\n\nEnsemble Timing to solve ", num_runs, " random Nelson systems on GPUs with Rodas4():")
-@time solve(monteprob_nelson, Rodas4(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-@time solve(monteprob_nelson, Rodas4(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-@time solve(monteprob_nelson, Rodas4(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-@time solve(monteprob_nelson, Rodas4(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Rodas4(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Rodas4(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Rodas4(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Rodas4(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 
 print("\nEnsemble Timing to solve ", num_runs, " random Nelson systems on GPUs with Rodas5P():")
-@time solve(monteprob_nelson, Rodas5P(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-@time solve(monteprob_nelson, Rodas5P(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-@time solve(monteprob_nelson, Rodas5P(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-@time solve(monteprob_nelson, Rodas5P(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Rodas5P(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Rodas5P(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Rodas5P(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Rodas5P(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 
 print("\nEnsemble Timing to solve ", num_runs, " random Nelson systems on GPUs with Tsit5():")
-@time solve(monteprob_nelson, Tsit5(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-@time solve(monteprob_nelson, Tsit5(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-@time solve(monteprob_nelson, Tsit5(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-@time solve(monteprob_nelson, Tsit5(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Tsit5(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Tsit5(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Tsit5(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Tsit5(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 
 print("\nEnsemble Timing to solve ", num_runs, " random Nelson systems on GPUs with Vern9():")
-@time solve(monteprob_nelson, Tsit5(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-@time solve(monteprob_nelson, Tsit5(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-@time solve(monteprob_nelson, Tsit5(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-@time solve(monteprob_nelson, Tsit5(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Vern9(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Vern9(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Vern9(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, Vern9(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+
+print("\nWe're officially on for Nelson ODEs GPUs!! Onwards and march!\n")
+
 
 
 
@@ -221,7 +211,7 @@ print("Time to solve the Ensemble Problem using EnsembleDistributed")
 @time solve(monteprob_nelson,lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10, EnsembleDistributed(), trajectories = 100)
 @time solve(monteprob_nelson,lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10, EnsembleDistributed(), trajectories = 100)
 
-print("\nWe're officially on for Nelson ODEs CPUs!! Onwards and march!\n")
+
 
 
 
