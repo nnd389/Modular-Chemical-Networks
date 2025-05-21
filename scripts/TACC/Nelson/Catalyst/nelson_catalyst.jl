@@ -85,6 +85,38 @@ reaction_equations = [
     (@reaction 2e-10 * Go * exp(-1.9 * Av), M --> M⁺ + e),
     (@reaction 1.5e-10 * Go * exp(-2.5 * Av), HCO⁺ --> CO) # HCO⁺ --> CO + H
 ]
+CUDA.allowscalar(false)
+
+
+### Set The timespan, parameters, and initial conditions ###
+seconds_per_year = 3600 * 24 * 365
+tspan = (0.0, 30000 * seconds_per_year) # ~30 thousand yrs
+
+params = [10,  # T
+    2,   # Av
+    1.7, # Go
+    611, # n_H
+    1]   # shield
+
+u0 = [0.5,    # 1:  H2   yep?
+    9.059e-9, # 2:  H3+  yep
+    2.0e-4,   # 3:  e    yep
+    0.1,      # 4:  He  SEE lines 535 NL99
+    7.866e-7, # 5:  He+  yep? should be 2.622e-5
+    0.0,      # 6:  C    yep
+    0.0,      # 7:  CHx  yep
+    0.0004,   # 8:  O    yep
+    0.0,      # 9:  OHx  yep
+    0.0,      # 10: CO   yep
+    0.0,      # 11: HCO+ yep
+    0.0002,   # 12: C+   yep
+    2.0e-7,   # 13: M+   yep
+    2.0e-7]   # 14: M    yep
+
+
+
+
+
 print("\nCheck 4: Finished reading the reactions equations")
 
 
@@ -93,10 +125,6 @@ print("\nCheck 4: Finished reading the reactions equations")
 #@named sys = ODESystem(reaction_equations, t) # this doesn't work but I have hope for it one day, see https://github.com/SciML/MethodOfLines.jl/issues/117
 sys = convert(ODESystem, Catalyst.complete(system))
 completed_sys = Catalyst.complete(sys)
-
-
-
-
 print("\n\nNelson Catalyst CPUs Parrallelization Test:")
 prob = ODEProblem(completed_sys, u0, tspan, params)
 sol = solve(prob, lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e9)
@@ -145,6 +173,23 @@ end
 
 
 
+tspan_gpu = (0.0f0, 946080000000.0f0) # ~30 thousand yrs
+params_gpu = Float32[10.0f0, 2.0f0, 1.7f0, 611.0f0, 1.0f0]
+u0_gpu = Float32[0.5;    # 1:  H2   yep?
+9.059f-9; # 2:  H3+  yep
+2.0f-4;   # 3:  e    yep
+0.1;      # 4:  He  SEE lines 535 NL99
+7.866f-7; # 5:  He+  yep? should be 2.622f-5
+0.0;      # 6:  C    yep
+0.0;      # 7:  CHx  yep
+0.0004;   # 8:  O    yep
+0.0;      # 9:  OHx  yep
+0.0;      # 10: CO   yep
+0.0;      # 11: HCO+ yep
+0.0002;   # 12: C+   yep
+2.0f-7;   # 13: M+   yep
+2.0f-7]   # 14: M    yep
+
 ### Ensemble Problem ###
 print("\nEnsemble GPU Problem")
 print("\nCheck 1: Finished the for loops")
@@ -154,17 +199,21 @@ prob_ens = ODEProblem(completed_sys, u0, tspan_ens, params) # perhaps try CUDA.c
 print("\nCheck 3: Finished creating the Ensemble ODE problem")
 prob_func_nelson = (prob_ens, i, repeat) -> remake(prob_ens, u0 = rand(Float32,14) .* u0)
 print("\nCheck 4: Finished making all the remakes")
-monteprob_nelson = EnsembleProblem(prob, prob_func = prob_func_nelson, safetycopy = false);
+monteprob_nelson = EnsembleProblem(prob_ens, prob_func = prob_func_nelson, safetycopy = false);
 print("\nCheck 5: Finished creating the Ensemble problem")
 
 
 sol_ensemble = solve(monteprob_nelson, Rodas4(), EnsembleThreads(), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=10000000000.0f0)
-print("\n\nEnsemble Timing to solve ", num_runs, " random Nelson systems on GPUs with Rodas4():")
-@time solve(monteprob_nelson, Rodas4(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-@time solve(monteprob_nelson, Rodas4(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-@time solve(monteprob_nelson, Rodas4(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
-@time solve(monteprob_nelson, Rodas4(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+print("\n\nEnsemble Timing to solve ", num_runs, " random Nelson systems on GPUs with nothing:")
+@time solve(monteprob_nelson, EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+@time solve(monteprob_nelson, EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 
+#@time solve(monteprob_nelson, Rodas4(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
+#=
 print("\nEnsemble Timing to solve ", num_runs, " random Nelson systems on GPUs with Rodas5P():")
 @time solve(monteprob_nelson, Rodas5P(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
 @time solve(monteprob_nelson, Rodas5P(), EnsembleGPUArray(CUDA.CUDABackend()), trajectories = num_runs, reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10)
@@ -211,7 +260,7 @@ print("Time to solve the Ensemble Problem using EnsembleDistributed")
 @time solve(monteprob_nelson,lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10, EnsembleDistributed(), trajectories = 100)
 @time solve(monteprob_nelson,lsoda(), reltol=1.49012e-8, abstol=1.49012e-8, saveat=1e10, EnsembleDistributed(), trajectories = 100)
 
-
+=#
 
 
 
